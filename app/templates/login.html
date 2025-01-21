@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<form method="POST" action="/signin">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+    <div class="form-action-title">Kirish</div>
+    {{ form.hidden_tag() }} <!-- To render hidden CSRF token -->
+
+    <label for="username">Taxallus</label>
+    {{ form.username(class="form-input", id="username") }}<br>
+
+    <label for="password">Parol</label>
+    {{ form.password(class="form-input", id="password") }}<br>
+
+    <button type="submit">Kirish</button>
+</form>
+{% endblock %}
+
+{% block page_content %}
+{{wtf.quick_form(form)}}
+{% endblock %}

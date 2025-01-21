@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Physics Hub{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <div class="web-title">Physics Hub</div>
+        <div class="button-group">
+            {% if current_user.is_authenticated %}
+            <div class="enter-button"><a href="/profile">Profilim</a></div>
+            <div class="enter-button"><a href="/logout">Chiqish</a></div>
+            {% else %}
+            <div class="enter-button"><a href="/signin">Kirish</a></div>
+            <div class="enter-button"><a href="/signup">Ro'yxatdan o'tish</a></div>
+            {% endif %}
+        </div>
+    </header>
+    <div class="container">
+        <nav>
+            <div class="nav-button"><a href="/"><span class="material-symbols-outlined">person_raised_hand</span>
+                    Qo'llanma</a></div>
+            <div class="nav-button"><a href="/"><span class="material-symbols-outlined">military_tech</span> Reyting</a>
+            </div>
+            <div class="nav-button"><a href="/"><span class="material-symbols-outlined">calculate</span> Masalalar</a>
+            </div>
+            <div class="nav-button"><a href="/"><span class="material-symbols-outlined">done_outline</span> Testlar</a>
+            </div>
+            <div class="nav-button"><a href="/"><span class="material-symbols-outlined">question_exchange</span>
+                    Savol-Javob</a></div>
+            <div class="nav-button"><a href="/"><span class="material-symbols-outlined">labs</span> Labaratoriya</a>
+            </div>
+        </nav>
+        <section>
+            {% block content %}{% endblock %}
+        </section>
+    </div>
+</body>
+
+</html>

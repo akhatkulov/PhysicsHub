@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Physics Hub{% endblock %}
+
+
+{% block content %}
+<form method="POST" action="/signup">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <center>
+        <h2>To'ldiring</h2>
+    </center>
+    {{ form.hidden_tag() }}
+
+    <label for="name">Ism:</label>
+    {{ form.name(class="form-input") }}<br>
+
+    <label for="surname">Familiya:</label>
+    {{ form.surname(class="form-input") }}<br>
+
+    <label for="username">Taxallus:</label>
+    {{ form.username(class="form-input") }}<br>
+
+    <label for="university">O'qish joyi:</label>
+    {{ form.university(class="form-input") }}<br>
+
+    <label for="password">Parol:</label>
+    {{ form.password(class="form-input") }}<br>
+
+    <button type="submit">Yuborish</button>
+</form>
+{% endblock %}

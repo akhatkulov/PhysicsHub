@@ -1,0 +1,315 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: linear-gradient(90deg, #004aad, #0078ff);
+    /* Silliq gradient */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Pastki soyani qo'shish */
+    border-radius: 10px;
+    /* Yantig'ini yumaloqlash */
+    color: white;
+    font-family: 'Arial', sans-serif;
+}
+
+.web-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 1px;
+    /* Harflar orasidagi bo'shliq */
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+.enter-button a {
+    text-decoration: none;
+    color: white;
+    background-color: #ff6700;
+    /* Yorqin tugma rangi */
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    /* Tugma uchun soya */
+}
+
+.enter-button a:hover {
+    background-color: #cc5200;
+    /* Hover paytida rangi o'zgaradi */
+    transform: scale(1.05);
+    /* Kichik kattalashish animatsiyasi */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    /* Hover paytida ko'proq soya */
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 90px);
+    background-color: #fff;
+    box-shadow: 0 1px 1px 0 rgb(0, 0, 0, 0.6), 0 2px 5px 0 rgb(0, 0, 0, 0.6), ;
+    display: flex;
+}
+
+/* NAV */
+
+.container nav {
+    position: relative;
+    flex: 30%;
+    background: linear-gradient(90deg, #0078ff, #004aad);
+    /* Silliq gradient fon */
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    /* Yorqin chegaralar */
+    box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px 15px;
+    /* Yaxshi bo'shliq */
+    border-radius: 10px;
+    /* Yumaloqlash */
+    color: white;
+}
+
+.container nav .nav-button {
+    text-align: left;
+    background-color: #0056b3;
+    /* Tugma rangi */
+    margin: 10px 0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    /* Tugmaga silliq soya */
+}
+
+.container nav .nav-button:hover {
+    background-color: #003f8c;
+    /* Hover paytida rang o'zgaradi */
+    transform: scale(1.05);
+    /* Kattalashish animatsiyasi */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    /* Ko'proq soya */
+}
+
+.container nav a {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+    /* Harflar orasida bo'shliq */
+    font-weight: 600;
+    /* Qalinroq shrift */
+    font-size: 18px;
+    text-decoration: none;
+    color: #ffffff;
+    transition: color 0.3s, text-shadow 0.3s;
+    gap: 10px;
+}
+
+.container nav a:hover {
+    color: #ffcc00;
+    /* Hover paytida rangni o'zgartirish */
+    text-shadow: 0px 2px 5px rgba(255, 204, 0, 0.7);
+    /* Matnning soyalari */
+}
+
+.container nav .nav-button.active {
+    background-color: #003366;
+    /* Aktiv tugma uchun chuqur ko'k rang */
+    border-left: 4px solid #ffcc00;
+    /* Aktiv tugma uchun sariq indikator */
+    transform: scale(1.08);
+    /* Kattalashish effekti */
+    box-shadow: 0 6px 15px rgba(255, 204, 0, 0.4);
+    /* Aktiv tugma uchun yorqin soya */
+}
+
+@media (max-width: 768px) {
+    .container nav {
+        flex: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        /* Yagona chegarani qo'shish */
+        border-radius: 0;
+    }
+
+    .container nav .nav-button {
+        text-align: center;
+        margin: 10px 0;
+        padding: 12px 18px;
+    }
+
+    .container nav a {
+        font-size: 16px;
+        /* Mobil uchun shriftni kichraytirish */
+    }
+}
+
+
+/* 
+Forma uchun style */
+
+/* Umumiy sektsiya uslubi */
+.container section {
+    position: relative;
+    flex: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Forma markazda bo'lishi uchun */
+    margin: 20px;
+    background: linear-gradient(135deg, #0066cc, #003366);
+    /* Gradient fon */
+    border-radius: 15px;
+    /* Burchaklarni yumaloqlash */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    /* Soyalar */
+    padding: 30px;
+    /* Ichki oraliq */
+}
+
+/* Forma uslubi */
+.container section form {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    /* Maksimal kenglik */
+    box-sizing: border-box;
+    /* Box modelni optimallashtirish */
+}
+
+/* Forma sarlavha uslubi */
+.container section form .form-action-title {
+    font-weight: 800;
+    font-size: 80px;
+    color: #003366;
+    /* Matn rangi */
+    text-align: center;
+    /* Markazlashtirish */
+    margin-bottom: 20px;
+    /* Pastki oraliq */
+}
+
+/* Forma elementlari */
+.container section form label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.container section form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.container section form input:focus {
+    border-color: #0066cc;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+}
+
+/* Tugma qo'shishni xohlaysizmi? Shu qo'shing */
+.container section form button {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #0066cc;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.container section form button:hover {
+    background-color: #003366;
+    transform: translateY(-2px);
+}
+
+/* Tugma uslubi */
+.container section form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0066cc;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    /* Katta harflar */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.container section form button:hover {
+    background-color: #003366;
+    transform: scale(1.05);
+    /* Tugma biroz kattalashadi */
+}
+
+.container section form button:active {
+    transform: scale(0.98);
+    /* Tugma biroz kichrayadi */
+    background-color: #004080;
+}
+
+
+
+
+
+
+/* FUCKING FLASK /////////////// WARNING FUCKIN FLASH //////////  */
+.flash-messages {
+    margin-top: 10px;
+}
+
+.flash {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.flash.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.flash.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
