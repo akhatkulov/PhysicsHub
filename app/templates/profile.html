@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Physics Hub{% endblock %}
+
+
+{% block content %}
+    <form method="POST" action="{{ url_for('main.profile') }}">
+        <h3>Profilingizni Tahrirlash</h3>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        {{ form.hidden_tag() }}
+        <div>
+            <label for="name">Ism:</label>
+            {{ form.name(class="form-control", value=user.name) }}
+        </div>
+        <div>
+            <label for="surname">Familiya:</label>
+            {{ form.surname(class="form-control", value=user.surname) }}
+        </div>
+        <div>
+            <label for="username">Taxallus:</label>
+            {{ form.username(class="form-control", value=user.username) }}
+        </div>
+        <input type="hidden" name="username" value="{{ form.username.data }}">
+        <div>
+            <label for="university">O'qish joyi:</label>
+            {{ form.university(class="form-control", value=user.university) }}
+        </div>
+        <div>
+            <label for="password">Yangi Parol:</label>
+            {{ form.password(class="form-control") }}
+            <small>Parolni almashtirish shart emas.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Saqlash</button>
+    </form>
+{% endblock %}

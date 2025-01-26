@@ -9,6 +9,9 @@ class User(UserMixin, db.Model):
     university = db.Column(db.String(120), unique=False, nullable=False)
     password = db.Column(db.String(200), nullable=False)
 
+class Test(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

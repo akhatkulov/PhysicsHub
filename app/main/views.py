@@ -3,9 +3,9 @@ from .. import db
 from ..models import User
 from ..email import send_email
 from . import main
-from .forms import SignInForm, SignUpForm
+from .forms import SignInForm, SignUpForm,UpdateData
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_required, logout_user, login_user
+from flask_login import login_required, logout_user, login_user,current_user
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -60,6 +60,38 @@ def login_page():
 
         flash("Taxallus yoki parol noto'g'ri", "error")
     return render_template("login.html", form=form)
+
+@main.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    form = UpdateData()
+    if form.validate_on_submit():
+        print("olindi")
+        # Formdagi ma'lumotlarni olish
+        name = form.name.data
+        surname = form.surname.data
+        university = form.university.data
+        password = form.password.data
+
+        # current_user ob'ekti orqali malumotlarni yangilash
+        user = current_user
+        user.name = name
+        user.surname = surname
+        user.university = university
+
+        if password:
+            user.password = generate_password_hash(password)
+
+        try:
+            db.session.commit()  # Malumotlarni bazaga saqlash
+            flash('Malumotlar yangilandi!', 'success')
+        except Exception as e:
+            db.session.rollback()  # Agar xato bo'lsa, rollback qilish
+            flash(f'Error updating profile: {str(e)}', 'danger')
+
+        return redirect(url_for('main.profile'))  # Yangi sahifaga qaytish
+
+    return render_template('profile.html', user=current_user, form=form)
 
 @main.route('/logout')
 @login_required

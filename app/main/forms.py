@@ -16,3 +16,10 @@ class SignUpForm(FlaskForm):
     username = StringField('Taxallus:', validators=[InputRequired()])
     university = StringField('O\'qish joyi:', validators=[InputRequired()])
     password = PasswordField('Parol:', validators=[InputRequired()])
+
+class UpdateData(FlaskForm):
+    name = StringField('Ism:', validators=[InputRequired()])
+    surname = StringField('Familiya:', validators=[InputRequired()],render_kw={"placeholder": "********"})
+    username = StringField('Taxallus:', validators=[InputRequired()],render_kw={"disabled": "disabled"})
+    university = StringField('O\'qish joyi:', validators=[InputRequired()])
+    password = PasswordField('Parol:',render_kw={"placeholder": "********"})
