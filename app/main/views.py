@@ -62,19 +62,74 @@ def add_theme():
 @main.route('/themes', methods=['GET'])
 def get_themes():
     themes = [
-        {"name": "Minimalist", "about": "Soddalik va tartibga asoslangan dizayn."},
-        {"name": "Dark Mode", "about": "Qorong'u fon va yorqin matnlar bilan qulay ko'rinish."},
+        {"name": "minimalist", "about": "Soddalik va tartibga asoslangan dizayn."},
+        {"name": "dark Mode", "about": "Qorong'u fon va yorqin matnlar bilan qulay ko'rinish."},
         {"name": "Cyberpunk", "about": "Neon ranglar va futuristik ko'rinish."},
         {"name": "Classic", "about": "An'anaviy va rasmiy dizayn."}
     ]
     return jsonify(themes)
 
 
+@main.route('/matters/')
+def matters():
+    themes = [
+        {"name": "Mexanika", "about": "Jismlarning harakati, kuchlar va muvozanat qonunlarini o‘rganadi. Masalan, Nyuton mexanikasi va klassik mexanika."},
+        {"name": "Termodinamika", "about": "Issiqlik, energiya va ularning o‘zaro bog‘liqligini tadqiq qiladi. Masalan, issiqlik mashinalari va entropiya tushunchalari."},
+        {"name": "Elektromagnetizm", "about": "Elektr va magnit maydonlarini o‘rganadi. Masalan, Maksvell tenglamalari, elektromagnit to‘lqinlar."},
+        {"name": "Optika", "about": "Yorug‘likning tarqalishi, sinishi, aks etishi kabi xususiyatlarini o‘rganadi. Masalan, linzalar, nurlar interferensiyasi."},
+        {"name": "Kvant mexanikasi", "about": "Mikro dunyodagi zarrachalar harakati va xususiyatlarini o‘rganadi. Masalan, elektronlarning holati, superpozitsiya prinsipi."},
+        {"name": "Nisbiylik nazariyasi", "about": "Katta tezlik va gravitatsiya ta’siridagi jism harakatini o‘rganadi. Masalan, vaqtning nisbiyligi, E=mc² tenglamasi."},
+        {"name": "Yadro fizikasi", "about": "Atom yadrosi va yadro reaksiyalarini o‘rganadi. Masalan, radioaktivlik, yadroviy energiya."},
+        {"name": "Zarralar fizikasi", "about": "Elementar zarralar va ularning o‘zaro ta’sirini tadqiq qiladi. Masalan, kvarklar, leptonlar, Standart model."},
+        {"name": "Kondensatlangan muhit fizikasi", "about": "Qattiq jism va suyuqliklarning xossalarini o‘rganadi. Masalan, yarimo‘tkazgichlar, supero‘tkazuvchanlik."},
+        {"name": "Astrofizika", "about": "Kosmik jismlar va ularning fizik qonuniyatlarini o‘rganadi. Masalan, qora tuynuklar, koinot kengayishi."}
+    ]
+    return render_template('matters.html',themes=themes)
 
-@main.route("/tests")
+@main.route("/tests/")
 def tests():
     #themes = get_all_themes()
-    return render_template('tests.html')
+    themes = [
+        {"name": "Mexanika", "about": "Jismlarning harakati, kuchlar va muvozanat qonunlarini o‘rganadi. Masalan, Nyuton mexanikasi va klassik mexanika."},
+        {"name": "Termodinamika", "about": "Issiqlik, energiya va ularning o‘zaro bog‘liqligini tadqiq qiladi. Masalan, issiqlik mashinalari va entropiya tushunchalari."},
+        {"name": "Elektromagnetizm", "about": "Elektr va magnit maydonlarini o‘rganadi. Masalan, Maksvell tenglamalari, elektromagnit to‘lqinlar."},
+        {"name": "Optika", "about": "Yorug‘likning tarqalishi, sinishi, aks etishi kabi xususiyatlarini o‘rganadi. Masalan, linzalar, nurlar interferensiyasi."},
+        {"name": "Kvant mexanikasi", "about": "Mikro dunyodagi zarrachalar harakati va xususiyatlarini o‘rganadi. Masalan, elektronlarning holati, superpozitsiya prinsipi."},
+        {"name": "Nisbiylik nazariyasi", "about": "Katta tezlik va gravitatsiya ta’siridagi jism harakatini o‘rganadi. Masalan, vaqtning nisbiyligi, E=mc² tenglamasi."},
+        {"name": "Yadro fizikasi", "about": "Atom yadrosi va yadro reaksiyalarini o‘rganadi. Masalan, radioaktivlik, yadroviy energiya."},
+        {"name": "Zarralar fizikasi", "about": "Elementar zarralar va ularning o‘zaro ta’sirini tadqiq qiladi. Masalan, kvarklar, leptonlar, Standart model."},
+        {"name": "Kondensatlangan muhit fizikasi", "about": "Qattiq jism va suyuqliklarning xossalarini o‘rganadi. Masalan, yarimo‘tkazgichlar, supero‘tkazuvchanlik."},
+        {"name": "Astrofizika", "about": "Kosmik jismlar va ularning fizik qonuniyatlarini o‘rganadi. Masalan, qora tuynuklar, koinot kengayishi."}
+    ]
+
+    return render_template('tests.html',themes=themes)
+
+@main.route('/matters/<name>')
+def show_matter(name):
+    matters = Matter.query.filter(Matter.theme == name).all()
+    return render_template('show_matter.html', name=name, matters=matters)
+
+@main.route('/matters/<theme>/<int:matter_id>', methods=["GET", "POST"])
+def calc_matter(theme, matter_id):
+    matter = Matter.query.filter_by(id=matter_id).first()
+
+    if not matter: 
+        abort(404)
+
+    if request.method == 'POST':
+        user_answer = request.form['answer'].strip()
+        correct_answer = matter.correct
+
+        if user_answer == correct_answer:
+            flash(f"✅ To‘g‘ri javob! ({user_answer})", "success")
+        else:
+            flash(f"❌ Noto‘g‘ri javob! To‘g‘ri javob: {correct_answer}", "danger")
+
+        return redirect(url_for('main.calc_matter', theme=theme, matter_id=matter_id)) 
+
+    return render_template('calc_matter.html', problem=matter,theme=theme)
+
+
 
 @main.route("/home")
 def home_page():

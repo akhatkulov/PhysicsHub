@@ -2,20 +2,21 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-
 <div class="theme-list">
     <h1>Mavzular ro'yxati</h1>
     <ul id="theme-list">
         {% for theme in themes %}
             <li>
-                <a href="/tests/{{ theme.name | lower}}">
+                <a href="/matters/{{ theme.name | lower }}">
                     <strong class="theme-name">{{ theme.name | capitalize }}</strong>: 
                     <div class="theme-about">{{ theme.about }}</div>
                 </a>
             </li>
         {% endfor %}
     </ul>
+
 </div>
+
 
 {% endblock %}
 

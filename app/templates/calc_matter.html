@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+            <form method="POST" class="calc-form">
+                <h1>{{ problem.title }}</h1>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+                <hr>
+            <p class="calc-matter-question">{{ problem.main }}</p>
+            <hr>
+            <p class="calc-matter-helper"><strong>Yordam:</strong> {{ problem.helper }}</p>
+
+            
+                <input type="text" name="answer" placeholder="Javobni kiriting" required>
+                <button type="submit">Yuborish</button><br>
+                <a href="{{ url_for('main.show_matter',name=theme) }}">⬅ Masalalar ro‘yxatiga qaytish</a>
+            </form>
+
+
+{% endblock %}
+
+{% block page_content %}
+{{wtf.quick_form(form)}}
+{% endblock %}
