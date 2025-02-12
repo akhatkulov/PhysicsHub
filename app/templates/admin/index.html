@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='fontawesome-free-6.7.2-web/css/all.css')}}">
+</head>
+
+<body>
+    <div class="con">
+        <div class="nav">
+            <div class="back">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+        </div>
+        <div class="question_menu">
+            <div class="question">
+                Masala qo'shish +
+            </div>
+            <div class="test">
+                Test qo'shish +
+            </div>
+            <div class="theme">
+                Mavzu qo'shish +
+            </div>
+        </div>
+        <div class="question_boxs">
+            <div class="q_box">
+                <h1>Masalalar</h1>
+            </div>
+            <div class="t_box">
+                <h1>Testlar</h1>
+            </div>
+            <div class="th_box">
+                <h1>Mavzular</h1>
+            </div>
+        </div>
+    </div>
+    <div class="modals">
+        <div class="question_modal">
+            <span class="q_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <h1>Masala qo'shish</h1>
+            <form class="q_form">
+                <div class="input-i">
+                    <input type="text" id="title" required>
+                    <label for="title" class="title">
+                        Masala nomi
+                    </label>
+                </div>
+                <div class="input-i">
+                    <textarea type="text" id="shart" required></textarea>
+                    <label for="shart" class="shart">
+                        Masalaning sharti
+                    </label>
+                </div>
+                <div class="input-i">
+                    <textarea name="izoh" id="izoh" required></textarea>
+                    <label for="izoh" class="izoh">
+                        Izoh qoldirish
+                    </label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="javob" required>
+                    <label for="javob" class="javob">
+                        To'g'ri javob
+                    </label>
+                </div>
+                <div class="input-i">
+                    <select id="mavzusi">
+                        <option value="dinamika">Dinamika</option>
+                        <option value="statika">Statika</option>
+                        <option value="airodinamika">Airodinamika</option>
+                        <option value="elektronika">Elektronika</option>
+                        <option value="optika">Optika</option>
+                    </select>
+                    <label for="mavzusi" class="mavzulari">
+                        Masala mavzulari
+                    </label>
+                </div>
+                <button type="submit">Qo'shish</button>
+            </form>
+        </div>
+        <div class="test_modal">
+            <span class="t_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <h1>Test qo'shish</h1>
+            <form class="t_form">
+                <div class="input-i">
+                    <input type="text" id="t_title" required>
+                    <label for="t_title" class="title">
+                        Test nomi
+                    </label>
+                </div>
+                <div class="input-i">
+                    <select id="t_mavzusi">
+                        <option value="dinamika">Dinamika</option>
+                        <option value="statika">Statika</option>
+                        <option value="airodinamika">Airodinamika</option>
+                        <option value="elektronika">Elektronika</option>
+                        <option value="optika">Optika</option>
+                    </select>
+                    <label for="t_mavzusi" class="mavzulari">
+                        Masala mavzulari
+                    </label>
+                </div>
+                <div class="tests">
+                    <div class="test_s--wrapper">
+                        <span>Savollar soni:</span>
+                        <span class="q_number">0</span>
+                    </div>
+                    <div class="tests--wrapper">
+                    </div>
+                    <span class="t_plus">
+                        <i class="fa-solid fa-plus"></i>
+                    </span>
+                </div>
+                <button type="submit">Qo'shish</button>
+            </form>
+        </div>
+        <div class="theme_modal">
+            <span class="m_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <h1>
+                Mavzu qo'shish
+            </h1>
+            <form class="m_form">
+                <div class="input-i">
+                    <input type="text" id="m_title" required>
+                    <label for="m_title" class="title">
+                        Test nomi
+                    </label>
+                </div>
+                <button type="submit">Qo'shish</button>
+            </form>
+        </div>
+    </div>
+    <div class="little_modal">
+        <div class="modal">
+            <span class="l_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <form action="#" class="sv_q">
+                <div class="input-i">
+                    <input type="text" id="l_savol" required>
+                    <label for="l_savol" class="savol">
+                        Savol
+                    </label>
+                </div>
+                <div class="v_j">
+                    <div class="variants">
+                        <div class="input-i">
+                            <input type="text" id="variant1" required>
+                            <label for="variant1" class="savol">
+                                1-javob
+                            </label>
+                        </div>
+                        <div class="input-i">
+                            <input type="text" id="variant2" required>
+                            <label for="variant2" class="savol">
+                                2-javob
+                            </label>
+                        </div>
+                        <div class="input-i">
+                            <input type="text" id="variant3" required>
+                            <label for="variant3" class="savol">
+                                3-javob
+                            </label>
+                        </div>
+                        <div class="input-i">
+                            <input type="text" id="variant4" required>
+                            <label for="variant4" class="savol">
+                                4-javob
+                            </label>
+                        </div>
+                    </div>
+                    <div class="javoblar">
+                        <p>Javob</p>
+                        <input type="radio" class="radio" value="j1" required name="javoblar">
+                        <input type="radio" class="radio" value="j2" required name="javoblar">
+                        <input type="radio" class="radio" value="j3" required name="javoblar">
+                        <input type="radio" class="radio" value="j4" required name="javoblar">
+                    </div>
+                </div>
+                <button type="submit">Qo'shish</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{url_for('static', filename='app.js')}}"></script>
+</body>
+
+</html>

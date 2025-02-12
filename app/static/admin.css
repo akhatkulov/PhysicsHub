@@ -1,0 +1,479 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", serif;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    background-color: #1c202f;
+}
+
+.con {
+    width: 100%;
+    height: auto;
+    display: grid;
+    position: relative;
+
+}
+
+.nav {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: left;
+    padding: 10px 50px;
+}
+
+.back {
+    width: 50px;
+    height: 50px;
+    background-color: dodgerblue;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 11px;
+    cursor: pointer;
+    transition: 0.2s;
+    overflow: hidden;
+    font-size: 20px;
+    color: white;
+}
+
+.question_menu {
+    width: 90%;
+    height: 100px;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.question_menu div {
+    width: 30%;
+    height: 50px;
+    background-color: dodgerblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.question_menu div:hover,
+.back:hover {
+    background: transparent;
+    color: dodgerblue;
+    border: 1px solid dodgerblue;
+}
+
+.modals {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.600);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.modals div {
+    max-width: 550px;
+    height: auto;
+    padding: 20px;
+    background-color: #20253b;
+    position: relative;
+}
+
+.test_modal {
+    padding: 10px !important;
+}
+
+.modals>div {
+    display: none;
+}
+
+.input-i {
+    width: 100%;
+    height: auto;
+    display: grid;
+    justify-content: left;
+    align-items: end;
+    position: relative;
+}
+
+.modals div form {
+    display: grid;
+    grid-template-columns: auto;
+    column-gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.modals div h1 {
+    font-weight: 200;
+    text-align: center;
+    color: white;
+}
+
+.input-i label {
+    position: absolute;
+    cursor: text;
+    color: gray;
+    top: 30px;
+    left: 20px;
+    transition: 0.2s;
+}
+
+.input-i input,
+.input-i select {
+    width: 300px;
+    height: 40px;
+}
+
+.input-i option {
+    background: #1c202f;
+}
+
+.input-i textarea {
+    min-width: 300px;
+    max-width: 300px;
+    height: 40px;
+    min-height: 40px;
+    max-height: 100px;
+    padding-top: 5px;
+}
+
+.input-i input,
+.input-i textarea,
+.input-i select {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid dodgerblue;
+    outline: none;
+    color: white;
+    font-size: 18px;
+}
+
+.input-i input:focus+label,
+.input-i textarea:focus+label,
+.input-i select:focus+label {
+    top: 0;
+    color: dodgerblue;
+    font-size: 12px;
+}
+
+.input-i input:valid+label,
+.input-i textarea:valid+label,
+.input-i select:valid+label {
+    top: 0;
+    color: dodgerblue;
+    font-size: 12px;
+}
+
+.modals button {
+    width: 100%;
+    height: 40px;
+    background-color: dodgerblue;
+    color: white;
+    font-size: 20px;
+    border: none;
+    transition: 0.2s;
+    cursor: pointer;
+    font-family: "Poppins", serif;
+}
+
+.modals button:hover {
+    color: dodgerblue;
+    border: 1px solid dodgerblue;
+    background: transparent;
+}
+
+.modals button:active {
+    opacity: 1;
+}
+
+.exit {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: absolute;
+    right: -100px;
+    top: -50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 20px;
+    color: white;
+    background-color: dodgerblue;
+}
+
+.exit img {
+    width: 30px;
+}
+
+.exit:hover {
+    background-color: transparent;
+    border: 1px solid dodgerblue;
+    color: dodgerblue;
+}
+
+.tests {
+    display: grid;
+    gap: 0;
+    margin-top: -20px !important;
+    grid-gap: 10px !important;
+    justify-content: center;
+    grid-template-columns: auto;
+}
+
+.tests span,
+i {
+    color: white;
+}
+
+.t_plus {
+    width: 50px;
+    height: 50px !important;
+    background-color: dodgerblue !important;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s !important;
+    cursor: pointer;
+    right: 20px !important;
+    top: 25px;
+    position: absolute;
+}
+
+.t_plus:hover,
+.little_modal button:hover {
+    background-color: transparent !important;
+    border: 1px solid dodgerblue !important;
+    color: dodgerblue !important;
+}
+
+.t_plus:hover i {
+    color: dodgerblue !important;
+}
+
+.test_s--wrapper {
+    margin-left: -20px;
+}
+
+.savol_box {
+    padding: 0 !important;
+    min-width: 300px;
+    max-width: 100%;
+    height: 50px !important;
+    border: 1px solid dodgerblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.savol_box>span:nth-child(3) {
+    width: 60px !important;
+    height: 50px !important;
+    background-color: dodgerblue;
+    color: red !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid dodgerblue;
+    font-size: 20px;
+}
+
+.savol_box>span:nth-child(2) i {
+    color: red;
+}
+
+.savol_box>span:nth-child(3):hover {
+    background: transparent;
+}
+
+.savol_box>span:nth-child(1) {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    text-align: left;
+    padding-left: 10px;
+    overflow: hidden;
+}
+
+.tests--wrapper {
+    width: 100%;
+    height: 200px !important;
+    display: grid;
+    gap: 10px;
+    overflow-x: auto;
+}
+
+.the_end {
+    width: 30px;
+    height: 5px;
+    background-color: #20253b;
+
+}
+
+.little_modal {
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.600);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    width: 600px;
+    height: 500px;
+    background-color: #20253b;
+    padding: 20px;
+    position: relative;
+}
+
+.modal>form>.input-i,
+.modal>form>.input-i input {
+    width: 500px !important;
+}
+
+.input-i {
+    padding: 20px;
+}
+
+.v_j {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.javoblar {
+    width: 100%;
+    height: auto;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-rows: 20px auto auto auto auto;
+    color: dodgerblue;
+}
+
+.javoblar input {
+    width: 20px;
+    cursor: pointer;
+}
+
+.javoblar p {
+    margin-left: -20px;
+}
+
+.little_modal button {
+    width: 100%;
+    height: 40px;
+    color: white;
+    background-color: dodgerblue;
+    border: 1px solid dodgerblue;
+    cursor: pointer;
+    font-family: "Poppins", serif;
+    font-size: 20px;
+    transition: 0.2s;
+}
+
+.question_boxs {
+    width: 90%;
+    height: auto;
+    display: flex;
+    margin: 0 auto;
+    padding: 10px;
+    justify-content: space-around;
+}
+
+.question_boxs>div {
+    width: 30%;
+    height: auto;
+    display: grid;
+    grid-gap: 10px;
+}
+
+.box .the_end {
+    background-color: #1c202f;
+    color: white;
+}
+
+.box .t_edit {
+    width: 60px !important;
+    height: 50px !important;
+    background-color: dodgerblue;
+    color: red !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid dodgerblue;
+    font-size: 20px;
+}
+.box .t_edit:hover{
+    background: transparent;
+}
+.fa-edit{
+    color: rgb(0, 255, 0) !important;
+}
+.fa-circle{
+    color: yellow;
+}
+.q_name{
+    width: 100%;
+}
+.question_boxs h1{
+    font-weight: 300;
+    color: dodgerblue;
+    display: none;
+}
+@media screen and (max-width: 1060px) {
+    .question_menu{
+        display: grid;
+        gap: 20px;
+    }
+    .question_menu div{
+        width: 100%;
+        padding: 20px;
+    }
+    .question_boxs{
+        display: grid;
+        gap: 50px;
+        margin-top: 150px;
+    }
+    .question_boxs h1{
+        display: block;
+    }
+    .modals > div, .modal{
+        transform: scale(0.6);
+    }
+    .modal .exit{
+        right: -10px;
+        top: -80px;
+    }
+}

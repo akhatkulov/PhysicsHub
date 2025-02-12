@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<div class="theme-list">
+    <h1>Mavzular ro'yxati</h1>
+    <ul id="theme-list"></ul>
+</div>
+
+<script>
+    async function fetchThemes() {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/themes'); // Flask API manzili
+            const data = await response.json();
+            const list = document.getElementById('theme-list');
+
+            data.forEach(theme => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<strong>${theme.name}</strong>: ${theme.about}`;
+                list.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error('Xatolik yuz berdi:', error);
+        }
+    }
+
+    fetchThemes();
+</script>
+{% endblock %}
+
+{% block page_content %}
+{{wtf.quick_form(form)}}
+{% endblock %}

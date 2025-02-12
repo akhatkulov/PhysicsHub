@@ -1,15 +1,80 @@
-from flask import render_template, session, redirect, url_for, request, flash, current_app
+from flask import render_template, session, redirect, url_for, request, flash, current_app,jsonify
 from .. import db
-from ..models import User
+from ..models import User,Theme,Matter,get_all_themes
 from ..email import send_email
 from . import main
 from .forms import SignInForm, SignUpForm,UpdateData
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, logout_user, login_user,current_user
+import json
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
+
+@main.route("/admin")
+@login_required
+def admin():
+    if current_user.username == 'admin':
+        return render_template('admin/index.html')
+    else:
+        return render_template('404.html')
+
+@main.post("/admin/add_matter")
+@login_required
+def add_matter():
+    res_data = json.loads(request.data)
+    title = res_data['title']
+    main = res_data['main']
+    helper = res_data['helper']
+    theme = res_data['theme']
+    correct = res_data['correct']
+    status = True 
+    if current_user.username == 'admin':
+        new_matter = Matter(title=title,main=main,helper=helper,theme=theme,correct=correct,status=True)
+        db.session.add(new_matter)
+        db.session.commit()
+        return "Yeah!!!"
+    else:
+        return render_template('404.html')
+
+# @main.get("/admin/add_quiz")
+# def add_matter():
+#     if current_user.username == 'admin':
+#         return "Hi"
+#     else:
+#         return render_template('404.html')
+
+@main.get("/admin/add_theme")
+def add_theme():
+    res_data = json.loads(request.data)
+    name = res_data['name']
+    about = res_data['about']
+    if current_user.username == 'admin':
+        new_theme = Theme(name=name,about=about)
+        db.session.add(new_theme)
+        db.session.commit()
+        return "Yeah!!!"
+    else:
+        return render_template('404.html')
+
+
+@main.route('/themes', methods=['GET'])
+def get_themes():
+    themes = [
+        {"name": "Minimalist", "about": "Soddalik va tartibga asoslangan dizayn."},
+        {"name": "Dark Mode", "about": "Qorong'u fon va yorqin matnlar bilan qulay ko'rinish."},
+        {"name": "Cyberpunk", "about": "Neon ranglar va futuristik ko'rinish."},
+        {"name": "Classic", "about": "An'anaviy va rasmiy dizayn."}
+    ]
+    return jsonify(themes)
+
+
+
+@main.route("/tests")
+def tests():
+    #themes = get_all_themes()
+    return render_template('tests.html')
 
 @main.route("/home")
 def home_page():
@@ -56,7 +121,10 @@ def login_page():
         if user and user.password and check_password_hash(user.password, password):
             login_user(user)
             flash("Kirish muvaffaqiyatli!", "success")
-            return redirect(url_for('main.home_page'))
+            if current_user.username == "admin":
+                return redirect(url_for('main.admin'))
+            else:
+                return redirect(url_for('main.home_page'))
 
         flash("Taxallus yoki parol noto'g'ri", "error")
     return render_template("login.html", form=form)
