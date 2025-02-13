@@ -11,7 +11,7 @@ mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
+login_manager.login_view = 'main.login_page'
 
 def create_app(config_name):
     app = Flask(__name__)

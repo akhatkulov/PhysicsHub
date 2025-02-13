@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, url_for, request, flash, current_app,jsonify
 from .. import db
-from ..models import User,Theme,Matter,get_all_themes
+from ..models import User,Theme,Matter,Quiz,get_all_themes
 from ..email import send_email
 from . import main
 from .forms import SignInForm, SignUpForm,UpdateData
@@ -38,14 +38,30 @@ def add_matter():
     else:
         return render_template('404.html')
 
-# @main.get("/admin/add_quiz")
-# def add_matter():
-#     if current_user.username == 'admin':
-#         return "Hi"
-#     else:
-#         return render_template('404.html')
+@main.post("/admin/add_quiz")
+def add_quiz():
+    try:
+        res_data = json.loads(request.data)
 
-@main.get("/admin/add_theme")
+        title = res_data.get('title', '')
+        theme = res_data.get('theme', '').lower()
+        status = True
+        data = json.dumps(res_data.get('data', {}))
+
+        if not title or not theme:
+            return jsonify({'error': 'Title va Theme kerak'}), 400
+        
+        if current_user.is_authenticated and current_user.username == 'admin':
+            new_quiz = Quiz(title=title, theme=theme, status=status, data=data)
+            db.session.add(new_quiz)
+            db.session.commit()
+            return jsonify({'message': 'Quiz qo\'shildi!'}), 201
+        else:
+            return render_template('404.html'), 403
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@main.post("/admin/add_theme")
 def add_theme():
     res_data = json.loads(request.data)
     name = res_data['name']
@@ -58,51 +74,49 @@ def add_theme():
     else:
         return render_template('404.html')
 
-
-@main.route('/themes', methods=['GET'])
+@main.route('/api/themes', methods=['GET'])
 def get_themes():
-    themes = [
-        {"name": "minimalist", "about": "Soddalik va tartibga asoslangan dizayn."},
-        {"name": "dark Mode", "about": "Qorong'u fon va yorqin matnlar bilan qulay ko'rinish."},
-        {"name": "Cyberpunk", "about": "Neon ranglar va futuristik ko'rinish."},
-        {"name": "Classic", "about": "An'anaviy va rasmiy dizayn."}
-    ]
+    themes = get_all_themes()
     return jsonify(themes)
-
 
 @main.route('/matters/')
 def matters():
-    themes = [
-        {"name": "Mexanika", "about": "Jismlarning harakati, kuchlar va muvozanat qonunlarini o‘rganadi. Masalan, Nyuton mexanikasi va klassik mexanika."},
-        {"name": "Termodinamika", "about": "Issiqlik, energiya va ularning o‘zaro bog‘liqligini tadqiq qiladi. Masalan, issiqlik mashinalari va entropiya tushunchalari."},
-        {"name": "Elektromagnetizm", "about": "Elektr va magnit maydonlarini o‘rganadi. Masalan, Maksvell tenglamalari, elektromagnit to‘lqinlar."},
-        {"name": "Optika", "about": "Yorug‘likning tarqalishi, sinishi, aks etishi kabi xususiyatlarini o‘rganadi. Masalan, linzalar, nurlar interferensiyasi."},
-        {"name": "Kvant mexanikasi", "about": "Mikro dunyodagi zarrachalar harakati va xususiyatlarini o‘rganadi. Masalan, elektronlarning holati, superpozitsiya prinsipi."},
-        {"name": "Nisbiylik nazariyasi", "about": "Katta tezlik va gravitatsiya ta’siridagi jism harakatini o‘rganadi. Masalan, vaqtning nisbiyligi, E=mc² tenglamasi."},
-        {"name": "Yadro fizikasi", "about": "Atom yadrosi va yadro reaksiyalarini o‘rganadi. Masalan, radioaktivlik, yadroviy energiya."},
-        {"name": "Zarralar fizikasi", "about": "Elementar zarralar va ularning o‘zaro ta’sirini tadqiq qiladi. Masalan, kvarklar, leptonlar, Standart model."},
-        {"name": "Kondensatlangan muhit fizikasi", "about": "Qattiq jism va suyuqliklarning xossalarini o‘rganadi. Masalan, yarimo‘tkazgichlar, supero‘tkazuvchanlik."},
-        {"name": "Astrofizika", "about": "Kosmik jismlar va ularning fizik qonuniyatlarini o‘rganadi. Masalan, qora tuynuklar, koinot kengayishi."}
-    ]
+    themes = get_all_themes()
     return render_template('matters.html',themes=themes)
+
 
 @main.route("/tests/")
 def tests():
-    #themes = get_all_themes()
-    themes = [
-        {"name": "Mexanika", "about": "Jismlarning harakati, kuchlar va muvozanat qonunlarini o‘rganadi. Masalan, Nyuton mexanikasi va klassik mexanika."},
-        {"name": "Termodinamika", "about": "Issiqlik, energiya va ularning o‘zaro bog‘liqligini tadqiq qiladi. Masalan, issiqlik mashinalari va entropiya tushunchalari."},
-        {"name": "Elektromagnetizm", "about": "Elektr va magnit maydonlarini o‘rganadi. Masalan, Maksvell tenglamalari, elektromagnit to‘lqinlar."},
-        {"name": "Optika", "about": "Yorug‘likning tarqalishi, sinishi, aks etishi kabi xususiyatlarini o‘rganadi. Masalan, linzalar, nurlar interferensiyasi."},
-        {"name": "Kvant mexanikasi", "about": "Mikro dunyodagi zarrachalar harakati va xususiyatlarini o‘rganadi. Masalan, elektronlarning holati, superpozitsiya prinsipi."},
-        {"name": "Nisbiylik nazariyasi", "about": "Katta tezlik va gravitatsiya ta’siridagi jism harakatini o‘rganadi. Masalan, vaqtning nisbiyligi, E=mc² tenglamasi."},
-        {"name": "Yadro fizikasi", "about": "Atom yadrosi va yadro reaksiyalarini o‘rganadi. Masalan, radioaktivlik, yadroviy energiya."},
-        {"name": "Zarralar fizikasi", "about": "Elementar zarralar va ularning o‘zaro ta’sirini tadqiq qiladi. Masalan, kvarklar, leptonlar, Standart model."},
-        {"name": "Kondensatlangan muhit fizikasi", "about": "Qattiq jism va suyuqliklarning xossalarini o‘rganadi. Masalan, yarimo‘tkazgichlar, supero‘tkazuvchanlik."},
-        {"name": "Astrofizika", "about": "Kosmik jismlar va ularning fizik qonuniyatlarini o‘rganadi. Masalan, qora tuynuklar, koinot kengayishi."}
-    ]
-
+    themes = get_all_themes()
     return render_template('tests.html',themes=themes)
+
+@main.route('/tests/<name>')
+def show_tests(name):
+    tests = Quiz.query.filter(Quiz.theme == name).all()
+    return render_template('show_tests.html', name=name, tests=tests)
+
+
+@main.route('/tests/<theme>/<int:quiz_id>', methods=["GET", "POST"])
+def calc_test(theme, quiz_id):
+    quiz = Quiz.query.filter_by(id=quiz_id).first()
+    
+    if not quiz: 
+        abort(404)
+    
+    questions = json.loads(quiz.data)
+    if request.method == 'POST':    
+        questions_dict = {f'question-{q["id"]}': q for q in questions}
+        answers = {f'question-{q["id"]}': request.form.get(f'question-{q["id"]}') for q in questions}
+        correct_answers = {f'question-{q["id"]}': q['answer'] for q in questions} 
+        score = users_ball = 0  
+        for qid, answer in answers.items(): 
+            correct_answer = correct_answers.get(qid)  
+            if answer == correct_answer:  
+                score += 1  
+                users_ball += questions_dict[qid]['ball']  
+        return render_template('result_test.html',ball=users_ball, score=score, total=len(correct_answers))
+    else:
+        return render_template('calc_test.html', questions=questions,theme=theme)
 
 @main.route('/matters/<name>')
 def show_matter(name):
@@ -131,9 +145,17 @@ def calc_matter(theme, matter_id):
 
 
 
-@main.route("/home")
-def home_page():
-    return "Hey"
+@main.route('/lab')
+def lab():
+    return render_template('lab_list.html')
+
+@main.route('/lab/<id>')
+def show_lab(id):
+    return render_template('lab.html',id=id)
+
+@main.route("/labaratory/<int:id>")
+def lab_page(id):
+    return render_template('lab/1/index.html')
 
 @main.route("/signup", methods=["GET", "POST"])
 def signup():

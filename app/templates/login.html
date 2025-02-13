@@ -2,7 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-<form method="POST" action="/signin">
+<form method="POST" action="/signin" class="i42-form">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         <div class="flash-messages">
@@ -15,7 +15,7 @@
         {% endif %}
     {% endwith %}
     <div class="form-action-title">Kirish</div>
-    {{ form.hidden_tag() }} <!-- To render hidden CSRF token -->
+    {{ form.hidden_tag() }}
 
     <label for="username">Taxallus</label>
     {{ form.username(class="form-input", id="username") }}<br>

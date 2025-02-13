@@ -4,7 +4,7 @@
 
 
 {% block content %}
-<form method="POST" action="/signup">
+<form method="POST" action="/signup" class="i42-form">
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     <div class="flash-messages">

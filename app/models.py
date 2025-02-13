@@ -28,6 +28,7 @@ class Quiz(db.Model):
     title = db.Column(db.String(80),nullable=False)
     theme = db.Column(db.String(100),nullable=False)
     data = db.Column(db.String(36000),nullable=False)
+    status = db.Column(db.Boolean,default=True)
 
 @login_manager.user_loader
 def load_user(user_id):

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+<div class="lab1-card">
+    <div class="lab-collect">
+        <div class="lab1-image">
+            <img src="{{ url_for('static', filename='/lab_list/lab1.png')}}" alt="Elektr laboratoriyasi">
+        </div>
+        <div class="lab1-info">
+            <h2 class="lab1-title">Elektr laboratoriyasi</h2>
+            <p class="lab1-description">Bu laboratoriyada elektrga oid tajribalarni bajarish mumkin. Asosiy maqsad talabalarga amaliy bilim berishdir.</p>
+        </div>
+    </div>    
+    <a href="/lab/1"><button class="lab1-enter-btn">Kirish</button></a>
+</div>
+
+{% endblock %}
+
+{% block page_content %}
+{{wtf.quick_form(form)}}
+{% endblock %}
+

@@ -348,7 +348,7 @@ i {
 
 .modal {
     width: 600px;
-    height: 500px;
+    height: 550px;
     background-color: #20253b;
     padding: 20px;
     position: relative;
@@ -477,4 +477,3 @@ i {
         top: -80px;
     }
 }
-

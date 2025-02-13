@@ -190,7 +190,7 @@ Forma uchun style */
 }
 
 /* Forma uslubi */
-.container section form {
+.container section .i42-form {
     background-color: #fff;
     padding: 20px 30px;
     border-radius: 10px;
@@ -203,7 +203,7 @@ Forma uchun style */
 }
 
 /* Forma sarlavha uslubi */
-.container section form .form-action-title {
+.container section .i42-form .form-action-title {
     font-weight: 800;
     font-size: 80px;
     color: #003366;
@@ -215,7 +215,7 @@ Forma uchun style */
 }
 
 /* Forma elementlari */
-.container section form label {
+.container section .i42-form label {
     display: block;
     font-weight: bold;
     color: #333;
@@ -223,7 +223,7 @@ Forma uchun style */
     font-size: 14px;
 }
 
-.container section form input {
+.container section .i42-form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -234,14 +234,14 @@ Forma uchun style */
     transition: border-color 0.3s ease;
 }
 
-.container section form input:focus {
+.container section .i42-form input:focus {
     border-color: #0066cc;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
 }
 
 /* Tugma qo'shishni xohlaysizmi? Shu qo'shing */
-.container section form button {
+.container section .i42-form button {
     width: 100%;
     padding: 10px 15px;
     background-color: #0066cc;
@@ -253,13 +253,13 @@ Forma uchun style */
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.container section form button:hover {
+.container section .i42-form button:hover {
     background-color: #003366;
     transform: translateY(-2px);
 }
 
 /* Tugma uslubi */
-.container section form button {
+.container section .i42-form button {
     width: 100%;
     padding: 12px;
     background-color: #0066cc;
@@ -274,13 +274,13 @@ Forma uchun style */
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.container section form button:hover {
+.container section .i42-form button:hover {
     background-color: #003366;
     transform: scale(1.05);
     /* Tugma biroz kattalashadi */
 }
 
-.container section form button:active {
+.container section .i42-form button:active {
     transform: scale(0.98);
     /* Tugma biroz kichrayadi */
     background-color: #004080;
@@ -346,74 +346,334 @@ Forma uchun style */
 }
 
 
-/* Calck Matter */
-.calc-matter-flash-messages {
-    margin: 10px 0;
+/* Calc Matter */
+.calc-form {
+    background-color: #fff;
+    border: 2px solid #0066cc;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 51, 102, 0.2);
 }
 
-.calc-matter-flash {
-    padding: 12px;
-    border-radius: 5px;
-    margin-bottom: 10px;
+.calc-matter-question {
+    font-size: 18px;
+    color: #003366;
     font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.calc-matter-helper {
+    font-size: 16px;
+    color: #0066cc;
+    background-color: rgba(0, 102, 204, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.calc-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #0066cc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.calc-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #0066cc;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.calc-form button:hover {
+    background-color: #003366;
+}
+
+.calc-form a {
+    display: block;
     text-align: center;
+    margin-top: 10px;
+    color: #0066cc;
+    font-weight: bold;
+    text-decoration: none;
 }
 
-.calc-matter-flash-success {
-    background-color: #28a745;
+.calc-form a:hover {
+    color: #003366;
+}
+
+
+/* tests | quiz */
+.quiz-form {
+    width: 80%;
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.quiz-title {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.quiz-question {
+    background-color: #fafafa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-option {
+    display: inline-block;
+    width: 48%;
+    margin: 5px 0;
+    padding-left: 25px;
+    font-size: 16px;
+    color: #555;
+    position: relative;
+    cursor: pointer;
+}
+
+.quiz-option input[type="radio"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+}
+
+.quiz-option:hover {
+    color: #0078ff;
+}
+
+.quiz-submit-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    background-color: #0078ff;
     color: white;
-}
-
-.calc-matter-flash-danger {
-    background-color: #dc3545;
-    color: white;
-}
-
-.calc-matter-problems {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: 20px;
 }
 
-.calc-matter-problem-card {
-    background-color: #004aad;
-    border-radius: 10px;
-    padding: 20px;
-    width: 280px;
-    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.calc-matter-problem-card:hover {
+.quiz-submit-btn:hover {
+    background-color: #0056b3;
     transform: scale(1.05);
-    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-.calc-matter-problem-card h2 {
-    color: #fff;
-    font-size: 20px;
+.quiz-navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
 }
 
-.calc-matter-problem-card a {
+.quiz-navigation-buttons .quiz-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.quiz-navigation-buttons .quiz-button:hover {
+    background-color: #45a049;
+}
+
+.quiz-navbar {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+}
+
+.quiz-navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.quiz-navbar-item {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #777;
+}
+
+.quiz-navbar-item a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.quiz-result {
+    text-align: center;
+    padding: 20px;
+}
+
+.quiz-result a {
     display: inline-block;
-    margin-top: 10px;
-    padding: 10px 15px;
-    background-color: #fff;
-    color: #004aad;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #0078ff;
+    color: white;
     text-decoration: none;
     border-radius: 5px;
-    font-weight: bold;
-    transition: background 0.3s, color 0.3s;
 }
 
-.calc-matter-problem-card a:hover {
-    background-color: #ccc;
-    color: #003080;
+.quiz-result a:hover {
+    background-color: #0056b3;
 }
 
-.calc-form{
-    min-width: 400px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* lab list */
+.lab1-card {
+    display: block;
+    width: 80%;
     max-width: 800px;
+    background-color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    padding: 10px;
+}
+
+.lab1-image{
+    width: 35%;
+    height: 200px;
+}
+
+.lab1-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lab1-info {
+    width: 60%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.lab1-info::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    width: 2px;
+    height: 80%;
+    background-color: #0078ff;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.lab1-title {
+    font-size: 22px;
+    color: #0078ff;
+    margin: 0;
+}
+
+.lab1-description {
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.lab1-enter-btn {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #0078ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.lab-collect{
+    display: flex;
+    border-radius: 15px;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.lab1-card:hover .lab-collect {
+    filter: blur(3px);
+}
+
+.lab1-card:hover .lab1-enter-btn {
+    bottom: 50%;
+    opacity: 1;
+    transform: translate(-50%, 50%);
+}
+
+
+
+
+/*lab 1 */
+.responsive-iframe {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    border: solid white 10px;
+    border-radius: 15px;
 }
