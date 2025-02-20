@@ -1,0 +1,66 @@
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+  }
+.p5Canvas{
+  display: flex;
+
+}
+  .control {
+    position: absolute;
+    margin-left: 1600px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 270px; 
+  }
+
+  .control input {
+    margin-right: 10px;
+    padding: 5px;
+    width: 100px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .control label {
+    font-size: 14px;
+    margin-right: 5px;
+    font-weight: bold;
+  }
+
+  button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
+
+  button:active {
+    transform: scale(0.95);
+  }
+
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }

@@ -155,7 +155,7 @@ def show_lab(id):
 
 @main.route("/labaratory/<int:id>")
 def lab_page(id):
-    return render_template('lab/1/index.html')
+    return render_template(f'lab/{id}/index.html')
 
 @main.route("/signup", methods=["GET", "POST"])
 def signup():

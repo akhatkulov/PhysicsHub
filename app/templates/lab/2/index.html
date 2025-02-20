@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nyuton qonuni simulyatori</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='/lab/2/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+  <script src="{{ url_for('static', filename='/lab/2/sketch.js') }}"></script>
+  <style>
+    .control {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      margin-bottom: 10px;
+    }
+
+    .control input {
+      margin-right: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="control">
+    <label>Og'irlik (kg): <input id="massInput" type="number" value="100"></label>
+    <label>Kuchi (Н): <input id="forceInput" type="number" value="10"></label>
+    <label>Ishqalanish (Н): <input id="frictionInput" type="number" value="2"></label>
+  
+    <!-- New parameter for controlling ball size -->
+    <label>Sharning o'lchami:
+      <input id="ballSizeInput" type="range" min="10" max="100" value="50">
+      <span id="ballSizeValue">50</span> px
+    </label>
+  
+    <button id="applyButton">O'zlashtirish</button>
+    <button id="restartButton">Ishga tushirish</button>
+  </div>
+</body>
+
+</html>
