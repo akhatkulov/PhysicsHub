@@ -9,7 +9,7 @@ from flask_login import login_required, logout_user, login_user,current_user
 import json
 
 @main.route('/', methods=['GET', 'POST'])
-def index():
+def home_page():
     return render_template('index.html')
 
 @main.route("/admin")
@@ -136,6 +136,7 @@ def calc_matter(theme, matter_id):
 
         if user_answer == correct_answer:
             flash(f"✅ To‘g‘ri javob! ({user_answer})", "success")
+            
         else:
             flash(f"❌ Noto‘g‘ri javob! To‘g‘ri javob: {correct_answer}", "danger")
 
@@ -164,7 +165,7 @@ def signup():
         try:
             name = form.name.data
             surname = form.surname.data
-            username = form.username.data
+            username = form.username.data.replace(" ", "")
             university = form.university.data
             password = form.password.data
 
@@ -191,7 +192,7 @@ def signup():
 def login_page():
     form = SignInForm()
     if form.validate_on_submit():
-        username = form.username.data
+        username = form.username.data.replace(" ", "")
         password = form.password.data
 
         user = User.query.filter_by(username=username).first()

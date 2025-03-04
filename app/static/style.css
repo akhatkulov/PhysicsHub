@@ -317,35 +317,62 @@ Forma uchun style */
 }
 
 /* Theme list */
-.theme-list{
-    list-style: none;
-    border-radius: 10px;
-    padding: 10px;
-    background-color: white;
+.theme-list {
+    max-width: 500px;
+    width: 100%;
+    border-radius: 12px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
-.theme-list h1{
+
+.theme-list h1 {
     text-align: center;
+    font-size: 24px;
+    color: #003366;
+    margin-bottom: 15px;
 }
-.theme-list ul{
+
+.theme-list ul {
     list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 ta ustun */
+    gap: 10px; /* Elementlar orasidagi bo‘shliq */
 }
-.theme-list a{
+
+.theme-list a {
     text-decoration: none;
     color: #fff;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
 }
-.theme-list li{
+
+.theme-list li {
     background: linear-gradient(135deg, #003366, #0066cc);
-    padding: 10px 5px;
-    margin: 5px 10px;
-    border-radius: 15px;
+    padding: 12px;
+    border-radius: 18px;
     color: #fff;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
-.theme-list a:hover{
-    color: #ffcc00;
-    /* Hover paytida rangni o'zgartirish */
-    text-shadow: 0px 2px 5px rgba(255, 204, 0, 0.7);
+
+.theme-list li:hover {
+    background: linear-gradient(135deg, #004080, #0080ff);
     transform: scale(1.05);
+    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
 }
+
+.theme-list a:hover {
+    color: #ffcc00;
+    text-shadow: 0px 2px 5px rgba(255, 204, 0, 0.7);
+}
+
 
 
 /* Calc Matter */

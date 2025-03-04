@@ -1,6 +1,6 @@
-from . import db,login_manager
+from . import db, login_manager
 from flask_login import UserMixin
-import datetime
+from datetime import datetime
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
@@ -12,43 +12,43 @@ class User(UserMixin, db.Model):
 
 class Theme(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
-    name = db.Column(db.String(100),nullable=False)
-    about = db.Column(db.String(600),nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    about = db.Column(db.String(600), nullable=False)
 
 class Matter(db.Model):
-    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    title = db.Column(db.String(80),nullable=False)
-    main = db.Column(db.String(3600),nullable=False)
-    helper = db.Column(db.String(600),nullable=False)
-    correct = db.Column(db.String(100),nullable=False)
-    theme = db.Column(db.String(100),nullable=False)
-    status = db.Column(db.Boolean,default=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(80), nullable=False)
+    main = db.Column(db.String(3600), nullable=False)
+    helper = db.Column(db.String(600), nullable=False)
+    correct = db.Column(db.String(100), nullable=False)
+    theme = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.Boolean, default=True)
 
 class Quiz(db.Model):
-    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    title = db.Column(db.String(80),nullable=False)
-    theme = db.Column(db.String(100),nullable=False)
-    data = db.Column(db.String(36000),nullable=False)
-    status = db.Column(db.Boolean,default=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(80), nullable=False)
+    theme = db.Column(db.String(100), nullable=False)
+    data = db.Column(db.String(36000), nullable=False)
+    status = db.Column(db.Boolean, default=True)
 
 class MatterPoints(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     matter_id = db.Column(db.Integer, db.ForeignKey('matter.id'), nullable=True)  
     points_earned = db.Column(db.Integer, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow) 
-    user = db.relationship('User', backref=db.backref('progress', lazy=True))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', backref=db.backref('matter_progress', lazy=True))
     matter = db.relationship('Matter', backref=db.backref('solvers', lazy=True))
 
 class QuizPoints(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-   
     quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=True) 
     points_earned = db.Column(db.Integer, nullable=False)  
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-    user = db.relationship('User', backref=db.backref('progress', lazy=True))
+    user = db.relationship('User', backref=db.backref('quiz_progress', lazy=True))
     quiz = db.relationship('Quiz', backref=db.backref('participants', lazy=True))
 
 def save_user_progress(user_id, item_id, points, x_type):
@@ -57,7 +57,6 @@ def save_user_progress(user_id, item_id, points, x_type):
         
         if progress:
             progress.points_earned = points
-            progress.timestamp = datetime.utcnow()
         else:
             progress = MatterPoints(user_id=user_id, matter_id=item_id, points_earned=points)
             db.session.add(progress)
@@ -67,7 +66,6 @@ def save_user_progress(user_id, item_id, points, x_type):
 
         if progress:
             progress.points_earned = points
-            progress.timestamp = datetime.utcnow()
         else:
             progress = QuizPoints(user_id=user_id, quiz_id=item_id, points_earned=points)
             db.session.add(progress)
@@ -80,6 +78,7 @@ def save_user_progress(user_id, item_id, points, x_type):
 def check_history(user_id, item_id, x_type):
     result = {'status': False, 'points': 0, 'time': "never"}
 
+    progress = None
     if x_type == "matter":
         progress = MatterPoints.query.filter_by(user_id=user_id, matter_id=item_id).first()
     elif x_type == "quiz":
@@ -90,7 +89,8 @@ def check_history(user_id, item_id, x_type):
     if progress:
         result['status'] = True
         result['points'] = progress.points_earned
-        result['time'] = progress.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        if progress.timestamp:
+            result['time'] = progress.timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
     return result
 
