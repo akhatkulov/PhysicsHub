@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, url_for, request, flash, current_app,jsonify
 from .. import db
-from ..models import User,Theme,Matter,Quiz,get_all_themes
+from ..models import User,Theme,Matter,Quiz,get_all_themes,save_user_progress
 from ..email import send_email
 from . import main
 from .forms import SignInForm, SignUpForm,UpdateData
@@ -29,9 +29,10 @@ def add_matter():
     helper = res_data['helper']
     theme = res_data['theme']
     correct = res_data['correct']
+    ball = res_data['ball']
     status = True 
     if current_user.username == 'admin':
-        new_matter = Matter(title=title,main=main,helper=helper,theme=theme,correct=correct,status=True)
+        new_matter = Matter(title=title,main=main,helper=helper,theme=theme,correct=correct,status=True,ball=int(ball))
         db.session.add(new_matter)
         db.session.commit()
         return "Yeah!!!"
@@ -113,7 +114,9 @@ def calc_test(theme, quiz_id):
             correct_answer = correct_answers.get(qid)  
             if answer == correct_answer:  
                 score += 1  
-                users_ball += questions_dict[qid]['ball']  
+                users_ball += int(questions_dict[qid]['ball'])
+        
+        save_user_progress(user_id=current_user.id,item_id=quiz.id,points=users_ball,x_type="quiz")
         return render_template('result_test.html',ball=users_ball, score=score, total=len(correct_answers))
     else:
         return render_template('calc_test.html', questions=questions,theme=theme)
@@ -135,6 +138,7 @@ def calc_matter(theme, matter_id):
         correct_answer = matter.correct
 
         if user_answer == correct_answer:
+            save_user_progress(user_id=current_user.id,item_id=matter.id,points=matter.ball,x_type="matter")
             flash(f"✅ To‘g‘ri javob! ({user_answer})", "success")
             
         else:
@@ -211,6 +215,8 @@ def login_page():
 @login_required
 def profile():
     form = UpdateData()
+    user = current_user
+    ball = user.points
     if form.validate_on_submit():
         print("olindi")
         # Formdagi ma'lumotlarni olish
@@ -220,11 +226,9 @@ def profile():
         password = form.password.data
 
         # current_user ob'ekti orqali malumotlarni yangilash
-        user = current_user
         user.name = name
         user.surname = surname
         user.university = university
-
         if password:
             user.password = generate_password_hash(password)
 
@@ -237,7 +241,7 @@ def profile():
 
         return redirect(url_for('main.profile'))  # Yangi sahifaga qaytish
 
-    return render_template('profile.html', user=current_user, form=form)
+    return render_template('profile.html',ball=ball, user=current_user, form=form)
 
 @main.route('/logout')
 @login_required

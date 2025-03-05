@@ -1,6 +1,7 @@
 from . import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
+from sqlalchemy.ext.hybrid import hybrid_property
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
@@ -9,6 +10,13 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     university = db.Column(db.String(120), unique=False, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+
+    @hybrid_property
+    def points(self):
+        matter_points = db.session.query(db.func.sum(MatterPoints.points_earned)).filter_by(user_id=self.id).scalar() or 0
+        quiz_points = db.session.query(db.func.sum(QuizPoints.points_earned)).filter_by(user_id=self.id).scalar() or 0
+        return matter_points + quiz_points
+
 
 class Theme(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
@@ -23,6 +31,7 @@ class Matter(db.Model):
     correct = db.Column(db.String(100), nullable=False)
     theme = db.Column(db.String(100), nullable=False)
     status = db.Column(db.Boolean, default=True)
+    ball = db.Column(db.Integer,nullable=False)
 
 class Quiz(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

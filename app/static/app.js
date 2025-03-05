@@ -21,6 +21,7 @@ const m_about = document.getElementById("m_about");
 const shart = document.getElementById("shart");
 const izoh = document.getElementById("izoh");
 const javob = document.getElementById("javob");
+const ball_q = document.getElementById("ball_q");
 const mavzusi = document.getElementById("mavzusi");
 const t_mavzusi = document.getElementById("t_mavzusi");
 const l_savol = document.getElementById("l_savol");
@@ -42,6 +43,7 @@ question.addEventListener("click", () => {
     modals.style.display = "flex"
     q_modal.style.display = "grid"
 })
+let id = 0;
 test.addEventListener("click", () => {
     modals.style.display = "flex"
     t_modal.style.display = "grid"
@@ -51,6 +53,7 @@ test.addEventListener("click", () => {
     sv_q.addEventListener("submit", (e) => {
         e.preventDefault()
         let tests_obj = {
+            id:id,
             question: l_savol.value,
             ball:l_ball.value,
             options: [
@@ -61,6 +64,7 @@ test.addEventListener("click", () => {
             ],
             answer: "",
         }
+        id++;
         radio.forEach(e => {
             if (e.checked) {
                 tests_obj.answer = tests_obj.options[e.value];
@@ -123,7 +127,7 @@ test.addEventListener("click", () => {
             modals.style.display = "none"
             t_modal.style.display = "none"
             console.log(t_obj);
-            location.reload()
+            // location.reload()
         }
 
     })
@@ -156,7 +160,6 @@ exit_l.addEventListener("click", () => {
     modals.style.display = "flex"
     t_modal.style.display = "grid"
 })
-
 q_form.addEventListener("submit", (e) => {
     e.preventDefault()
     let q_obj = {
@@ -164,6 +167,7 @@ q_form.addEventListener("submit", (e) => {
         shart: shart.value,
         izoh: izoh.value,
         javob: javob.value,
+        ball_q: ball_q.value,
         mavzular: mavzusi.value,
         act: "active"
     }
@@ -171,6 +175,7 @@ q_form.addEventListener("submit", (e) => {
     shart.value = ""
     izoh.value = ""
     javob.value = ""
+    ball_q.value = ""
     console.log(q_obj);
     fetch("/admin/add_matter", {
         method: "POST",
@@ -179,11 +184,11 @@ q_form.addEventListener("submit", (e) => {
             main: q_obj.shart,
             helper: q_obj.izoh,
             theme: q_obj.mavzular,
-            correct: q_obj.javob
+            correct: q_obj.javob,
+            ball: q_obj.ball_q
         })
     })
     //bach-endga post yuborish-------
-
     modals.style.display = "none"
     q_modal.style.display = "none"
     location.reload()
@@ -262,14 +267,14 @@ fetch("/admin/quizs")
         })
     })
 
-fetch("/admin/themes")
+fetch("/api/themes")
     .then(rec => rec.json())
     .then(data => {
         data.forEach(item => {
             th_box.innerHTML += `
             <div class="box">
                     <div class="savol_box">
-                        <span class="q_name"><i>${item.title}</i></span>
+                        <span class="q_name"><i>${item.name}</i></span>
                         <span class="t_edit ">
                             <i class="fa-solid fa-xmark"></i>
                         </span>
