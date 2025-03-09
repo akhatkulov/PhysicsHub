@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, url_for, request, flash, current_app,jsonify
 from .. import db
-from ..models import User,Theme,Matter,Quiz,get_all_themes,save_user_progress
+from ..models import User,Theme,Matter,Quiz,get_all_themes,save_user_progress,check_history
 from ..email import send_email
 from . import main
 from .forms import SignInForm, SignUpForm,UpdateData
@@ -94,13 +94,18 @@ def tests():
 @main.route('/tests/<name>')
 def show_tests(name):
     tests = Quiz.query.filter(Quiz.theme == name).all()
-    return render_template('show_tests.html', name=name, tests=tests)
+    user_id = current_user.id 
+    quiz_status = {}
+    for test in tests:
+        quiz_status[test.id] = check_history(user_id, test.id, "quiz")
+
+    return render_template('show_tests.html', name=name, tests=tests, quiz_status=quiz_status)
 
 
 @main.route('/tests/<theme>/<int:quiz_id>', methods=["GET", "POST"])
 def calc_test(theme, quiz_id):
     quiz = Quiz.query.filter_by(id=quiz_id).first()
-    
+    print(quiz.data)
     if not quiz: 
         abort(404)
     
@@ -123,8 +128,19 @@ def calc_test(theme, quiz_id):
 
 @main.route('/matters/<name>')
 def show_matter(name):
-    matters = Matter.query.filter(Matter.theme == name).all()
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+
+    matters = Matter.query.filter(Matter.theme == name).paginate(page=page, per_page=per_page, error_out=False)
+
+    user_id = current_user.id 
+
+    for matter in matters.items:
+        history = check_history(user_id, matter.id, "matter")
+        matter.solved = history['status']
+
     return render_template('show_matter.html', name=name, matters=matters)
+
 
 @main.route('/matters/<theme>/<int:matter_id>', methods=["GET", "POST"])
 def calc_matter(theme, matter_id):

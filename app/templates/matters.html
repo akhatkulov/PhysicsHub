@@ -2,24 +2,22 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-<div class="theme-list">
+<div class="theme-container">
     <h1>Mavzular ro'yxati</h1>
-    <ul id="theme-list">
+    <div class="theme-grid">
         {% for theme in themes %}
-            <li>
+            <div class="theme-card">
                 <a href="/matters/{{ theme.name | lower }}">
-                    <strong class="theme-name">{{ theme.name | capitalize }}</strong>: 
-                    <div class="theme-about">{{ theme.about }}</div>
+                    <h3 class="theme-name">{{ theme.name | capitalize }}</h3>
+                    <hr>
+                    <p class="theme-about">{{ theme.about }}</p>
                 </a>
-            </li>
+            </div>
         {% endfor %}
-    </ul>
-
+    </div>
 </div>
-
-
 {% endblock %}
 
 {% block page_content %}
-{{wtf.quick_form(form)}}
+{{ wtf.quick_form(form) }}
 {% endblock %}

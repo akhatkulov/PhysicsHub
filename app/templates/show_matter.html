@@ -2,23 +2,40 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-<div class="theme-list">
-    <h2>{{name | capitalize}} | Masalalar ro'yxati</h2>
-    <ul id="theme-list">
-        {% for matter in matters %}
+<div class="matter-list">
+    <h2>{{ name | capitalize }} | Masalalar ro'yxati</h2>
+    <ul id="matter-list-item">
+        {% for matter in matters.items %}
             <li>
-                <a href="/matters/{{name}}/{{matter.id}}">
-                    <strong class="theme-name">{{ matter.title | capitalize }}</strong>: 
+                <a href="/matters/{{ name }}/{{ matter.id }}">
+                    <strong class="matter-theme-name" 
+                            class="{% if matter.solved %}matter-solved{% else %}matter-unsolved{% endif %}">
+                        {{ matter.title | capitalize }}
+                    </strong>
                 </a>
+                {% if matter.solved %}
+                    <span class="matter-solved"> | Yechilgan <span class="material-symbols-outlined">select_check_box</span></span>
+                {% else %}
+                    <span class="matter-unsolved">| Yechilmagan <span class="material-symbols-outlined">check_box_outline_blank</span></span>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
 
+    <!-- Pagination -->
+    <div class="matter-pagination">
+        {% if matters.has_prev %}
+            <a href="?page={{ matters.prev_num }}" style="color: #003366;">&laquo; Oldingi</a>
+        {% endif %}
+        <span> {{ matters.page }} / {{ matters.pages }} </span>
+        {% if matters.has_next %}
+            <a href="?page={{ matters.next_num }}" style="color: #003366;">Keyingi &raquo;</a>
+        {% endif %}
+    </div>
 </div>
-
 
 {% endblock %}
 
 {% block page_content %}
-{{wtf.quick_form(form)}}
+{{ wtf.quick_form(form) }}
 {% endblock %}

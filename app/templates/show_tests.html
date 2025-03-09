@@ -1,24 +1,26 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-<div class="theme-list">
-    <h2>{{name | capitalize}} | Masalalar ro'yxati</h2>
-    <ul id="theme-list">
+<div class="quiz-container">
+    <h2>{{ name | capitalize }} | Testlar Ro'yxati</h2>
+
+    <ul class="quiz-list">
         {% for test in tests %}
-            <li>
-                <a href="/tests/{{name}}/{{test.id}}">
-                    <strong class="theme-name">{{ test.title | capitalize }}</strong>: 
+            {% set status = quiz_status[test.id] %}
+            <li class="quiz-item {% if status.status %}solved{% else %}unsolved{% endif %}">
+                <a href="/tests/{{ name }}/{{ test.id }}">
+                    <strong>{{ test.title | capitalize }}</strong>
+                    <!-- <span class="question-count">Savollar: {{ test.question_count }}</span>
+                     -->
+                    {% if status.status %}
+                        <span class="status solved">✅ Tugallangan | Ball: {{ status.points }}</span>
+                        <span class="time">{{ status.time }}</span>
+                    {% else %}
+                        <span class="status unsolved">❌ Yechilmagan</span>
+                    {% endif %}
                 </a>
             </li>
         {% endfor %}
     </ul>
-
 </div>
-
-
-{% endblock %}
-
-{% block page_content %}
-{{wtf.quick_form(form)}}
 {% endblock %}
