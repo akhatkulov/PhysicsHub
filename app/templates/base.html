@@ -7,11 +7,24 @@
     <title>{% block title %}Physics Hub{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 </head>
 
 <body>
     <header>
         <div class="web-title">Physics Hub</div>
+        
+        {% if current_user.is_authenticated %}
+        <div class="user-stats">
+            <span><span class="material-symbols-outlined">person</span>: {{ current_user.username }}</span>
+            <span><span class="material-symbols-outlined">calculate</span>: {{ current_user.problems_solved }}</span>
+            <span><span class="material-symbols-outlined">checklist_rtl</span>: {{ current_user.tests_passed }}</span>
+            <span><span class="material-symbols-outlined">stars</span>:  {{ current_user.points }}</span>
+            <span><span class="material-symbols-outlined">military_tech</span>: #{{ current_user.rank() }}</span>
+        </div>
+        {% endif %}
+        
         <div class="button-group">
             {% if current_user.is_authenticated %}
             <div class="enter-button"><a href="/profile">Profilim</a></div>
@@ -22,18 +35,18 @@
             {% endif %}
         </div>
     </header>
+    
     <div class="container">
         <nav>
             <div class="nav-button"><a href="/"><span class="material-symbols-outlined">person_raised_hand</span>
                     Qo'llanma</a></div>
-            <div class="nav-button"><a href="/"><span class="material-symbols-outlined">military_tech</span> Reyting</a>
+            <div class="nav-button"><a href="/leaderboard"><span class="material-symbols-outlined">military_tech</span> Reyting</a>
             </div>
             <div class="nav-button"><a href="/matters"><span class="material-symbols-outlined">calculate</span> Masalalar</a>
             </div>
             <div class="nav-button"><a href="/tests"><span class="material-symbols-outlined">done_outline</span> Testlar</a>
             </div>
-            <div class="nav-button"><a href="/"><span class="material-symbols-outlined">question_exchange</span>
-                    Savol-Javob</a></div>
+            <!-- <div class="nav-button"><a href="/"><span class="material-symbols-outlined">question_exchange</span>Savol-Javob</a></div> -->
             <div class="nav-button"><a href="/lab"><span class="material-symbols-outlined">labs</span> Labaratoriya</a>
             </div>
 

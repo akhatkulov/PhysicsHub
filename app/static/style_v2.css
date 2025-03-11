@@ -11,6 +11,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background-color: #282528;
 }
 
 header {
@@ -19,9 +20,9 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background: linear-gradient(90deg, #004aad, #0078ff);
+    background: #2e3d7c;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 5px;
     color: white;
     font-family: 'Arial', sans-serif;
 }
@@ -90,7 +91,7 @@ header {
     position: relative;
     width: 100%;
     height: calc(100vh - 90px);
-    background-color: #fff;
+    /* background-color: #1c202f; */
     box-shadow: 0 1px 1px 0 rgb(0, 0, 0, 0.6), 0 2px 5px 0 rgb(0, 0, 0, 0.6), ;
     display: flex;
 }
@@ -101,14 +102,13 @@ header {
     margin: 5px;
     position: relative;
     flex: 30%;
-    background: linear-gradient(90deg, #0078ff, #004aad);
+    background: #2e3d7c;
     /* Silliq gradient fon */
-    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    
     /* Yorqin chegaralar */
-    box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.1);
     padding: 20px 15px;
     /* Yaxshi bo'shliq */
-    border-radius: 10px;
+    border-radius: 5px;
     /* Yumaloqlash */
     color: white;
 }
@@ -202,9 +202,9 @@ Forma uchun style */
     justify-content: center;
     /* Forma markazda bo'lishi uchun */
     margin:5px;
-    background: linear-gradient(135deg, #0066cc, #003366);
+    background: #2e3d7c;
     /* Gradient fon */
-    border-radius:10px;
+    border-radius: 5px;
     /* Burchaklarni yumaloqlash */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     /* Soyalar */
@@ -216,7 +216,7 @@ Forma uchun style */
 .container section .i42-form {
     background-color: #fff;
     padding: 20px 30px;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
@@ -492,7 +492,7 @@ Forma uchun style */
 .quiz-item {
     background: #ffffff;
     padding: 12px;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
     transition: transform 0.3s ease-in-out;
@@ -551,7 +551,7 @@ Forma uchun style */
 .calc-form {
     background-color: #fff;
     border: 2px solid #0066cc;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 20px;
     width: 100%;
     max-width: 500px;
@@ -858,53 +858,4 @@ Forma uchun style */
     height: 90%;
     border: solid white 10px;
     border-radius: 15px;
-}
-
-
-/* leader board */
-.leaderboard-container {
-    width: 80%;
-    margin: 50px auto;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    padding: 20px;
-}
-.leaderboard-title {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-    color: #fff;
-}
-.leaderboard-title h2 {
-    margin: 0;
-}
-.leaderboard-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    color: #fff;
-}
-.leaderboard-th, .leaderboard-td {
-    padding: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    text-align: center;
-}
-.leaderboard-th {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-}
-.leaderboard-th div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
-.leaderboard-row:nth-child(odd) {
-    background: rgba(255, 255, 255, 0.1);
-}
-.leaderboard-row:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transition: 0.3s;
 }

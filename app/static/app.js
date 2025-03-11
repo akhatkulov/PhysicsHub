@@ -283,3 +283,18 @@ fetch("/api/themes")
             `
         })
     })
+
+    fetch("/api/themes")
+        .then(rec => rec.json())
+        .then(data => {
+            data.forEach(item => {
+            mavzusi.innerHTML += `
+                <option value="dinamika">${item.name}</option>
+            `
+            t_mavzusi.innerHTML += `
+                <option value="dinamika">${item.name}</option>
+            `
+            
+            })
+        })
+    

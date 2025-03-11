@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, url_for, request, flash, current_app,jsonify
 from .. import db
-from ..models import User,Theme,Matter,Quiz,get_all_themes,save_user_progress,check_history
+from ..models import User,Theme,Matter,Quiz,get_all_themes,save_user_progress,check_history,get_leaderboard
 from ..email import send_email
 from . import main
 from .forms import SignInForm, SignUpForm,UpdateData
@@ -40,6 +40,7 @@ def add_matter():
         return render_template('404.html')
 
 @main.post("/admin/add_quiz")
+@login_required
 def add_quiz():
     try:
         res_data = json.loads(request.data)
@@ -63,6 +64,7 @@ def add_quiz():
         return jsonify({'error': str(e)}), 500
 
 @main.post("/admin/add_theme")
+@login_required
 def add_theme():
     res_data = json.loads(request.data)
     name = res_data['name']
@@ -75,6 +77,18 @@ def add_theme():
     else:
         return render_template('404.html')
 
+@main.route("/admin/delete_theme/<int:item_id>", methods=["DELETE"])
+@login_required
+def delete_item(item_id):
+    if current_user == "admin":
+        item = Theme.query.get(item_id)
+        if item:
+            db.session.delete(item)
+            db.session.commit()
+            return jsonify({"message": "Item deleted successfully"}), 200
+        return jsonify({"error": "Item not found"}), 404
+    else:
+        return "Doom shot, Mother Fucker)"
 @main.route('/api/themes', methods=['GET'])
 def get_themes():
     themes = get_all_themes()
@@ -165,7 +179,16 @@ def calc_matter(theme, matter_id):
     return render_template('calc_matter.html', problem=matter,theme=theme)
 
 
+@main.route('/leaderboard')
+def leaderboard():
+    top_users = get_leaderboard()
+    ranked_users = [(rank + 1, user, total_points) for rank, (user, total_points) in enumerate(top_users)]
 
+    print("top_users:", top_users)
+    print("ranked_users:", ranked_users)
+
+    return render_template('leaderboard.html', ranked_users=ranked_users)
+    
 @main.route('/lab')
 def lab():
     return render_template('lab_list.html')
