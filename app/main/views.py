@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, url_for, request, flash, current_app,jsonify
 from .. import db
-from ..models import User,Theme,Matter,Quiz,get_all_themes,save_user_progress,check_history,get_leaderboard
+from ..models import User,Theme,Matter,Quiz,get_all_themes,save_user_progress,check_history,get_leaderboard,get_matter,get_quiz
 from ..email import send_email
 from . import main
 from .forms import SignInForm, SignUpForm,UpdateData
@@ -64,6 +64,26 @@ def add_quiz():
             return render_template('404.html'), 403
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@main.post('/admin/get_quiz')
+@login_required
+def get_quiz_list():
+    if current_user == "admin":
+        data = request.get_json() 
+        prefix = data['prefix'].lower()
+        return jsonify(get_quiz(prefix))
+    else:
+        return render_template('404.html')
+
+@main.post('/admin/get_matter')
+@login_required
+def get_matter_list():
+    if current_user == 'admin':
+        data = request.get_json() 
+        prefix = data['prefix'].lower()
+        return jsonify(get_matter(prefix))
+    else:
+        return render_template('404.html')
 
 @main.post("/admin/add_theme")
 @login_required

@@ -145,10 +145,6 @@ def check_history(user_id, item_id, x_type):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-def get_all_themes():
-    themes = Theme.query.all()
-    return [{'id': t.id, 'name': t.name, 'about': t.about} for t in themes]
-
 def get_leaderboard():
     subquery = db.session.query(
         User.id,
@@ -163,3 +159,25 @@ def get_leaderboard():
     ).order_by(subquery.c.total_points.desc()).limit(10).all()
 
     return top_users
+
+
+def get_all_themes():
+    themes = Theme.query.all()
+    return [{'id': t.id, 'name': t.name, 'about': t.about} for t in themes]
+
+def get_matter_list():
+    matters = Matter.query.all()
+    return [{'id': m.id, 'title': m.title.lower(), 'main': m.main,"helper":m.helper,"correct":m.correct,"theme":m.theme,"status":m.status,"ball":m.ball} for m in matters]
+
+def get_all_quizzes():
+    quizzes = Quiz.query.all()
+    return [{'id': q.id, 'title': q.title.lower(), 'theme': q.theme,'data':q.data,'status':q.status} for q in quizzes]
+
+def get_quiz(prefix):
+    quizzes = get_all_quizzes()
+    print("quizs",quizzes)
+    return [q for q in quizzes if q['title'].startswith(prefix)]
+
+def get_matter(prefix):
+    matters = get_matter_list()
+    return [m for m in matters if m['title'].startswith(prefix)]
