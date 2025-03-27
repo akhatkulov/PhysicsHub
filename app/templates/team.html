@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<div class="team-container">
+    <div class="team-box">
+        <div class="team-lastoption">
+            <div class="team-img">
+                <img src="/static/team/mexroj.jpg" alt="">
+            </div>
+                <h3 class="team-name">Mexroj Axatkulov</h3>
+        </div>
+        <div class="team-option">
+                <h3 class="team-name">Mexroj Axatkulov</h3>
+                <p>
+                    Python Dasturchisi va Kiber Xavfsizlik muhandisi
+                </p>
+        </div>
+    </div>
+    <div class="team-box">
+        <div class="team-lastoption">
+            <div class="team-img">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/029/306/038/small_2x/ai-generative-happy-businessman-standing-with-arms-crossed-isolated-on-white-background-free-photo.jpg" alt="">
+            </div>
+                <h3 class="team-name">Kimdur Nimadur</h3>
+        </div>
+        <div class="team-option">
+                <h3 class="team-name">Kimdur Nimadur</h3>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. At distinctio earum odit itaque adipisci ab maiores provident magni alias aperiam.
+                </p>
+        </div>
+    </div>
+    <div class="team-box">
+        <div class="team-lastoption">
+            <div class="team-img">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/029/306/038/small_2x/ai-generative-happy-businessman-standing-with-arms-crossed-isolated-on-white-background-free-photo.jpg" alt="">
+            </div>
+                <h3 class="team-name">Kimdur Nimadur</h3>
+        </div>
+        <div class="team-option">
+                <h3 class="team-name">Kimdur Nimadur</h3>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. At distinctio earum odit itaque adipisci ab maiores provident magni alias aperiam.
+                </p>
+        </div>
+    </div>
+    <div class="team-box">
+        <div class="team-lastoption">
+            <div class="team-img">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/029/306/038/small_2x/ai-generative-happy-businessman-standing-with-arms-crossed-isolated-on-white-background-free-photo.jpg" alt="">
+            </div>
+                <h3 class="team-name">Kimdur Nimadur</h3>
+        </div>
+        <div class="team-option">
+                <h3 class="team-name">Kimdur Nimadur</h3>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. At distinctio earum odit itaque adipisci ab maiores provident magni alias aperiam.
+                </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_content %}
+{{wtf.quick_form(form)}}
+{% endblock %}

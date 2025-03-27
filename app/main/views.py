@@ -44,12 +44,14 @@ def add_matter():
 def add_quiz():
     try:
         res_data = json.loads(request.data)
-
+        print()
+        print(res_data)
         title = res_data.get('title', '')
         theme = res_data.get('theme', '').lower()
         status = True
         data = json.dumps(res_data.get('data', {}))
-
+        print(data)
+        print()
         if not title or not theme:
             return jsonify({'error': 'Title va Theme kerak'}), 400
         
@@ -89,6 +91,7 @@ def delete_item(item_id):
         return jsonify({"error": "Item not found"}), 404
     else:
         return "Doom shot, Mother Fucker)"
+        
 @main.route('/api/themes', methods=['GET'])
 def get_themes():
     themes = get_all_themes()
@@ -178,6 +181,9 @@ def calc_matter(theme, matter_id):
 
     return render_template('calc_matter.html', problem=matter,theme=theme)
 
+@main.route("/team")
+def team():
+    return render_template("team.html")
 
 @main.route('/leaderboard')
 def leaderboard():
@@ -258,13 +264,11 @@ def profile():
     ball = user.points
     if form.validate_on_submit():
         print("olindi")
-        # Formdagi ma'lumotlarni olish
         name = form.name.data
         surname = form.surname.data
         university = form.university.data
         password = form.password.data
 
-        # current_user ob'ekti orqali malumotlarni yangilash
         user.name = name
         user.surname = surname
         user.university = university
@@ -272,13 +276,13 @@ def profile():
             user.password = generate_password_hash(password)
 
         try:
-            db.session.commit()  # Malumotlarni bazaga saqlash
+            db.session.commit()
             flash('Malumotlar yangilandi!', 'success')
         except Exception as e:
-            db.session.rollback()  # Agar xato bo'lsa, rollback qilish
+            db.session.rollback() 
             flash(f'Error updating profile: {str(e)}', 'danger')
 
-        return redirect(url_for('main.profile'))  # Yangi sahifaga qaytish
+        return redirect(url_for('main.profile'))
 
     return render_template('profile.html',ball=ball, user=current_user, form=form)
 

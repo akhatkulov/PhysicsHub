@@ -106,6 +106,8 @@ test.addEventListener("click", () => {
         little_modal.style.display = "none"
     })
     t_form.addEventListener("submit", (e) => {
+        console.log(t_mavzusi);
+        
         if (s != 0) {
             e.preventDefault()
             tests_arr = tests_arr.filter(item => item !== undefined);
@@ -272,10 +274,7 @@ fetch("/api/themes")
     .then(data => {
         data.forEach(item => {
             th_box.innerHTML += `
-            <div class="box">
-                    <div class="savol_box">
-                        <span class="q_name"><i>${item.name}</i></span>
-                        <span class="t_edit ">
+            <div class="box">team"t_edit ">
                             <i class="fa-solid fa-xmark"></i>
                         </span>
                     </div>
@@ -289,10 +288,10 @@ fetch("/api/themes")
         .then(data => {
             data.forEach(item => {
             mavzusi.innerHTML += `
-                <option value="dinamika">${item.name}</option>
+                <option value="${item.name}">${item.name}</option>
             `
             t_mavzusi.innerHTML += `
-                <option value="dinamika">${item.name}</option>
+                <option value="${item.name}">${item.name}</option>
             `
             
             })

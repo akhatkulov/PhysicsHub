@@ -19,11 +19,12 @@ class User(UserMixin, db.Model):
 
     @hybrid_property
     def problems_solved(self):
-        return db.session.query(db.func.count(SolvedProblems.id)).filter_by(user_id=self.id).scalar() or 0
+        return db.session.query(db.func.count(db.distinct(SolvedProblems.matter_id))).filter_by(user_id=self.id).scalar() or 0
 
     @hybrid_property
     def tests_passed(self):
-        return db.session.query(db.func.count(TestResults.id)).filter_by(user_id=self.id).scalar() or 0
+        return db.session.query(db.func.count(db.distinct(TestResults.quiz_id))).filter_by(user_id=self.id).scalar() or 0
+
 
     @hybrid_method
     def rank(self):
@@ -36,14 +37,6 @@ class User(UserMixin, db.Model):
         ranked_users = db.session.query(subquery.c.id).order_by(subquery.c.total_points.desc()).all()
         rank_dict = {user_id: rank for rank, (user_id,) in enumerate(ranked_users, start=1)}
         return rank_dict.get(self.id, None)
-
-class SolvedProblems(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-class TestResults(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class Theme(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
@@ -87,31 +80,43 @@ class QuizPoints(db.Model):
     user = db.relationship('User', backref=db.backref('quiz_progress', lazy=True))
     quiz = db.relationship('Quiz', backref=db.backref('participants', lazy=True))
 
+class SolvedProblems(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    matter_id = db.Column(db.Integer, db.ForeignKey('matter.id'), nullable=False, unique=True)
+
+
+class TestResults(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=False, unique=True)
+
+
 def save_user_progress(user_id, item_id, points, x_type):
     if x_type == "matter":
         progress = MatterPoints.query.filter_by(user_id=user_id, matter_id=item_id).first()
-
         if progress:
             progress.points_earned = points
         else:
             progress = MatterPoints(user_id=user_id, matter_id=item_id, points_earned=points)
             db.session.add(progress)
 
-        if not SolvedProblems.query.filter_by(user_id=user_id, id=item_id).first():
-            solved_problem = SolvedProblems(user_id=user_id)
+        if not SolvedProblems.query.filter_by(user_id=user_id, matter_id=item_id).first():
+            solved_problem = SolvedProblems(user_id=user_id, matter_id=item_id)
             db.session.add(solved_problem)
 
     elif x_type == "quiz":
         progress = QuizPoints.query.filter_by(user_id=user_id, quiz_id=item_id).first()
-
         if progress:
             progress.points_earned = points
         else:
             progress = QuizPoints(user_id=user_id, quiz_id=item_id, points_earned=points)
             db.session.add(progress)
-        if not TestResults.query.filter_by(user_id=user_id, id=item_id).first():
-                solved_test = TestResults(user_id=user_id)
-                db.session.add(solved_test)
+
+        if not TestResults.query.filter_by(user_id=user_id, quiz_id=item_id).first():
+            solved_test = TestResults(user_id=user_id, quiz_id=item_id)
+            db.session.add(solved_test)
+
     else:
         raise ValueError("Invalid x_type. Use 'matter' or 'quiz'.")
 
