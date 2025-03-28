@@ -1,5 +1,5 @@
-from flasky import db,app 
-from app.models import Matter,Quiz,Theme
+from flasky import db, app
+from app.models import Matter, Quiz, Theme
 
 problems = [
     {
@@ -8,7 +8,7 @@ problems = [
         "helper": "O‘rtacha tezlik v = s / t formulasi bilan hisoblanadi.",
         "correct": "20 m/s",
         "theme": "Mexanika",
-        "ball": 1
+        "ball": 1,
     },
     {
         "title": "Tezlanishni hisoblash",
@@ -16,7 +16,7 @@ problems = [
         "helper": "Tezlanish a = (v - v0) / t formulasi bilan hisoblanadi.",
         "correct": "5 m/s²",
         "theme": "Mexanika",
-        "ball": 1
+        "ball": 1,
     },
     {
         "title": "Erkin tushish masofasi",
@@ -24,7 +24,7 @@ problems = [
         "helper": "S = (1/2) * g * t² formulasi bilan hisoblanadi.",
         "correct": "44.1 m",
         "theme": "Mexanika",
-        "ball": 1
+        "ball": 1,
     },
     {
         "title": "Newton birinchi qonuni",
@@ -32,7 +32,7 @@ problems = [
         "helper": "Newtonning birinchi qonuniga ko‘ra, tashqi kuch bo‘lmasa, jism o‘z harakatini o‘zgartirmaydi.",
         "correct": "Tinch yoki tekis harakat qiladi",
         "theme": "Mexanika",
-        "ball": 1
+        "ball": 1,
     },
     {
         "title": "Newton ikkinchi qonuni",
@@ -40,7 +40,7 @@ problems = [
         "helper": "Newtonning ikkinchi qonuniga ko‘ra, a = F / m.",
         "correct": "5 m/s²",
         "theme": "Mexanika",
-        "ball": 1
+        "ball": 1,
     },
     {
         "title": "Newton uchinchi qonuni",
@@ -48,7 +48,7 @@ problems = [
         "helper": "Newtonning uchinchi qonuniga ko‘ra, har bir harakatga teskari yo‘nalishda teng kuch ta’sir qiladi.",
         "correct": "Stol kitobga teskari yo‘nalishda teng kuch bilan ta’sir qiladi.",
         "theme": "Mexanika",
-        "ball": 1
+        "ball": 1,
     },
     {
         "title": "Ishni hisoblash",
@@ -56,7 +56,7 @@ problems = [
         "helper": "Ish W = m * g * h formulasi bilan hisoblanadi.",
         "correct": "490 J",
         "theme": "Mexanika",
-        "ball": 1
+        "ball": 1,
     },
     {
         "title": "Kinetik energiya",
@@ -64,7 +64,7 @@ problems = [
         "helper": "Kinetik energiya Ek = (1/2) * m * v² formulasi bilan hisoblanadi.",
         "correct": "80 J",
         "theme": "Mexanika",
-        "ball": 1
+        "ball": 1,
     },
     {
         "title": "Potensial energiya",
@@ -72,7 +72,7 @@ problems = [
         "helper": "Potensial energiya Ep = m * g * h formulasi bilan hisoblanadi.",
         "correct": "98 J",
         "theme": "Mexanika",
-        "ball": 1
+        "ball": 1,
     },
     {
         "title": "Impulsni hisoblash",
@@ -80,8 +80,8 @@ problems = [
         "helper": "Impuls P = m * v formulasi bilan hisoblanadi.",
         "correct": "18 kg·m/s",
         "theme": "Mexanika",
-        "ball": 1
-    }
+        "ball": 1,
+    },
 ]
 
 with app.app_context():
@@ -92,7 +92,7 @@ with app.app_context():
             helper=problem["helper"],
             correct=problem["correct"],
             theme=problem["theme"].lower(),
-            ball=problem["ball"]
+            ball=problem["ball"],
         )
         db.session.add(new_problem)
 
@@ -144,8 +144,8 @@ with app.app_context():
 
 #     for quiz in quizzes:
 #         db.session.add(Quiz(
-#             title=quiz["title"], 
-#             theme=quiz["theme"], 
+#             title=quiz["title"],
+#             theme=quiz["theme"],
 #             data=quiz["data"]
 #         ))
 

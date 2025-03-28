@@ -38,6 +38,8 @@ const themes = document.querySelector(".theme_modal");
 const q_box = document.querySelector(".q_box");
 const t_box = document.querySelector(".t_box");
 const th_box = document.querySelector(".th_box");
+const edit_q = document.querySelector(".edit_q");
+const edit_t = document.querySelector(".edit_t");
 
 question.addEventListener("click", () => {
     modals.style.display = "flex"
@@ -53,9 +55,9 @@ test.addEventListener("click", () => {
     sv_q.addEventListener("submit", (e) => {
         e.preventDefault()
         let tests_obj = {
-            id:id,
+            id: id,
             question: l_savol.value,
-            ball:l_ball.value,
+            ball: l_ball.value,
             options: [
                 variant1.value,
                 variant2.value,
@@ -107,7 +109,7 @@ test.addEventListener("click", () => {
     })
     t_form.addEventListener("submit", (e) => {
         console.log(t_mavzusi);
-        
+
         if (s != 0) {
             e.preventDefault()
             tests_arr = tests_arr.filter(item => item !== undefined);
@@ -214,67 +216,22 @@ m_form.addEventListener("submit", (e) => {
         name: m_title.value,
         about: m_about.value
     });
-    
+
     modals.style.display = "none"
     themes.style.display = "none"
     m_title.value = ""
     location.reload()
 })
 
-fetch("/admin/questions")
-    .then(rec => rec.json())
-    .then(data => {
-        data.forEach(item => {
-            q_box.innerHTML += `
-                <div class="box">
-                    <div class="savol_box">
-                        <span class="q_name"><i>${item.title}</i></span>
-                        <span class="t_edit ">
-                            <i class="fa-solid fa-xmark"></i>
-                        </span>
-                        <span class="t_edit ">
-                            <i class="fa-solid fa-edit"></i>
-                        </span>
-                        <span class="t_edit ">
-                            <i class="fa-solid fa-circle"></i>
-                        </span>
-                    </div>
-                </div>
-    `
-
-        })
-
-    })
-
-fetch("/admin/quizs")
-    .then(rec => rec.json())
-    .then(data => {
-        data.forEach(item => {
-            t_box.innerHTML += `
-            <div class="box">
-                    <div class="savol_box">
-                        <span class="q_name"><i>${item.title}</i></span>
-                        <span class="t_edit ">
-                            <i class="fa-solid fa-xmark"></i>
-                        </span>
-                        <span class="t_edit ">
-                            <i class="fa-solid fa-edit"></i>
-                        </span>
-                        <span class="t_edit ">
-                            <i class="fa-solid fa-circle"></i>
-                        </span>
-                    </div>
-                </div>
-            `
-        })
-    })
-
 fetch("/api/themes")
     .then(rec => rec.json())
     .then(data => {
         data.forEach(item => {
             th_box.innerHTML += `
-            <div class="box">team"t_edit ">
+            <div class="box">
+                    <div class="savol_box">
+                        <span class="q_name"><i>${item.name}</i></span>
+                        <span class="t_edit ">
                             <i class="fa-solid fa-xmark"></i>
                         </span>
                     </div>
@@ -282,18 +239,59 @@ fetch("/api/themes")
             `
         })
     })
-
-    fetch("/api/themes")
-        .then(rec => rec.json())
-        .then(data => {
-            data.forEach(item => {
+fetch("/api/themes")
+    .then(rec => rec.json())
+    .then(data => {
+        data.forEach(item => {
             mavzusi.innerHTML += `
                 <option value="${item.name}">${item.name}</option>
             `
             t_mavzusi.innerHTML += `
                 <option value="${item.name}">${item.name}</option>
             `
-            
-            })
+
         })
-    
+    })
+
+let timeout;
+
+edit_q.addEventListener(("click"), () => {
+    document.querySelector(".edit_search_modal").style.display = "flex"
+
+    clearTimeout(timeout);
+
+    fetch("/api/get_matter")
+        .then(rec => rec.json())
+        .then(data => console.log(data))
+        .catch(error => console.log(error))
+    document.getElementById("edit_search_input").addEventListener("input", (e) => {
+        document.querySelector(".edit_loader").style.display = "block";
+        timeout = setTimeout(() => {
+            let prefix = e.target.value.trim();
+
+            let url = prefix === "" ? "/api/get_matter" : `/api/get_matter?prefix=${prefix}`;
+
+
+            fetch(url)
+                .then(rec => rec.json())
+                .then(data => {
+                    document.querySelector(".edit_loader").style.display = "none";
+                    document.querySelector(".edit_boxs").innerHTML = "";
+                    data.forEach(item => {
+                        const edit_box = document.createElement("p");
+                        edit_box.innerHTML = item.title;
+                        document.querySelector(".edit_boxs").appendChild(edit_box);
+                    })
+                })
+                .catch(error => console.log(error))
+        }, 1000);
+    })
+
+})
+edit_t.addEventListener(("click"), () => {
+    document.querySelector(".edit_search_modal").style.display = "flex"
+
+})
+document.querySelector(".search_exit").addEventListener("click", () => {
+    document.querySelector(".edit_search_modal").style.display = "none"
+})

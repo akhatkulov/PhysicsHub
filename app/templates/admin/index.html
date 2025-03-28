@@ -30,11 +30,15 @@
             </div>
         </div>
         <div class="question_boxs">
-            <div class="q_box">
-                <h1>Masalalar</h1>
+            <div>
+                <div class="edit_q">
+                    <i class="fa-solid fa-file-pen"></i>
+                </div>
             </div>
-            <div class="t_box">
-                <h1>Testlar</h1>
+            <div>
+                <div class="edit_t">
+                    <i class="fa-solid fa-file-pen"></i>
+                </div>
             </div>
             <div class="th_box">
                 <h1>Mavzular</h1>
@@ -198,6 +202,22 @@
                 </div>
                 <button type="submit">Qo'shish</button>
             </form>
+        </div>
+    </div>
+    <div class="edit_search_modal">
+        <div class="modal">
+            <span class="search_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <form id="edit_search_form">
+                <input type="search" id="edit_search_input" name="prefix" placeholder="Qidirish..." autocomplete="off">
+            </form>
+            <div class="edit_loader">
+                <div></div>
+            </div>
+            <div class="edit_boxs">
+                
+            </div>
         </div>
     </div>
     <script src="{{url_for('static', filename='app.js')}}"></script>
