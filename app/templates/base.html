@@ -13,46 +13,57 @@
 
 <body>
     <header>
-        <div class="web-title">Physics Hub</div>
-        
-        {% if current_user.is_authenticated %}
-        <div class="user-stats">
-            <span><span class="material-symbols-outlined">person</span>: {{ current_user.username }}</span>
-            <span><span class="material-symbols-outlined">calculate</span>: {{ current_user.problems_solved }}</span>
-            <span><span class="material-symbols-outlined">checklist_rtl</span>: {{ current_user.tests_passed }}</span>
-            <span><span class="material-symbols-outlined">stars</span>:  {{ current_user.points }}</span>
-            <span><span class="material-symbols-outlined">military_tech</span>: #{{ current_user.rank() }}</span>
-        </div>
-        {% endif %}
-        
-        <div class="button-group">
+        <div class="container header-container">
+            <div class="web-title">
+                <!-- <img src="/static/logo.png" alt=""> -->
+                Physics Hub
+            </div>
+
             {% if current_user.is_authenticated %}
-            <div class="enter-button"><a href="/profile">Profilim</a></div>
-            <div class="enter-button"><a href="/logout">Chiqish</a></div>
-            {% else %}
-            <div class="enter-button"><a href="/signin">Kirish</a></div>
-            <div class="enter-button"><a href="/signup">Ro'yxatdan o'tish</a></div>
+            <div class="user-stats">
+                <span><span class="material-symbols-outlined">person</span>: {{ current_user.username }}</span>
+                <span><span class="material-symbols-outlined">calculate</span>: {{ current_user.problems_solved
+                    }}</span>
+                <span><span class="material-symbols-outlined">checklist_rtl</span>: {{ current_user.tests_passed
+                    }}</span>
+                <span><span class="material-symbols-outlined">stars</span>: {{ current_user.points }}</span>
+                <span><span class="material-symbols-outlined">military_tech</span>: #{{ current_user.rank() }}</span>
+            </div>
             {% endif %}
+
+            <div class="button-group">
+                {% if current_user.is_authenticated %}
+                <div class="enter-button"><a href="/profile">Profilim</a></div>
+                <div class="enter-button"><a href="/logout">Chiqish</a></div>
+                {% else %}
+                <div class="enter-button"><a href="/signin">Kirish</a></div>
+                <div class="enter-button"><a href="/signup">Ro'yxatdan o'tish</a></div>
+                {% endif %}
+            </div>
         </div>
     </header>
-    
-    <div class="container">
+
+    <div class="container main-container">
         <nav>
             <div class="nav-button"><a href="/"><span class="material-symbols-outlined">person_raised_hand</span>
                     Qo'llanma</a></div>
-            <div class="nav-button"><a href="/leaderboard"><span class="material-symbols-outlined">military_tech</span> Reyting</a>
+            <div class="nav-button"><a href="/leaderboard"><span class="material-symbols-outlined">military_tech</span>
+                    Reyting</a>
             </div>
-            <div class="nav-button"><a href="/matters"><span class="material-symbols-outlined">calculate</span> Masalalar</a>
+            <div class="nav-button"><a href="/matters"><span class="material-symbols-outlined">calculate</span>
+                    Masalalar</a>
             </div>
-            <div class="nav-button"><a href="/tests"><span class="material-symbols-outlined">done_outline</span> Testlar</a>
+            <div class="nav-button"><a href="/tests"><span class="material-symbols-outlined">done_outline</span>
+                    Testlar</a>
             </div>
             <!-- <div class="nav-button"><a href="/"><span class="material-symbols-outlined">question_exchange</span>Savol-Javob</a></div> -->
             <div class="nav-button"><a href="/lab"><span class="material-symbols-outlined">labs</span> Labaratoriya</a>
             </div>
 
-            <div class="nav-button"><a href="/team"><span class="material-symbols-outlined">diversity_3</span> Jamoa</a></div>
+            <div class="nav-button"><a href="/team"><span class="material-symbols-outlined">diversity_3</span> Jamoa</a>
+            </div>
         </nav>
-        <section>
+        <section class="main-display">
             {% block content %}{% endblock %}
         </section>
     </div>
