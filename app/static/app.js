@@ -253,45 +253,151 @@ fetch("/api/themes")
         })
     })
 
-let timeout;
-
 edit_q.addEventListener(("click"), () => {
     document.querySelector(".edit_search_modal").style.display = "flex"
 
-    clearTimeout(timeout);
-
     fetch("/api/get_matter")
         .then(rec => rec.json())
-        .then(data => console.log(data))
+        .then(data => {
+            document.querySelector(".edit_boxs").innerHTML = "";
+            if (data.length > 0) {
+                data.forEach(item => {
+                    document.querySelector(".edit_boxs").innerHTML += `
+                        <div class="edit_box">
+                            <p class="edit_box_title">
+                            ${item.id}.    
+                            ${item.title}
+                            </p>
+                            <div class="edit_box_crud">
+                                <span class="edit_box_eq">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </span>
+                                <span class="edit_box_aq">
+                                    <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
+                                </span>
+                                <span class="edit_box_dq">
+                                    <i class="fa-solid fa-trash"></i>
+                                </span>
+                            <div>
+                        </div>
+                    `;
+                })
+            } else {
+                document.querySelector(".edit_boxs").innerHTML = `
+                    <span class="edit_empty">
+                        <i class="fa-solid fa-box-open"></i>
+                        <p>Ma'lumot topilmadi</p>
+                    </span>
+                `;
+            }
+        })
         .catch(error => console.log(error))
+    searchFunc("/api/get_matter", "q")
+})
+
+
+
+edit_t.addEventListener(("click"), () => {
+    document.querySelector(".edit_search_modal").style.display = "flex"
+
+    fetch("/api/get_quiz")
+        .then(rec => rec.json())
+        .then(data => {
+            document.querySelector(".edit_boxs").innerHTML = "";
+            if (data.length > 0) {
+                data.forEach(item => {
+                    document.querySelector(".edit_boxs").innerHTML += `
+                        <div class="edit_box">
+                            <p class="edit_box_title">
+                            ${item.id}.    
+                            ${item.title}
+                            </p>
+                            <div class="edit_box_crud">
+                                <span class="edit_box_et">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </span>
+                                <span class="edit_box_at">
+                                    <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
+                                </span>
+                                <span class="edit_box_dt">
+                                    <i class="fa-solid fa-trash"></i>
+                                </span>
+                            <div>
+                        </div>
+                    `;
+                })
+            } else {
+                document.querySelector(".edit_boxs").innerHTML = `
+                    <span class="edit_empty">
+                        <i class="fa-solid fa-box-open"></i>
+                        <p>Ma'lumot topilmadi</p>
+                    </span>
+                `;
+            }
+        })
+        .catch(error => console.log(error))
+    searchFunc("/api/get_quiz", "t")
+})
+
+
+
+function searchFunc(p, q) {
+    let interval = null;
     document.getElementById("edit_search_input").addEventListener("input", (e) => {
-        document.querySelector(".edit_loader").style.display = "block";
-        timeout = setTimeout(() => {
+        if (interval) return
+        interval = setTimeout(() => {
             let prefix = e.target.value.trim();
 
-            let url = prefix === "" ? "/api/get_matter" : `/api/get_matter?prefix=${prefix}`;
+            let url = prefix === "" ? p : `${p}?prefix=${prefix}`;
 
+            console.log(document.querySelector(".edit_loader"));
+
+            document.querySelector(".edit_loader").style.display = "flex";
 
             fetch(url)
                 .then(rec => rec.json())
                 .then(data => {
-                    document.querySelector(".edit_loader").style.display = "none";
                     document.querySelector(".edit_boxs").innerHTML = "";
-                    data.forEach(item => {
-                        const edit_box = document.createElement("p");
-                        edit_box.innerHTML = item.title;
-                        document.querySelector(".edit_boxs").appendChild(edit_box);
-                    })
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            document.querySelector(".edit_boxs").innerHTML += `
+                                <div class="edit_box">
+                                    <p class="edit_box_title">
+                                    ${item.id}.    
+                                    ${item.title}
+                                    </p>
+                                    <div class="edit_box_crud">
+                                        <span class="edit_box_e${q}">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </span>
+                                        <span class="edit_box_a${q}">
+                                            <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
+                                        </span>
+                                        <span class="edit_box_d${q}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </span>
+                                    <div>
+                                </div>
+                            `;
+                        })
+                    } else {
+                        document.querySelector(".edit_boxs").innerHTML = `
+                            <span class="edit_empty">
+                                <i class="fa-solid fa-box-open"></i>
+                                <p>Ma'lumot topilmadi</p>
+                            </span>
+                        `;
+                    }
                 })
                 .catch(error => console.log(error))
+            document.querySelector(".edit_loader").style.display = "none";
+            interval = null;
         }, 1000);
     })
+}
 
-})
-edit_t.addEventListener(("click"), () => {
-    document.querySelector(".edit_search_modal").style.display = "flex"
-
-})
 document.querySelector(".search_exit").addEventListener("click", () => {
     document.querySelector(".edit_search_modal").style.display = "none"
+    document.querySelector(".edit_boxs").innerHTML = "";
+    document.getElementById("edit_search_input").value = "";
 })
