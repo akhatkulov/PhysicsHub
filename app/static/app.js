@@ -39,6 +39,7 @@ const q_box = document.querySelector(".q_box");
 const t_box = document.querySelector(".t_box");
 const th_box = document.querySelector(".th_box");
 
+
 question.addEventListener("click", () => {
     modals.style.display = "flex"
     q_modal.style.display = "grid"

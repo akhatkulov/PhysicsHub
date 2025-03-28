@@ -244,7 +244,8 @@ body {
 i {
     color: white;
 }
-a{
+
+a {
     text-decoration: none;
 }
 
@@ -438,45 +439,58 @@ a{
     border: 1px solid dodgerblue;
     font-size: 20px;
 }
-.box .t_edit:hover{
+
+.box .t_edit:hover {
     background: transparent;
 }
-.fa-edit{
+
+.fa-edit {
     color: rgb(0, 255, 0) !important;
 }
-.fa-circle{
+
+.fa-circle {
     color: yellow;
 }
-.q_name{
+
+.q_name {
     width: 100%;
 }
-.question_boxs h1{
+
+.question_boxs h1 {
     font-weight: 300;
     color: dodgerblue;
     display: none;
 }
+
 @media screen and (max-width: 1060px) {
-    .question_menu{
+    .question_menu {
         display: grid;
         gap: 20px;
     }
-    .question_menu div{
+
+    .question_menu div {
         width: 100%;
         padding: 20px;
     }
-    .question_boxs{
+
+    .question_boxs {
         display: grid;
         gap: 50px;
         margin-top: 150px;
     }
-    .question_boxs h1{
+
+    .question_boxs h1 {
         display: block;
     }
-    .modals > div, .modal{
+
+    .modals>div,
+    .modal {
         transform: scale(0.6);
     }
-    .modal .exit{
+
+    .modal .exit {
         right: -10px;
         top: -80px;
     }
 }
+
