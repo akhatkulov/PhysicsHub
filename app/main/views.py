@@ -97,25 +97,36 @@ def get_themes():
     themes = get_all_themes()
     return jsonify(themes)
 
-@main.post('/api/get_quiz')
-@login_required
+@main.route('/api/get_quiz', methods=['GET'])
+#@login_required
 def get_quiz_list():
-    if current_user == "admin" or 1==1:
-        data = request.get_json() 
-        prefix = data['prefix'].lower()
+    if current_user == "admin":
+        prefix = request.args.get('prefix', '').lower()
         return jsonify(get_quiz(prefix))
     else:
         return render_template('404.html')
 
-@main.post('/api/get_matter')
-@login_required
+@main.route('/api/get_matter', methods=['GET'])
+#@login_required
 def get_matter_list():
     if current_user == 'admin':
-        data = request.get_json() 
-        prefix = data['prefix'].lower()
+        prefix = request.args.get('prefix', '').lower()
         return jsonify(get_matter(prefix))
     else:
         return render_template('404.html')
+
+
+@main.post('/api/edit_quiz')
+@login_required
+def edit_quiz():
+    if current_user == 'admin':
+        data = request.get_json()
+        title = res_data.get('title')
+        theme = res_data.get('theme').lower()
+        status = Bool(res_data['status'])
+        data = json.dumps(res_data.get('data'))
+        if not title or not theme:
+            return jsonify({'error': 'Title va Theme kerak'}), 400
 
 @main.route('/matters/')
 def matters():
