@@ -79,9 +79,81 @@ def add_theme():
     else:
         return render_template('404.html')
 
-@main.route("/admin/delete_theme/<int:item_id>", methods=["DELETE"])
+        
+@main.route('/api/themes', methods=['GET'])
+def get_themes():
+    themes = get_all_themes()
+    return jsonify(themes)
+
+@main.route('/api/get_quiz', methods=['GET'])
+def get_quiz_list():
+    prefix = request.args.get('prefix', '').lower()
+    return jsonify(get_quiz(prefix))
+
+
+@main.route('/api/get_matter', methods=['GET'])
+def get_matter_list():
+    prefix = request.args.get('prefix', '').lower()
+    return jsonify(get_matter(prefix))
+
+
+
+@main.post('/api/edit_quiz')
 @login_required
-def delete_item(item_id):
+def edit_quiz():
+    if current_user == 'admin':
+
+        data = request.get_json()
+        title = res_data.get('title')
+        theme = res_data.get('theme').lower()
+        status = Bool(res_data['status'])
+        data = json.dumps(res_data.get('data'))
+        quiz = Quiz.query.filter(Quiz.title ==  title).first()
+        if quiz:
+            quiz.title = title
+            quiz.theme = theme 
+            quiz.data = data 
+            quiz.status = status 
+            db.session.commit()
+            return json({"status:":"done"}),200
+        else:
+            return jsonify({"error","mavjud emas"}),404
+    else:
+        abort(404)
+
+
+@main.post('/api/edit_matter')
+@login_required
+def edit_matter():
+    if current_user == 'admin':
+        data = request.get_json()
+        title = res_data['title']
+        main = res_data['main']
+        helper = res_data['helper']
+        theme = res_data['theme']
+        correct = res_data['correct']
+        ball = int(res_data['ball'])
+        status = Bool(res_data['status'])
+        
+        matter = Matter.query.filter(Quiz.title ==  title).first()
+        if matter:
+            matter.title = title
+            matter.main = main 
+            matter.helper = helper
+            matter.theme = theme 
+            matter.correct = correct
+            matter.ball = ball  
+            matter.status = status 
+            db.session.commit()
+            return json({"status:":"done"}),200
+        else:
+            return jsonify({"error","mavjud emas"}),404
+    else:
+        abort(404)
+
+@main.route("/api/delete_theme/<int:item_id>", methods=["DELETE"])
+@login_required
+def delete_theme(item_id):
     if current_user == "admin":
         item = Theme.query.get(item_id)
         if item:
@@ -91,43 +163,118 @@ def delete_item(item_id):
         return jsonify({"error": "Item not found"}), 404
     else:
         return "Doom shot, Mother Fucker)"
-        
-@main.route('/api/themes', methods=['GET'])
-def get_themes():
-    themes = get_all_themes()
-    return jsonify(themes)
 
 @main.route('/api/get_quiz', methods=['GET'])
-#@login_required
+@login_required
 def get_quiz_list():
-    if current_user == "admin" or 1==1:
+    if current_user == "admin":
         prefix = request.args.get('prefix', '').lower()
         return jsonify(get_quiz(prefix))
     else:
         return render_template('404.html')
 
 @main.route('/api/get_matter', methods=['GET'])
-#@login_required
+@login_required
 def get_matter_list():
-    if current_user == 'admin' or 1==1:
+    if current_user == 'admin':
         prefix = request.args.get('prefix', '').lower()
         return jsonify(get_matter(prefix))
     else:
         return render_template('404.html')
 
-
 @main.post('/api/edit_quiz')
 @login_required
 def edit_quiz():
     if current_user == 'admin':
+
         data = request.get_json()
         title = res_data.get('title')
         theme = res_data.get('theme').lower()
         status = Bool(res_data['status'])
         data = json.dumps(res_data.get('data'))
-        if not title or not theme:
-            return jsonify({'error': 'Title va Theme kerak'}), 400
+        quiz = Quiz.query.filter(Quiz.title ==  title).first()
+        if quiz:
+            quiz.title = title
+            quiz.theme = theme 
+            quiz.data = data 
+            quiz.status = status 
+            db.session.commit()
+            return json({"status:":"done"}),200
+        else:
+            return jsonify({"error","mavjud emas"}),404
+    else:
+        abort(404)
 
+
+@main.post('/api/edit_matter')
+@login_required
+def edit_matter():
+    if current_user == 'admin':
+        data = request.get_json()
+        title = res_data['title']
+        main = res_data['main']
+        helper = res_data['helper']
+        theme = res_data['theme']
+        correct = res_data['correct']
+        ball = int(res_data['ball'])
+        status = Bool(res_data['status'])
+        
+        matter = Matter.query.filter(Quiz.title ==  title).first()
+        if matter:
+            matter.title = title
+            matter.main = main 
+            matter.helper = helper
+            matter.theme = theme 
+            matter.correct = correct
+            matter.ball = ball  
+            matter.status = status 
+            db.session.commit()
+            return json({"status:":"done"}),200
+        else:
+            return jsonify({"error","mavjud emas"}),404
+    else:
+        abort(404)
+
+@main.route("/api/delete_theme/<int:item_id>", methods=["DELETE"])
+@login_required
+def delete_theme(item_id):
+    if current_user == "admin":
+        item = Theme.query.get(item_id)
+        if item:
+            db.session.delete(item)
+            db.session.commit()
+            return jsonify({"message": "Item deleted successfully"}), 200
+        return jsonify({"error": "Item not found"}), 404
+    else:
+        return "Doom shot, Mother Fucker)"
+
+@main.route("/api/delete_quiz/<int:item_id>", methods=["DELETE"])
+@login_required
+def delete_quiz(item_id):
+    if current_user == "admin":
+        item = Quiz.query.get(item_id)
+        if item:
+            db.session.delete(item)
+            db.session.commit()
+            return jsonify({"message": "Item deleted successfully"}), 200
+        return jsonify({"error": "Item not found"}), 404
+    else:
+        return "Doom shot, Mother Fucker)"
+
+@main.route("/api/delete_matter/<int:item_id>", methods=["DELETE"])
+@login_required
+def delete_matter(item_id):
+    if current_user == "admin":
+        item = Matter.query.get(item_id)
+        if item:
+            db.session.delete(item)
+            db.session.commit()
+            return jsonify({"message": "Item deleted successfully"}), 200
+        return jsonify({"error": "Item not found"}), 404
+    else:
+        return "Doom shot, Mother Fucker)"
+         
+    
 @main.route('/matters/')
 def matters():
     themes = get_all_themes()
