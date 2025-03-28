@@ -244,6 +244,9 @@ body {
 i {
     color: white;
 }
+a{
+    text-decoration: none;
+}
 
 .t_plus {
     width: 50px;

@@ -268,6 +268,54 @@ fetch("/admin/quizs")
             `
         })
     })
+fetch("/api/questions")
+    .then(rec => rec.json())
+    .then(data => {
+        data.forEach(item => {
+            q_box.innerHTML += `
+                <div class="box">
+                    <div class="savol_box">
+                        <span class="q_name"><i>${item.title}</i></span>
+                        <span class="t_edit ">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                        <span class="t_edit ">
+                            <i class="fa-solid fa-edit"></i>
+                        </span>
+                        <span class="t_edit ">
+                            <i class="fa-solid fa-circle"></i>
+                        </span>
+                    </div>
+                </div>
+    `
+
+        })
+
+    })
+
+
+fetch("/admin/quizs")
+    .then(rec => rec.json())
+    .then(data => {
+        data.forEach(item => {
+            t_box.innerHTML += `
+            <div class="box">
+                    <div class="savol_box">
+                        <span class="q_name"><i>${item.title}</i></span>
+                        <span class="t_edit ">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                        <span class="t_edit ">
+                            <i class="fa-solid fa-edit"></i>
+                        </span>
+                        <span class="t_edit ">
+                            <i class="fa-solid fa-circle"></i>
+                        </span>
+                    </div>
+                </div>
+            `
+        })
+    })
 
 fetch("/api/themes")
     .then(rec => rec.json())
