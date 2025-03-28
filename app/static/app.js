@@ -53,9 +53,9 @@ test.addEventListener("click", () => {
     sv_q.addEventListener("submit", (e) => {
         e.preventDefault()
         let tests_obj = {
-            id:id,
+            id: id,
             question: l_savol.value,
-            ball:l_ball.value,
+            ball: l_ball.value,
             options: [
                 variant1.value,
                 variant2.value,
@@ -107,7 +107,7 @@ test.addEventListener("click", () => {
     })
     t_form.addEventListener("submit", (e) => {
         console.log(t_mavzusi);
-        
+
         if (s != 0) {
             e.preventDefault()
             tests_arr = tests_arr.filter(item => item !== undefined);
@@ -214,7 +214,7 @@ m_form.addEventListener("submit", (e) => {
         name: m_title.value,
         about: m_about.value
     });
-    
+
     modals.style.display = "none"
     themes.style.display = "none"
     m_title.value = ""
@@ -274,7 +274,10 @@ fetch("/api/themes")
     .then(data => {
         data.forEach(item => {
             th_box.innerHTML += `
-            <div class="box">team"t_edit ">
+            <div class="box">
+                    <div class="savol_box">
+                        <span class="q_name"><i>${item.name}</i></span>
+                        <span class="t_edit ">
                             <i class="fa-solid fa-xmark"></i>
                         </span>
                     </div>
@@ -282,18 +285,16 @@ fetch("/api/themes")
             `
         })
     })
-
-    fetch("/api/themes")
-        .then(rec => rec.json())
-        .then(data => {
-            data.forEach(item => {
+fetch("/api/themes")
+    .then(rec => rec.json())
+    .then(data => {
+        data.forEach(item => {
             mavzusi.innerHTML += `
                 <option value="${item.name}">${item.name}</option>
             `
             t_mavzusi.innerHTML += `
                 <option value="${item.name}">${item.name}</option>
             `
-            
-            })
+
         })
-    
+    })
