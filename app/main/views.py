@@ -65,26 +65,6 @@ def add_quiz():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@main.post('/admin/get_quiz')
-@login_required
-def get_quiz_list():
-    if current_user == "admin":
-        data = request.get_json() 
-        prefix = data['prefix'].lower()
-        return jsonify(get_quiz(prefix))
-    else:
-        return render_template('404.html')
-
-@main.post('/admin/get_matter')
-@login_required
-def get_matter_list():
-    if current_user == 'admin':
-        data = request.get_json() 
-        prefix = data['prefix'].lower()
-        return jsonify(get_matter(prefix))
-    else:
-        return render_template('404.html')
-
 @main.post("/admin/add_theme")
 @login_required
 def add_theme():
@@ -116,6 +96,26 @@ def delete_item(item_id):
 def get_themes():
     themes = get_all_themes()
     return jsonify(themes)
+
+@main.post('/api/get_quiz')
+@login_required
+def get_quiz_list():
+    if current_user == "admin" or 1==1:
+        data = request.get_json() 
+        prefix = data['prefix'].lower()
+        return jsonify(get_quiz(prefix))
+    else:
+        return render_template('404.html')
+
+@main.post('/api/get_matter')
+@login_required
+def get_matter_list():
+    if current_user == 'admin':
+        data = request.get_json() 
+        prefix = data['prefix'].lower()
+        return jsonify(get_matter(prefix))
+    else:
+        return render_template('404.html')
 
 @main.route('/matters/')
 def matters():
