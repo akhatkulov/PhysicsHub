@@ -838,12 +838,30 @@ header {
     text-align: center;
     overflow: hidden;
     position: relative;
+
+    &#mexroj img {
+        object-position: bottom;
+    }
+
+    &#jumanazar img {
+        height: 100%;
+        object-position: center;
+    }
+
+    &#abbos img {
+        height: 500px;
+        object-position: center;
+    }
+
+    &#me img {
+        height: 100%;
+        object-position: center;
+    }
 }
 
 .our-team img {
     width: 250px;
     object-fit: cover;
-    object-position: bottom;
 }
 
 .our-team .team-content {
