@@ -14,30 +14,44 @@
         <div class="nav">
             <a href="/logout">
                 <div class="back">
-                    <i class="fa-solid fa-chevron-left"></i>
+                    <i class="fa-solid fa-sign-out"></i>
                 </div>
             </a>
-        </div>
-        <div class="question_menu">
-            <div class="question">
-                Masala qo'shish +
-            </div>
-            <div class="test">
-                Test qo'shish +
-            </div>
-            <div class="theme">
-                Mavzu qo'shish +
+            <div class="question_menu">
+                <div class="question">
+                    Masala qo'shish +
+                </div>
+                <div class="test">
+                    Test qo'shish +
+                </div>
+                <div class="theme">
+                    Mavzu qo'shish +
+                </div>
             </div>
         </div>
         <div class="question_boxs">
             <div>
-                <div class="edit_q">
-                    <i class="fa-solid fa-file-pen"></i>
+                <h1>Masalalar</h1>
+                <form id="q_search_form">
+                    <input type="search" id="q_search_input" name="prefix" placeholder="Qidirish..." autocomplete="off">
+                </form>
+                <div class="edit_boxs q_boxs">
+
+                </div>
+                <div class="edit_loader q_loader">
+                    <div></div>
                 </div>
             </div>
             <div>
-                <div class="edit_t">
-                    <i class="fa-solid fa-file-pen"></i>
+                <h1>Testlar</h1>
+                <form id="t_search_form">
+                    <input type="search" id="t_search_input" name="prefix" placeholder="Qidirish..." autocomplete="off">
+                </form>
+                <div class="edit_boxs t_boxs">
+
+                </div>
+                <div class="edit_loader t_loader">
+                    <div></div>
                 </div>
             </div>
             <div class="th_box">
@@ -206,18 +220,7 @@
     </div>
     <div class="edit_search_modal">
         <div class="modal">
-            <span class="search_exit exit">
-                <i class="fa-solid fa-xmark"></i>
-            </span>
-            <form id="edit_search_form">
-                <input type="search" id="edit_search_input" name="prefix" placeholder="Qidirish..." autocomplete="off">
-            </form>
-            <div class="edit_boxs">
-                
-            </div>
-            <div class="edit_loader">
-                <div></div>
-            </div>
+
         </div>
     </div>
     <script src="{{url_for('static', filename='app.js')}}"></script>

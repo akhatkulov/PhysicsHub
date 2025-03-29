@@ -7,6 +7,7 @@ from flask import (
     flash,
     current_app,
     jsonify,
+    abort
 )
 from .. import db
 from ..models import (
@@ -174,6 +175,7 @@ def edit_quiz():
 def edit_matter():
     if current_user == "admin":
         data = request.get_json()
+        id = res_data['id']
         title = res_data["title"]
         main = res_data["main"]
         helper = res_data["helper"]
@@ -182,7 +184,7 @@ def edit_matter():
         ball = int(res_data["ball"])
         status = Bool(res_data["status"])
 
-        matter = Matter.query.filter(Quiz.title == title).first()
+        matter = Matter.query.filter(Matter.id == id).first()
         if matter:
             matter.title = title
             matter.main = main
@@ -196,7 +198,7 @@ def edit_matter():
         else:
             return jsonify({"error", "mavjud emas"}), 404
     else:
-        abort(404)
+        abort(404, "san admin massan")
 
 
 @main.route("/matters/")

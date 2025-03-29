@@ -10,7 +10,7 @@
 body {
     width: 100%;
     height: 100vh;
-    background-color: #1c202f;
+    background-color: #ececec;
 }
 
 .con {
@@ -23,21 +23,25 @@ body {
 
 .nav {
     width: 100%;
-    height: 100px;
+    height: 80px;
     display: flex;
     justify-content: left;
     padding: 10px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .back {
     width: 50px;
     height: 50px;
-    background-color: dodgerblue;
-    border-radius: 50%;
+    background-color: rgba(0, 0, 161, 0.7);
+    border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 11px;
     cursor: pointer;
     transition: 0.2s;
     overflow: hidden;
@@ -46,10 +50,8 @@ body {
 }
 
 .question_menu {
-    width: 90%;
+    width: 600px;
     height: 100px;
-    margin: 0 auto;
-    padding: 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -58,7 +60,7 @@ body {
 .question_menu div {
     width: 30%;
     height: 50px;
-    background-color: dodgerblue;
+    background-color: #0000a1b3;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,14 +69,14 @@ body {
     cursor: pointer;
     transition: 0.2s;
     border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .question_menu div:hover,
 .back:hover {
-    background: transparent;
-    border: 1px solid dodgerblue;
+    background-color: #0000a1;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
-
 .modals {
     width: 100%;
     height: 100%;
@@ -87,12 +89,14 @@ body {
     left: 0;
 }
 
-.modals div {
+.modals>div {
     max-width: 550px;
     height: auto;
     padding: 20px;
-    background-color: #20253b;
+    background-color: #fff;
     position: relative;
+    box-shadow: 0 3 6 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 .test_modal {
@@ -123,7 +127,7 @@ body {
 .modals div h1 {
     font-weight: 200;
     text-align: center;
-    color: white;
+    color: #0000a1;
 }
 
 .input-i label {
@@ -141,9 +145,7 @@ body {
     height: 40px;
 }
 
-.input-i option {
-    background: #1c202f;
-}
+
 
 .input-i textarea {
     min-width: 300px;
@@ -161,7 +163,6 @@ body {
     border: none;
     border-bottom: 2px solid dodgerblue;
     outline: none;
-    color: white;
     font-size: 18px;
 }
 
@@ -268,71 +269,6 @@ a {
     border: 1px solid dodgerblue !important;
 }
 
-
-
-.test_s--wrapper {
-    margin-left: -20px;
-}
-
-.savol_box {
-    padding: 0 !important;
-    min-width: 300px;
-    max-width: 100%;
-    height: 50px !important;
-    border: 1px solid dodgerblue;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.savol_box>span:nth-child(3) {
-    width: 60px !important;
-    height: 50px !important;
-    background-color: dodgerblue;
-    color: red !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.2s;
-    border: 1px solid dodgerblue;
-    font-size: 20px;
-}
-
-.savol_box>span:nth-child(2) i {
-    color: red;
-}
-
-.savol_box>span:nth-child(3):hover {
-    background: transparent;
-}
-
-.savol_box>span:nth-child(1) {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    text-align: left;
-    padding-left: 10px;
-    overflow: hidden;
-}
-
-.tests--wrapper {
-    width: 100%;
-    height: 200px !important;
-    display: grid;
-    gap: 10px;
-    overflow-x: auto;
-}
-
-.the_end {
-    width: 30px;
-    height: 5px;
-    background-color: #20253b;
-
-}
-
 .little_modal, .edit_search_modal{
     width: 100%;
     height: 100vh;
@@ -399,7 +335,6 @@ a {
     font-size: 20px;
     transition: 0.2s;
 }
-
 .question_boxs {
     width: 90%;
     height: auto;
@@ -407,44 +342,15 @@ a {
     margin: 0 auto;
     padding: 10px;
     justify-content: space-around;
+    gap: 20px;
+}
+.question_boxs > div{
+    width: 100%;
+    padding: 0 20px;
 }
 
-.question_boxs>div {
-    width: 30%;
-    height: auto;
-    display: grid;
-    grid-gap: 10px;
-}
-.box{
-    border-radius: 5px !important;
-    overflow: hidden;
-    border: 1px solid dodgerblue;
-}
-.box > div{
-    border: none;
-}
-.box .the_end {
-    background-color: #1c202f;
-    color: white;
-}
 
-.box .t_edit {
-    width: 60px !important;
-    height: 50px !important;
-    background-color: dodgerblue;
-    color: red !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.2s;
-    border: 1px solid dodgerblue;
-    font-size: 20px;
-}
 
-.box .t_edit:hover {
-    background: transparent;
-}
 
 .fa-edit {
     color: rgb(0, 255, 0) !important;
@@ -460,8 +366,8 @@ a {
 
 .question_boxs h1 {
     font-weight: 300;
-    color: dodgerblue;
-    display: none;
+    color: #0000a1;
+    margin-bottom: 20px;
 }
 .edit_q, .edit_t{
     padding: 20px;
@@ -480,15 +386,15 @@ a {
     background-color: transparent;
     color: dodgerblue !important;
 }
-.edit_search_modal input{
+.question_boxs input{
     width: 100%;
     height: 40px;
     padding: 5px;
-    border: 1px solid dodgerblue;
+    border: 1px solid #0000a1;
     border-radius: 5px;
-    background: transparent;
-    color: white;
     font-size: 15px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+
 }
 .edit_loader{
     width: 100%;
@@ -505,10 +411,8 @@ a {
 }
 .edit_boxs{
     width: 100%;
-    height: 90%;
+    height: auto;
     margin-top: 30px;
-    overflow-y:auto;
-    gap: 10px;
     padding: 10px;
 }
 .edit_loader > div {
@@ -544,20 +448,21 @@ a {
     color: dodgerblue;
 }
 
-.edit_box{
+.box{
     width: 100%;
     height: 50px;
-    border: 1px solid dodgerblue;
+    background-color: white;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom:10px;
     overflow: hidden;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+
 }
-.edit_box p{
+.box p{
     max-width: 400px;
-    color: white;
     padding: 10px;
     white-space: nowrap;
     overflow: hidden; 
@@ -565,14 +470,14 @@ a {
     display: block;
 }
 .edit_box_crud{
-    width: 120px;
+    width: auto;
     height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .edit_box_crud span{
-    width: 400px;
+    width: 40px;
     height: 100px;
     display: flex;
     justify-content: center;
@@ -581,7 +486,7 @@ a {
     transition: 0.2s;
 }
 .edit_box_crud span:hover{
-    background-color: rgba(30, 143, 255, 0.555);
+    background-color: rgba(189, 189, 189, 0.384);
 }
 .fa-pencil{
     color: rgb(0, 255, 0);

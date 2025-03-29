@@ -164,39 +164,39 @@ exit_l.addEventListener("click", () => {
     modals.style.display = "flex"
     t_modal.style.display = "grid"
 })
-q_form.addEventListener("submit", (e) => {
-    e.preventDefault()
-    let q_obj = {
-        title: title.value,
-        shart: shart.value,
-        izoh: izoh.value,
-        javob: javob.value,
-        ball_q: ball_q.value,
-        mavzular: mavzusi.value,
-        act: "active"
-    }
-    title.value = ""
-    shart.value = ""
-    izoh.value = ""
-    javob.value = ""
-    ball_q.value = ""
-    console.log(q_obj);
-    fetch("/admin/add_matter", {
-        method: "POST",
-        body: JSON.stringify({
-            title: q_obj.title,
-            main: q_obj.shart,
-            helper: q_obj.izoh,
-            theme: q_obj.mavzular,
-            correct: q_obj.javob,
-            ball: q_obj.ball_q
-        })
-    })
-    //bach-endga post yuborish-------
-    modals.style.display = "none"
-    q_modal.style.display = "none"
-    location.reload()
-})
+// q_form.addEventListener("submit", (e) => {
+//     e.preventDefault()
+//     let q_obj = {
+//         title: title.value,
+//         shart: shart.value,
+//         izoh: izoh.value,
+//         javob: javob.value,
+//         ball_q: ball_q.value,
+//         mavzular: mavzusi.value,
+//         act: "active"
+//     }
+//     title.value = ""
+//     shart.value = ""
+//     izoh.value = ""
+//     javob.value = ""
+//     ball_q.value = ""
+//     console.log(q_obj);
+//     fetch("/admin/add_matter", {
+//         method: "POST",
+//         body: JSON.stringify({
+//             title: q_obj.title,
+//             main: q_obj.shart,
+//             helper: q_obj.izoh,
+//             theme: q_obj.mavzular,
+//             correct: q_obj.javob,
+//             ball: q_obj.ball_q
+//         })
+//     })
+//     //bach-endga post yuborish-------
+//     modals.style.display = "none"
+//     q_modal.style.display = "none"
+//     location.reload()
+// })
 
 theme.addEventListener("click", () => {
     modals.style.display = "flex"
@@ -228,14 +228,17 @@ fetch("/api/themes")
     .then(data => {
         data.forEach(item => {
             th_box.innerHTML += `
-            <div class="box">
-                    <div class="savol_box">
-                        <span class="q_name"><i>${item.name}</i></span>
-                        <span class="t_edit ">
-                            <i class="fa-solid fa-xmark"></i>
-                        </span>
+                <div class="box">
+                        <p class="edit_box_title">
+                        ${item.id}.    
+                        ${item.name}
+                        </p>
+                        <div class="edit_box_crud">
+                            <span class="edit_box_dq">
+                                <i class="fa-solid fa-trash"></i>
+                            </span>
+                        <div>
                     </div>
-                </div>
             `
         })
     })
@@ -253,61 +256,51 @@ fetch("/api/themes")
         })
     })
 
-edit_q.addEventListener(("click"), () => {
-    document.querySelector(".edit_search_modal").style.display = "flex"
-
-    fetch("/api/get_matter")
-        .then(rec => rec.json())
-        .then(data => {
-            document.querySelector(".edit_boxs").innerHTML = "";
-            if (data.length > 0) {
-                data.forEach(item => {
-                    document.querySelector(".edit_boxs").innerHTML += `
-                        <div class="edit_box">
-                            <p class="edit_box_title">
-                            ${item.id}.    
-                            ${item.title}
-                            </p>
-                            <div class="edit_box_crud">
-                                <span class="edit_box_eq">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </span>
-                                <span class="edit_box_aq">
-                                    <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
-                                </span>
-                                <span class="edit_box_dq">
-                                    <i class="fa-solid fa-trash"></i>
-                                </span>
-                            <div>
-                        </div>
-                    `;
-                })
-            } else {
-                document.querySelector(".edit_boxs").innerHTML = `
-                    <span class="edit_empty">
-                        <i class="fa-solid fa-box-open"></i>
-                        <p>Ma'lumot topilmadi</p>
-                    </span>
+fetch("/api/get_matter")
+    .then(rec => rec.json())
+    .then(data => {
+        document.querySelector(".q_boxs").innerHTML = "";
+        if (data.length > 0) {
+            data.forEach(item => {
+                document.querySelector(".q_boxs").innerHTML += `
+                    <div class="box">
+                        <p class="edit_box_title">
+                        ${item.id}.    
+                        ${item.title}
+                        </p>
+                        <div class="edit_box_crud">
+                            <span class="edit_box_eq" onclick="edit_question_func(${item.id})">
+                                <i class="fa-solid fa-pencil"></i>
+                            </span>
+                            <span class="edit_box_aq">
+                                <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
+                            </span>
+                            <span class="edit_box_dq">
+                                <i class="fa-solid fa-trash"></i>
+                            </span>
+                        <div>
+                    </div>
                 `;
-            }
-        })
-        .catch(error => console.log(error))
-    searchFunc("/api/get_matter", "q")
-})
+            })
+        } else {
+            document.querySelector(".q_boxs").innerHTML = `
+                <span class="edit_empty">
+                    <i class="fa-solid fa-box-open"></i>
+                    <p>Ma'lumot topilmadi</p>
+                </span>
+            `;
+        }
+    })
+    .catch(error => console.log(error))
 
-
-
-edit_t.addEventListener(("click"), () => {
-    document.querySelector(".edit_search_modal").style.display = "flex"
-
-    fetch("/api/get_quiz")
-        .then(rec => rec.json())
-        .then(data => {
-            document.querySelector(".edit_boxs").innerHTML = "";
-            if (data.length > 0) {
-                data.forEach(item => {
-                    document.querySelector(".edit_boxs").innerHTML += `
-                        <div class="edit_box">
+fetch("/api/get_quiz")
+    .then(rec => rec.json())
+    .then(data => {
+        document.querySelector(".t_boxs").innerHTML = "";
+        if (data.length > 0) {
+            data.forEach(item => {
+                document.querySelector(".t_boxs").innerHTML += `
+                        <div class="box">
                             <p class="edit_box_title">
                             ${item.id}.    
                             ${item.title}
@@ -325,79 +318,153 @@ edit_t.addEventListener(("click"), () => {
                             <div>
                         </div>
                     `;
-                })
-            } else {
-                document.querySelector(".edit_boxs").innerHTML = `
+            })
+        } else {
+            document.querySelector(".t_boxs").innerHTML = `
                     <span class="edit_empty">
                         <i class="fa-solid fa-box-open"></i>
                         <p>Ma'lumot topilmadi</p>
                     </span>
                 `;
-            }
-        })
-        .catch(error => console.log(error))
-    searchFunc("/api/get_quiz", "t")
-})
+        }
+    })
+    .catch(error => console.log(error))
 
 
+let interval1 = null;
+document.getElementById("q_search_input").addEventListener("input", (e) => {
+    if (interval1) return
+    interval1 = setTimeout(() => {
+        let prefix = e.target.value.trim();
 
-function searchFunc(p, q) {
-    let interval = null;
-    document.getElementById("edit_search_input").addEventListener("input", (e) => {
-        if (interval) return
-        interval = setTimeout(() => {
-            let prefix = e.target.value.trim();
+        let url = prefix === "" ? "/api/get_matter" : `/api/get_matter?prefix=${prefix}`;
 
-            let url = prefix === "" ? p : `${p}?prefix=${prefix}`;
+        document.querySelector(".q_loader").style.display = "flex";
 
-            console.log(document.querySelector(".edit_loader"));
-
-            document.querySelector(".edit_loader").style.display = "flex";
-
-            fetch(url)
-                .then(rec => rec.json())
-                .then(data => {
-                    document.querySelector(".edit_boxs").innerHTML = "";
-                    if (data.length > 0) {
-                        data.forEach(item => {
-                            document.querySelector(".edit_boxs").innerHTML += `
-                                <div class="edit_box">
+        fetch(url)
+            .then(rec => rec.json())
+            .then(data => {
+                document.querySelector(".q_boxs").innerHTML = "";
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        document.querySelector(".q_boxs").innerHTML += `
+                                <div class="box">
                                     <p class="edit_box_title">
                                     ${item.id}.    
                                     ${item.title}
                                     </p>
                                     <div class="edit_box_crud">
-                                        <span class="edit_box_e${q}">
+                                        <span class="edit_box_eq" onclick="edit_question_func(${item.id})">
                                             <i class="fa-solid fa-pencil"></i>
                                         </span>
-                                        <span class="edit_box_a${q}">
+                                        <span class="edit_box_aq">
                                             <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
                                         </span>
-                                        <span class="edit_box_d${q}">
+                                        <span class="edit_box_dq">
                                             <i class="fa-solid fa-trash"></i>
                                         </span>
                                     <div>
                                 </div>
                             `;
-                        })
-                    } else {
-                        document.querySelector(".edit_boxs").innerHTML = `
+                    })
+                } else {
+                    document.querySelector(".q_boxs").innerHTML = `
                             <span class="edit_empty">
                                 <i class="fa-solid fa-box-open"></i>
                                 <p>Ma'lumot topilmadi</p>
                             </span>
                         `;
-                    }
-                })
-                .catch(error => console.log(error))
-            document.querySelector(".edit_loader").style.display = "none";
-            interval = null;
-        }, 1000);
+                }
+            })
+            .catch(error => console.log(error))
+        document.querySelector(".q_loader").style.display = "none";
+        interval1 = null;
+    }, 500);
+})
+
+
+let interval2 = null;
+document.getElementById("t_search_input").addEventListener("input", (e) => {
+    if (interval2) return
+    interval2 = setTimeout(() => {
+        let prefix = e.target.value.trim();
+
+        let url = prefix === "" ? "/api/get_quiz" : `/api/get_quiz?prefix=${prefix}`;
+
+        document.querySelector(".t_loader").style.display = "flex";
+
+        fetch(url)
+            .then(rec => rec.json())
+            .then(data => {
+                document.querySelector(".t_boxs").innerHTML = "";
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        document.querySelector(".t_boxs").innerHTML += `
+                                <div class="box">
+                                    <p class="edit_box_title">
+                                    ${item.id}.    
+                                    ${item.title}
+                                    </p>
+                                    <div class="edit_box_crud">
+                                        <span class="edit_box_et">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </span>
+                                        <span class="edit_box_at">
+                                            <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
+                                        </span>
+                                        <span class="edit_box_dt">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </span>
+                                    <div>
+                                </div>
+                            `;
+                    })
+                } else {
+                    document.querySelector(".t_boxs").innerHTML = `
+                            <span class="edit_empty">
+                                <i class="fa-solid fa-box-open"></i>
+                                <p>Ma'lumot topilmadi</p>
+                            </span>
+                        `;
+                }
+            })
+            .catch(error => console.log(error))
+        document.querySelector(".t_loader").style.display = "none";
+        interval2 = null;
+    }, 500);
+})
+
+function edit_question_func(id){
+    modals.style.display = "flex"
+    q_modal.style.display = "grid"
+    fetch("/api/get_matter")
+    .then(rec => rec.json())
+    .then(data => {
+        data.forEach(item =>{
+            if(item.id === id){
+                title.value = item.title;
+                shart.value = item.main;
+                izoh.value = item.helper;
+                mavzusi.value = item.theme;
+                javob.value = item.correct;
+                ball_q.value = item.ball;
+            }
+        })
+    })
+    q_form.addEventListener("submit", (e) =>{
+        e.preventDefault();
+        fetch("/api/edit_matter",{
+            method: "POST",
+            body:JSON.stringify({
+                id: id,
+                title: title.value,
+                main: shart.value,
+                helper: izoh.value,
+                theme: mavzusi.value,
+                correct: javob.value,
+                ball: ball_q.value,
+                status:true
+            })
+        })
     })
 }
-
-document.querySelector(".search_exit").addEventListener("click", () => {
-    document.querySelector(".edit_search_modal").style.display = "none"
-    document.querySelector(".edit_boxs").innerHTML = "";
-    document.getElementById("edit_search_input").value = "";
-})
