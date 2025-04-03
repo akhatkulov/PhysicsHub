@@ -147,10 +147,10 @@ def delete_theme(item_id):
         return "Doom shot, Mother Fucker)"
 
 
- @main.route("/api/delete_quiz/<int:item_id>", methods=["DELETE"])
- @login_required
- def delete_quiz(item_id):
-     if current_user == "admin":
+@main.route("/api/delete_quiz/<int:item_id>", methods=["DELETE"])
+@login_required
+def delete_quiz(item_id):
+     if current_user.username == "admin":
          item = Quiz.query.get(item_id)
          if item:
              db.session.delete(item)
@@ -160,10 +160,10 @@ def delete_theme(item_id):
      else:
          return "Doom shot, Mother Fucker)"
  
- @main.route("/api/delete_matter/<int:item_id>", methods=["DELETE"])
- @login_required
- def delete_matter(item_id):
-     if current_user == "admin":
+@main.route("/api/delete_matter/<int:item_id>", methods=["DELETE"])
+@login_required
+def delete_matter(item_id):
+     if current_user.username == "admin":
          item = Matter.query.get(item_id)
          if item:
              db.session.delete(item)

@@ -106,7 +106,12 @@ body {
 .modals>div {
     display: none;
 }
-
+.q_form{
+    display: none;
+}
+.q_form_edit{
+    display: none;
+}
 .input-i {
     width: 100%;
     height: auto;
@@ -117,7 +122,6 @@ body {
 }
 
 .modals div form {
-    display: grid;
     grid-template-columns: auto;
     column-gap: 10px;
     justify-content: center;
@@ -161,7 +165,7 @@ body {
 .input-i select {
     background: transparent;
     border: none;
-    border-bottom: 2px solid dodgerblue;
+    border-bottom: 2px solid #0000a1;
     outline: none;
     font-size: 18px;
 }
@@ -170,7 +174,7 @@ body {
 .input-i textarea:focus+label,
 .input-i select:focus+label {
     top: 0;
-    color: dodgerblue;
+    color: #0000a1;
     font-size: 12px;
 }
 
@@ -178,25 +182,26 @@ body {
 .input-i textarea:valid+label,
 .input-i select:valid+label {
     top: 0;
-    color: dodgerblue;
+    color: #0000a1;
     font-size: 12px;
 }
 
 .modals button {
     width: 100%;
     height: 40px;
-    background-color: dodgerblue;
+    background-color: #0000a1;
     color: white;
     font-size: 20px;
     border: none;
     transition: 0.2s;
     cursor: pointer;
     font-family: "Poppins", serif;
+    border-radius: 5px;
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.2);
 }
 
 .modals button:hover {
-    border: 1px solid dodgerblue;
-    background: transparent;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
 }
 
 .modals button:active {
@@ -218,7 +223,6 @@ body {
     transition: 0.2s;
     font-size: 20px;
     color: white;
-    background-color: dodgerblue;
 }
 
 .exit img {
@@ -226,22 +230,22 @@ body {
 }
 
 .exit:hover {
-    background-color: transparent;
-    border: 1px solid dodgerblue;
+    background-color: #ffffff50;
 }
 
 .tests {
-    display: grid;
-    gap: 0;
+    width: 100%;
+    min-height: 200px;
+    max-height: 300px;
+    overflow-y: auto;
     margin-top: -20px !important;
-    grid-gap: 10px !important;
-    justify-content: center;
-    grid-template-columns: auto;
+    position: relative;
+    padding: 20px;
+    color: #000;
 }
-
-.tests span,
-i {
-    color: white;
+.tests--wrapper{
+    width: 100%;
+    margin-top: 50px;
 }
 
 a {
@@ -251,7 +255,8 @@ a {
 .t_plus {
     width: 50px;
     height: 50px !important;
-    background-color: dodgerblue !important;
+    background-color: #0000a1 !important;
+    color: white;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -261,12 +266,12 @@ a {
     right: 20px !important;
     top: 25px;
     position: absolute;
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.2);
 }
 
 .t_plus:hover,
 .little_modal button:hover {
-    background-color: transparent !important;
-    border: 1px solid dodgerblue !important;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
 }
 
 .little_modal, .edit_search_modal{
@@ -284,9 +289,11 @@ a {
 .modal {
     width: 600px;
     height: 550px;
-    background-color: #20253b;
+    background-color: white;
     padding: 20px;
     position: relative;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 .modal>form>.input-i,
@@ -312,7 +319,7 @@ a {
     justify-content: center;
     align-items: center;
     grid-template-rows: 20px auto auto auto auto;
-    color: dodgerblue;
+    color: #0000a1;
 }
 
 .javoblar input {
@@ -328,8 +335,8 @@ a {
     width: 100%;
     height: 40px;
     color: white;
-    background-color: dodgerblue;
-    border: 1px solid dodgerblue;
+    background-color: #0000a1;
+    border: 1px solid #0000a1;
     cursor: pointer;
     font-family: "Poppins", serif;
     font-size: 20px;
@@ -371,20 +378,20 @@ a {
 }
 .edit_q, .edit_t{
     padding: 20px;
-    border: 1px solid dodgerblue;
+    border: 1px solid #0000a1;
     width: 50px;
     height: 50px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: dodgerblue;
+    background-color: #0000a1;
     transition: 0.2s;
     cursor: pointer;
 }
 .edit_q:hover, .edit_t:hover{
     background-color: transparent;
-    color: dodgerblue !important;
+    color: #0000a1 !important;
 }
 .question_boxs input{
     width: 100%;
@@ -420,7 +427,7 @@ a {
     padding: 8px;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: dodgerblue;
+    background: #0000a1;
     --_m: 
       conic-gradient(#0000 10%,#000),
       linear-gradient(#000 0 0) content-box;
@@ -435,7 +442,7 @@ a {
 .edit_empty{
     width: 100%;
     height: 100px;
-    color: dodgerblue;
+    color: #0000a1;
     display: grid;
     justify-content: center;
     align-items: center;
@@ -445,7 +452,7 @@ a {
 }
 .edit_empty i{
     font-size: 50px;
-    color: dodgerblue;
+    color: #0000a1;
 }
 
 .box{
@@ -502,8 +509,8 @@ a {
 }
 @media screen and (max-width: 1060px) {
     .question_menu {
-        display: grid;
         gap: 20px;
+        margin-left: 10px;
     }
 
     .question_menu div {
@@ -520,10 +527,9 @@ a {
     .question_boxs h1 {
         display: block;
     }
-
-    .modals>div,
-    .modal {
-        transform: scale(0.6);
+    .modals{
+        width: 760px !important;
+        height: 1500px !important;
     }
 
     .modal .exit {
