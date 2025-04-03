@@ -135,7 +135,8 @@ def get_matter_list():
 @main.route("/api/delete_theme/<int:item_id>", methods=["DELETE"])
 @login_required
 def delete_theme(item_id):
-    if current_user == "admin":
+    print("user",current_user)
+    if current_user.username == "admin":
         item = Theme.query.get(item_id)
         if item:
             db.session.delete(item)
@@ -149,7 +150,7 @@ def delete_theme(item_id):
 @main.post("/api/edit_quiz")
 @login_required
 def edit_quiz():
-    if current_user == "admin":
+    if current_user.username == "admin":
 
         data = request.get_json()
         title = res_data.get("title")
@@ -173,7 +174,7 @@ def edit_quiz():
 @main.post("/api/edit_matter")
 @login_required
 def edit_matter():
-    if current_user == "admin":
+    if current_user.username == "admin":
         data = request.get_json()
         id = res_data['id']
         title = res_data["title"]
