@@ -147,43 +147,69 @@ def delete_theme(item_id):
         return "Doom shot, Mother Fucker)"
 
 
-@main.post("/api/edit_quiz")
+ @main.route("/api/delete_quiz/<int:item_id>", methods=["DELETE"])
+ @login_required
+ def delete_quiz(item_id):
+     if current_user == "admin":
+         item = Quiz.query.get(item_id)
+         if item:
+             db.session.delete(item)
+             db.session.commit()
+             return jsonify({"message": "Item deleted successfully"}), 200
+         return jsonify({"error": "Item not found"}), 404
+     else:
+         return "Doom shot, Mother Fucker)"
+ 
+ @main.route("/api/delete_matter/<int:item_id>", methods=["DELETE"])
+ @login_required
+ def delete_matter(item_id):
+     if current_user == "admin":
+         item = Matter.query.get(item_id)
+         if item:
+             db.session.delete(item)
+             db.session.commit()
+             return jsonify({"message": "Item deleted successfully"}), 200
+         return jsonify({"error": "Item not found"}), 404
+     else:
+         return "Doom shot, Mother Fucker)"              
+ 
+@main.put("/api/edit_quiz")
 @login_required
 def edit_quiz():
     if current_user.username == "admin":
-
         data = request.get_json()
-        title = res_data.get("title")
-        theme = res_data.get("theme").lower()
-        status = Bool(res_data["status"])
-        data = json.dumps(res_data.get("data"))
+        title = data.get("title")
+        theme = data.get("theme").lower()
+        status = bool(data["status"])
+        quiz_data = json.dumps(data.get("data"))
+
         quiz = Quiz.query.filter(Quiz.title == title).first()
         if quiz:
             quiz.title = title
             quiz.theme = theme
-            quiz.data = data
+            quiz.data = quiz_data
             quiz.status = status
             db.session.commit()
-            return json({"status:": "done"}), 200
+            return jsonify({"status": "done"}), 200
         else:
-            return jsonify({"error", "mavjud emas"}), 404
+            return jsonify({"error": "mavjud emas"}), 404
     else:
         abort(404)
 
 
-@main.post("/api/edit_matter")
+@main.put("/api/edit_matter")
 @login_required
 def edit_matter():
     if current_user.username == "admin":
         data = request.get_json()
-        id = res_data['id']
-        title = res_data["title"]
-        main = res_data["main"]
-        helper = res_data["helper"]
-        theme = res_data["theme"]
-        correct = res_data["correct"]
-        ball = int(res_data["ball"])
-        status = Bool(res_data["status"])
+        id = data['id']
+        title = data["title"]
+        main = data["main"]
+        helper = data["helper"]
+        theme = data["theme"]
+        correct = data["correct"]
+        ball = int(data["ball"])
+        status = bool(data["status"])
 
         matter = Matter.query.filter(Matter.id == id).first()
         if matter:
@@ -195,11 +221,11 @@ def edit_matter():
             matter.ball = ball
             matter.status = status
             db.session.commit()
-            return json({"status:": "done"}), 200
+            return jsonify({"status": "done"}), 200
         else:
-            return jsonify({"error", "mavjud emas"}), 404
+            return jsonify({"error": "mavjud emas"}), 404
     else:
-        abort(404, "san admin massan")
+        abort(404, description="san admin massan")
 
 
 @main.route("/matters/")
