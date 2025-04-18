@@ -197,6 +197,10 @@ header {
         display: none;
     }
 
+    .enter-button.logOut {
+        display: none;
+    }
+
     .mobile-nav {
         display: block;
     }
@@ -555,7 +559,7 @@ header {
 
 /* Foydalanuvchi statistikasi */
 .user-stats {
-    background: #f8f8f8;
+    background-color: #f8f8f8;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
@@ -563,6 +567,19 @@ header {
     justify-content: space-between;
     align-items: center;
     gap: 30px;
+}
+
+@media (max-width: 1000px) {
+    .user-stats {
+        padding: 10px;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 700px) {
+    .user-stats {
+        display: none;
+    }
 }
 
 .user-stats span {
@@ -938,6 +955,34 @@ header {
         font-size: 16px;
         cursor: pointer;
         transition: all 0.3s ease;
+    }
+}
+
+/* Profile */
+
+.profile-container {
+    width: 100%;
+
+    & .stats {
+        display: flex;
+        flex-direction: column;
+        background-color: #FFF;
+        border-radius: 10px;
+        margin-bottom: 20px;
+
+        & span {
+            margin-right: 10px;
+        }
+
+        & div {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    & form {
+        max-width: 100%;
     }
 }
 

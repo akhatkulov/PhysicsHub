@@ -22,7 +22,7 @@
 
             {% if current_user.is_authenticated %}
             <div class="user-stats">
-                <span><span class="material-symbols-outlined">person</span>: {{ current_user.username }}</span>
+                <!-- <span><span class="material-symbols-outlined">person</span>: {{ current_user.username }}</span> -->
                 <span><span class="material-symbols-outlined">calculate</span>: {{ current_user.problems_solved
                     }}</span>
                 <span><span class="material-symbols-outlined">checklist_rtl</span>: {{ current_user.tests_passed
@@ -35,7 +35,7 @@
             <div class="button-group">
                 {% if current_user.is_authenticated %}
                 <div class="enter-button"><a href="/profile">Profilim</a></div>
-                <div class="enter-button"><a href="/logout">Chiqish</a></div>
+                <div class="enter-button logOut"><a href="/logout">Chiqish</a></div>
                 {% else %}
                 <div class="enter-button"><a href="/signin">Kirish</a></div>
                 <div class="enter-button signup"><a href="/signup">Ro'yxatdan o'tish</a></div>
@@ -70,7 +70,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </header>
 

@@ -4,6 +4,27 @@
 
 
 {% block content %}
+<div class="profile-container">
+    <div class="stats">
+        <div>
+            <span class="material-symbols-outlined">person</span>User: {{ current_user.username }}
+        </div>
+        <div>
+            <span class="material-symbols-outlined">calculate</span>Yechilgan masalalar: {{ current_user.problems_solved
+            }}
+        </div>
+        <div>
+            <span class="material-symbols-outlined">checklist_rtl</span>Yechilgan testlar: {{ current_user.tests_passed
+            }}
+        </div>
+        <div>
+            <span class="material-symbols-outlined">stars</span>Point lar: {{ current_user.points }}
+        </div>
+        <div>
+            <span class="material-symbols-outlined">military_tech</span>Rank: {{ current_user.rank() }}
+        </div>
+    </div>
+
     <form method="POST" action="{{ url_for('main.profile') }}" class="i42-form">
         <h3>Profilingizni Tahrirlash</h3>
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -42,4 +63,6 @@
         </div>
         <button type="submit" class="btn btn-primary">Saqlash</button>
     </form>
+</div>
+
 {% endblock %}
