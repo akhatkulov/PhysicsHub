@@ -1,3 +1,4 @@
+const con = document.querySelector(".con");
 const modals = document.querySelector(".modals");
 const modal = document.querySelector(".modal");
 const q_modal = document.querySelector(".question_modal");
@@ -12,17 +13,24 @@ const sv_q = document.querySelector(".sv_q");
 const little_modal = document.querySelector(".little_modal");
 const t_plus = document.querySelector(".t_plus");
 const q_form = document.querySelector(".q_form");
+const q_form_edit = document.querySelector(".q_form_edit");
 const t_form = document.querySelector(".t_form");
 const m_form = document.querySelector(".m_form");
 const title = document.getElementById("title");
+const title_edit = document.getElementById("title_edit");
 const t_title = document.getElementById("t_title");
 const m_title = document.getElementById("m_title");
 const m_about = document.getElementById("m_about");
 const shart = document.getElementById("shart");
+const shart_edit = document.getElementById("shart_edit");
 const izoh = document.getElementById("izoh");
+const izoh_edit = document.getElementById("izoh_edit");
 const javob = document.getElementById("javob");
+const javob_edit = document.getElementById("javob_edit");
 const ball_q = document.getElementById("ball_q");
+const ball_q_edit = document.getElementById("ball_q_edit");
 const mavzusi = document.getElementById("mavzusi");
+const mavzusi_edit = document.getElementById("mavzusi_edit");
 const t_mavzusi = document.getElementById("t_mavzusi");
 const l_savol = document.getElementById("l_savol");
 const l_ball = document.getElementById("l_ball");
@@ -44,11 +52,17 @@ const edit_t = document.querySelector(".edit_t");
 question.addEventListener("click", () => {
     modals.style.display = "flex"
     q_modal.style.display = "grid"
+    q_form.style.display = "grid"
+    q_form_edit.style.display = "none"
+    con.style.height = "100vh"
+    con.style.overflow = "hidden"
 })
 let id = 0;
 test.addEventListener("click", () => {
     modals.style.display = "flex"
     t_modal.style.display = "grid"
+    con.style.height = "100vh"
+    con.style.overflow = "hidden"
     let tests_arr = []
     l = 0
     s = 0
@@ -84,21 +98,20 @@ test.addEventListener("click", () => {
         q_number.innerHTML = s
         l++
         tests_w.innerHTML += `
-                <div class="savol_box test_savol">
-                        <span><i>${tests_obj.question}</i></span>
-                        <span class="the_end">
-                            . . .
-                        </span>
-                        <span class="t_edit ${l}">
-                            <i class="fa-solid fa-xmark"></i>
-                        </span>
+                <div class="box test_savol">
+                        <p class="box_title">${tests_obj.question}</p>
+                        <div class="edit_box_crud">
+                            <span class="edit_box_dq t_edit ${l}"> 
+                                <i class="fa-solid fa-trash"></i>
+                            </span>
+                        <div>
                 </div>
         `
         const t_edit = document.querySelectorAll(".t_edit")
         const test_box = document.querySelectorAll(".test_savol")
         t_edit.forEach(e => {
             e.addEventListener("click", () => {
-                delete_obj = Number(e.classList[1])
+                delete_obj = Number(e.classList[2])
                 delete tests_arr[delete_obj - 1]
                 test_box[delete_obj - 1].style.display = "none"
                 s -= 1
@@ -131,7 +144,7 @@ test.addEventListener("click", () => {
             modals.style.display = "none"
             t_modal.style.display = "none"
             console.log(t_obj);
-            // location.reload()
+            location.reload()
         }
 
     })
@@ -140,18 +153,28 @@ test.addEventListener("click", () => {
 exit_q.addEventListener("click", () => {
     modals.style.display = "none"
     q_modal.style.display = "none"
+    q_form.display = "none"
+    q_form_edit.style.display = "none"
+    con.style.height = "auto"
+    con.style.overflow = "auto"
 })
 exit_t.addEventListener("click", () => {
     modals.style.display = "none"
     t_modal.style.display = "none"
+    con.style.height = "auto"
+    con.style.overflow = "auto"
 })
 exit_l.addEventListener("click", () => {
     modals.style.display = "none"
     t_modal.style.display = "none"
+    con.style.height = "auto"
+    con.style.overflow = "auto"
 })
 exit_m.addEventListener("click", () => {
     modals.style.display = "none"
     themes.style.display = "none"
+    con.style.height = "auto"
+    con.style.overflow = "auto"
 })
 
 t_plus.addEventListener("click", () => {
@@ -163,6 +186,8 @@ exit_l.addEventListener("click", () => {
     modal.style.display = "none"
     modals.style.display = "flex"
     t_modal.style.display = "grid"
+    con.style.height = "auto"
+    con.style.overflow = "auto"
 })
 q_form.addEventListener("submit", (e) => {
     e.preventDefault()
@@ -201,6 +226,8 @@ q_form.addEventListener("submit", (e) => {
 theme.addEventListener("click", () => {
     modals.style.display = "flex"
     themes.style.display = "grid"
+    con.style.height = "100vh"
+    con.style.overflow = "hidden"
 })
 
 m_form.addEventListener("submit", (e) => {
@@ -228,22 +255,39 @@ fetch("/api/themes")
     .then(data => {
         data.forEach(item => {
             th_box.innerHTML += `
-            <div class="box">
-                    <div class="savol_box">
-                        <span class="q_name"><i>${item.name}</i></span>
-                        <span class="t_edit ">
-                            <i class="fa-solid fa-xmark"></i>
-                        </span>
+                <div class="box">
+                        <p class="box_title">
+                        #${item.id} |    
+                        ${item.name}
+                        </p>
+                        <div class="edit_box_crud">
+                            <span class="edit_box_dq" onclick="theme_delete(${item.id})"> 
+                                <i class="fa-solid fa-trash"></i>
+                            </span>
+                        <div>
                     </div>
-                </div>
             `
         })
     })
+function theme_delete(id) {
+    if (confirm("Mavzu o'chirilsinmi ?")) {
+        console.log("Deleted theme ");
+        fetch(`/api/delete_theme/${id}`, {
+            method: "DELETE",
+        })
+            .then(rec => rec.json())
+            .then(data => console.log(data))
+        window.location.reload();
+    }
+}
 fetch("/api/themes")
     .then(rec => rec.json())
     .then(data => {
         data.forEach(item => {
             mavzusi.innerHTML += `
+                <option value="${item.name}">${item.name}</option>
+            `
+            mavzusi_edit.innerHTML += `
                 <option value="${item.name}">${item.name}</option>
             `
             t_mavzusi.innerHTML += `
@@ -253,63 +297,63 @@ fetch("/api/themes")
         })
     })
 
-edit_q.addEventListener(("click"), () => {
-    document.querySelector(".edit_search_modal").style.display = "flex"
-
-    fetch("/api/get_matter")
-        .then(rec => rec.json())
-        .then(data => {
-            document.querySelector(".edit_boxs").innerHTML = "";
-            if (data.length > 0) {
-                data.forEach(item => {
-                    document.querySelector(".edit_boxs").innerHTML += `
-                        <div class="edit_box">
-                            <p class="edit_box_title">
-                            ${item.id}.    
-                            ${item.title}
-                            </p>
-                            <div class="edit_box_crud">
-                                <span class="edit_box_eq">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </span>
-                                <span class="edit_box_aq">
-                                    <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
-                                </span>
-                                <span class="edit_box_dq">
-                                    <i class="fa-solid fa-trash"></i>
-                                </span>
-                            <div>
-                        </div>
-                    `;
-                })
-            } else {
-                document.querySelector(".edit_boxs").innerHTML = `
-                    <span class="edit_empty">
-                        <i class="fa-solid fa-box-open"></i>
-                        <p>Ma'lumot topilmadi</p>
-                    </span>
+fetch("/api/get_matter")
+    .then(rec => rec.json())
+    .then(data => {
+        document.querySelector(".q_boxs").innerHTML = "";
+        if (data.length > 0) {
+            data.forEach(item => {
+                document.querySelector(".q_boxs").innerHTML += `
+                    <div class="box">
+                        <p class="box_title">
+                        #${item.id} |    
+                        ${item.title}
+                        </p>
+                        <div class="edit_box_crud">
+                            <span class="edit_box_eq" onclick="edit_question_func(${item.id})">
+                                <i class="fa-solid fa-pencil"></i>
+                            </span>
+                            <span class="edit_box_aq">
+                                <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
+                            </span>
+                            <span class="edit_box_dq" onclick="question_delete(${item.id})">
+                                <i class="fa-solid fa-trash"></i>
+                            </span>
+                        <div>
+                    </div>
                 `;
-            }
+            })
+        } else {
+            document.querySelector(".q_boxs").innerHTML = `
+                <span class="edit_empty">
+                    <i class="fa-solid fa-box-open"></i>
+                    <p>Ma'lumot topilmadi</p>
+                </span>
+            `;
+        }
+    })
+    .catch(error => console.log(error))
+function question_delete(id) {
+    if (confirm("Masala o'chirilsinmi ?")) {
+        console.log("Deleted question ");
+        fetch(`/api/delete_matter/${id}`, {
+            method: "DELETE",
         })
-        .catch(error => console.log(error))
-    searchFunc("/api/get_matter", "q")
-})
-
-
-
-edit_t.addEventListener(("click"), () => {
-    document.querySelector(".edit_search_modal").style.display = "flex"
-
-    fetch("/api/get_quiz")
-        .then(rec => rec.json())
-        .then(data => {
-            document.querySelector(".edit_boxs").innerHTML = "";
-            if (data.length > 0) {
-                data.forEach(item => {
-                    document.querySelector(".edit_boxs").innerHTML += `
-                        <div class="edit_box">
-                            <p class="edit_box_title">
-                            ${item.id}.    
+            .then(rec => rec.json())
+            .then(data => console.log(data))
+        window.location.reload();
+    }
+}
+fetch("/api/get_quiz")
+    .then(rec => rec.json())
+    .then(data => {
+        document.querySelector(".t_boxs").innerHTML = "";
+        if (data.length > 0) {
+            data.forEach(item => {
+                document.querySelector(".t_boxs").innerHTML += `
+                        <div class="box">
+                            <p class="box_title">
+                            #${item.id} |    
                             ${item.title}
                             </p>
                             <div class="edit_box_crud">
@@ -319,85 +363,177 @@ edit_t.addEventListener(("click"), () => {
                                 <span class="edit_box_at">
                                     <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
                                 </span>
-                                <span class="edit_box_dt">
+                                <span class="edit_box_dt" onclick="test_delete(${item.id})">
                                     <i class="fa-solid fa-trash"></i>
                                 </span>
                             <div>
                         </div>
                     `;
-                })
-            } else {
-                document.querySelector(".edit_boxs").innerHTML = `
+            })
+        } else {
+            document.querySelector(".t_boxs").innerHTML = `
                     <span class="edit_empty">
                         <i class="fa-solid fa-box-open"></i>
                         <p>Ma'lumot topilmadi</p>
                     </span>
                 `;
-            }
+        }
+    })
+    .catch(error => console.log(error))
+function test_delete(id) {
+    if (confirm("Test o'chirilsinmi ?")) {
+        console.log("Deleted test ");
+        fetch(`/api/delete_quiz/${id}`, {
+            method: "DELETE",
         })
-        .catch(error => console.log(error))
-    searchFunc("/api/get_quiz", "t")
-})
+            .then(rec => rec.json())
+            .then(data => console.log(data))
+        window.location.reload();
+    }
+}
 
+let interval1 = null;
+document.getElementById("q_search_input").addEventListener("input", (e) => {
+    if (interval1) return
+    interval1 = setTimeout(() => {
+        let prefix = e.target.value.trim();
 
+        let url = prefix === "" ? "/api/get_matter" : `/api/get_matter?prefix=${prefix}`;
 
-function searchFunc(p, q) {
-    let interval = null;
-    document.getElementById("edit_search_input").addEventListener("input", (e) => {
-        if (interval) return
-        interval = setTimeout(() => {
-            let prefix = e.target.value.trim();
+        document.querySelector(".q_loader").style.display = "flex";
 
-            let url = prefix === "" ? p : `${p}?prefix=${prefix}`;
-
-            console.log(document.querySelector(".edit_loader"));
-
-            document.querySelector(".edit_loader").style.display = "flex";
-
-            fetch(url)
-                .then(rec => rec.json())
-                .then(data => {
-                    document.querySelector(".edit_boxs").innerHTML = "";
-                    if (data.length > 0) {
-                        data.forEach(item => {
-                            document.querySelector(".edit_boxs").innerHTML += `
-                                <div class="edit_box">
-                                    <p class="edit_box_title">
-                                    ${item.id}.    
+        fetch(url)
+            .then(rec => rec.json())
+            .then(data => {
+                document.querySelector(".q_boxs").innerHTML = "";
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        document.querySelector(".q_boxs").innerHTML += `
+                                <div class="box">
+                                    <p class="box_title">
+                                    #${item.id} |    
                                     ${item.title}
                                     </p>
                                     <div class="edit_box_crud">
-                                        <span class="edit_box_e${q}">
+                                        <span class="edit_box_eq" onclick="edit_question_func(${item.id})">
                                             <i class="fa-solid fa-pencil"></i>
                                         </span>
-                                        <span class="edit_box_a${q}">
+                                        <span class="edit_box_aq">
                                             <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
                                         </span>
-                                        <span class="edit_box_d${q}">
+                                        <span class="edit_box_dq">
                                             <i class="fa-solid fa-trash"></i>
                                         </span>
                                     <div>
                                 </div>
                             `;
-                        })
-                    } else {
-                        document.querySelector(".edit_boxs").innerHTML = `
+                    })
+                } else {
+                    document.querySelector(".q_boxs").innerHTML = `
                             <span class="edit_empty">
                                 <i class="fa-solid fa-box-open"></i>
                                 <p>Ma'lumot topilmadi</p>
                             </span>
                         `;
-                    }
-                })
-                .catch(error => console.log(error))
-            document.querySelector(".edit_loader").style.display = "none";
-            interval = null;
-        }, 1000);
-    })
-}
-
-document.querySelector(".search_exit").addEventListener("click", () => {
-    document.querySelector(".edit_search_modal").style.display = "none"
-    document.querySelector(".edit_boxs").innerHTML = "";
-    document.getElementById("edit_search_input").value = "";
+                }
+            })
+            .catch(error => console.log(error))
+        document.querySelector(".q_loader").style.display = "none";
+        interval1 = null;
+    }, 500);
 })
+
+
+let interval2 = null;
+document.getElementById("t_search_input").addEventListener("input", (e) => {
+    if (interval2) return
+    interval2 = setTimeout(() => {
+        let prefix = e.target.value.trim();
+
+        let url = prefix === "" ? "/api/get_quiz" : `/api/get_quiz?prefix=${prefix}`;
+
+        document.querySelector(".t_loader").style.display = "flex";
+
+        fetch(url)
+            .then(rec => rec.json())
+            .then(data => {
+                document.querySelector(".t_boxs").innerHTML = "";
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        document.querySelector(".t_boxs").innerHTML += `
+                                <div class="box">
+                                    <p class="box_title">
+                                    #${item.id} |    
+                                    ${item.title}
+                                    </p>
+                                    <div class="edit_box_crud">
+                                        <span class="edit_box_et">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </span>
+                                        <span class="edit_box_at">
+                                            <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
+                                        </span>
+                                        <span class="edit_box_dt">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </span>
+                                    <div>
+                                </div>
+                            `;
+                    })
+                } else {
+                    document.querySelector(".t_boxs").innerHTML = `
+                            <span class="edit_empty">
+                                <i class="fa-solid fa-box-open"></i>
+                                <p>Ma'lumot topilmadi</p>
+                            </span>
+                        `;
+                }
+            })
+            .catch(error => console.log(error))
+        document.querySelector(".t_loader").style.display = "none";
+        interval2 = null;
+    }, 500);
+})
+
+function edit_question_func(id) {
+    modals.style.display = "flex"
+    q_modal.style.display = "grid"
+    fetch("/api/get_matter")
+        .then(rec => rec.json())
+        .then(data => {
+            data.forEach(item => {
+                if (item.id === id) {
+                    title_edit.value = item.title;
+                    shart_edit.value = item.main;
+                    izoh_edit.value = item.helper;
+                    mavzusi_edit.value = item.theme;
+                    javob_edit.value = item.correct;
+                    ball_q_edit.value = item.ball;
+                }
+            })
+        })
+    q_form_edit.style.display = "grid";
+    q_form.style.display = "none"
+    con.style.height = "100vh"
+    con.style.overflow = "hidden"
+    q_form_edit.addEventListener("submit", (e) => {
+        e.preventDefault();
+        console.log(title.value);
+        fetch("/api/edit_matter", {
+            method: "POST",
+            body: JSON.stringify({
+                id: id,
+                title: title.value,
+                main: shart.value,
+                helper: izoh.value,
+                theme: mavzusi.value,
+                correct: javob.value,
+                ball: ball_q.value,
+                status: true
+            })
+        })
+            .then(rec => rec.json())
+            .then(data => console.log(data))
+    })
+
+}

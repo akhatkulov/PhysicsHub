@@ -10,7 +10,7 @@
 body {
     width: 100%;
     height: 100vh;
-    background-color: #1c202f;
+    background-color: #ececec;
 }
 
 .con {
@@ -23,21 +23,25 @@ body {
 
 .nav {
     width: 100%;
-    height: 100px;
+    height: 80px;
     display: flex;
     justify-content: left;
     padding: 10px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .back {
     width: 50px;
     height: 50px;
-    background-color: dodgerblue;
-    border-radius: 50%;
+    background-color: rgba(0, 0, 161, 0.7);
+    border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 11px;
     cursor: pointer;
     transition: 0.2s;
     overflow: hidden;
@@ -46,10 +50,8 @@ body {
 }
 
 .question_menu {
-    width: 90%;
+    width: 600px;
     height: 100px;
-    margin: 0 auto;
-    padding: 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -58,7 +60,7 @@ body {
 .question_menu div {
     width: 30%;
     height: 50px;
-    background-color: dodgerblue;
+    background-color: #0000a1b3;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,14 +69,14 @@ body {
     cursor: pointer;
     transition: 0.2s;
     border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .question_menu div:hover,
 .back:hover {
-    background: transparent;
-    border: 1px solid dodgerblue;
+    background-color: #0000a1;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
-
 .modals {
     width: 100%;
     height: 100%;
@@ -87,12 +89,14 @@ body {
     left: 0;
 }
 
-.modals div {
+.modals>div {
     max-width: 550px;
     height: auto;
     padding: 20px;
-    background-color: #20253b;
+    background-color: #fff;
     position: relative;
+    box-shadow: 0 3 6 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 .test_modal {
@@ -102,7 +106,12 @@ body {
 .modals>div {
     display: none;
 }
-
+.q_form{
+    display: none;
+}
+.q_form_edit{
+    display: none;
+}
 .input-i {
     width: 100%;
     height: auto;
@@ -113,7 +122,6 @@ body {
 }
 
 .modals div form {
-    display: grid;
     grid-template-columns: auto;
     column-gap: 10px;
     justify-content: center;
@@ -123,7 +131,7 @@ body {
 .modals div h1 {
     font-weight: 200;
     text-align: center;
-    color: white;
+    color: #0000a1;
 }
 
 .input-i label {
@@ -141,9 +149,7 @@ body {
     height: 40px;
 }
 
-.input-i option {
-    background: #1c202f;
-}
+
 
 .input-i textarea {
     min-width: 300px;
@@ -159,9 +165,8 @@ body {
 .input-i select {
     background: transparent;
     border: none;
-    border-bottom: 2px solid dodgerblue;
+    border-bottom: 2px solid #0000a1;
     outline: none;
-    color: white;
     font-size: 18px;
 }
 
@@ -169,7 +174,7 @@ body {
 .input-i textarea:focus+label,
 .input-i select:focus+label {
     top: 0;
-    color: dodgerblue;
+    color: #0000a1;
     font-size: 12px;
 }
 
@@ -177,25 +182,26 @@ body {
 .input-i textarea:valid+label,
 .input-i select:valid+label {
     top: 0;
-    color: dodgerblue;
+    color: #0000a1;
     font-size: 12px;
 }
 
 .modals button {
     width: 100%;
     height: 40px;
-    background-color: dodgerblue;
+    background-color: #0000a1;
     color: white;
     font-size: 20px;
     border: none;
     transition: 0.2s;
     cursor: pointer;
     font-family: "Poppins", serif;
+    border-radius: 5px;
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.2);
 }
 
 .modals button:hover {
-    border: 1px solid dodgerblue;
-    background: transparent;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
 }
 
 .modals button:active {
@@ -217,7 +223,6 @@ body {
     transition: 0.2s;
     font-size: 20px;
     color: white;
-    background-color: dodgerblue;
 }
 
 .exit img {
@@ -225,22 +230,22 @@ body {
 }
 
 .exit:hover {
-    background-color: transparent;
-    border: 1px solid dodgerblue;
+    background-color: #ffffff50;
 }
 
 .tests {
-    display: grid;
-    gap: 0;
+    width: 100%;
+    min-height: 200px;
+    max-height: 300px;
+    overflow-y: auto;
     margin-top: -20px !important;
-    grid-gap: 10px !important;
-    justify-content: center;
-    grid-template-columns: auto;
+    position: relative;
+    padding: 20px;
+    color: #000;
 }
-
-.tests span,
-i {
-    color: white;
+.tests--wrapper{
+    width: 100%;
+    margin-top: 50px;
 }
 
 a {
@@ -250,7 +255,8 @@ a {
 .t_plus {
     width: 50px;
     height: 50px !important;
-    background-color: dodgerblue !important;
+    background-color: #0000a1 !important;
+    color: white;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -260,77 +266,12 @@ a {
     right: 20px !important;
     top: 25px;
     position: absolute;
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.2);
 }
 
 .t_plus:hover,
 .little_modal button:hover {
-    background-color: transparent !important;
-    border: 1px solid dodgerblue !important;
-}
-
-
-
-.test_s--wrapper {
-    margin-left: -20px;
-}
-
-.savol_box {
-    padding: 0 !important;
-    min-width: 300px;
-    max-width: 100%;
-    height: 50px !important;
-    border: 1px solid dodgerblue;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.savol_box>span:nth-child(3) {
-    width: 60px !important;
-    height: 50px !important;
-    background-color: dodgerblue;
-    color: red !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.2s;
-    border: 1px solid dodgerblue;
-    font-size: 20px;
-}
-
-.savol_box>span:nth-child(2) i {
-    color: red;
-}
-
-.savol_box>span:nth-child(3):hover {
-    background: transparent;
-}
-
-.savol_box>span:nth-child(1) {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    text-align: left;
-    padding-left: 10px;
-    overflow: hidden;
-}
-
-.tests--wrapper {
-    width: 100%;
-    height: 200px !important;
-    display: grid;
-    gap: 10px;
-    overflow-x: auto;
-}
-
-.the_end {
-    width: 30px;
-    height: 5px;
-    background-color: #20253b;
-
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
 }
 
 .little_modal, .edit_search_modal{
@@ -348,9 +289,11 @@ a {
 .modal {
     width: 600px;
     height: 550px;
-    background-color: #20253b;
+    background-color: white;
     padding: 20px;
     position: relative;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 .modal>form>.input-i,
@@ -376,7 +319,7 @@ a {
     justify-content: center;
     align-items: center;
     grid-template-rows: 20px auto auto auto auto;
-    color: dodgerblue;
+    color: #0000a1;
 }
 
 .javoblar input {
@@ -392,14 +335,13 @@ a {
     width: 100%;
     height: 40px;
     color: white;
-    background-color: dodgerblue;
-    border: 1px solid dodgerblue;
+    background-color: #0000a1;
+    border: 1px solid #0000a1;
     cursor: pointer;
     font-family: "Poppins", serif;
     font-size: 20px;
     transition: 0.2s;
 }
-
 .question_boxs {
     width: 90%;
     height: auto;
@@ -407,44 +349,15 @@ a {
     margin: 0 auto;
     padding: 10px;
     justify-content: space-around;
+    gap: 20px;
+}
+.question_boxs > div{
+    width: 100%;
+    padding: 0 20px;
 }
 
-.question_boxs>div {
-    width: 30%;
-    height: auto;
-    display: grid;
-    grid-gap: 10px;
-}
-.box{
-    border-radius: 5px !important;
-    overflow: hidden;
-    border: 1px solid dodgerblue;
-}
-.box > div{
-    border: none;
-}
-.box .the_end {
-    background-color: #1c202f;
-    color: white;
-}
 
-.box .t_edit {
-    width: 60px !important;
-    height: 50px !important;
-    background-color: dodgerblue;
-    color: red !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.2s;
-    border: 1px solid dodgerblue;
-    font-size: 20px;
-}
 
-.box .t_edit:hover {
-    background: transparent;
-}
 
 .fa-edit {
     color: rgb(0, 255, 0) !important;
@@ -460,35 +373,35 @@ a {
 
 .question_boxs h1 {
     font-weight: 300;
-    color: dodgerblue;
-    display: none;
+    color: #0000a1;
+    margin-bottom: 20px;
 }
 .edit_q, .edit_t{
     padding: 20px;
-    border: 1px solid dodgerblue;
+    border: 1px solid #0000a1;
     width: 50px;
     height: 50px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: dodgerblue;
+    background-color: #0000a1;
     transition: 0.2s;
     cursor: pointer;
 }
 .edit_q:hover, .edit_t:hover{
     background-color: transparent;
-    color: dodgerblue !important;
+    color: #0000a1 !important;
 }
-.edit_search_modal input{
+.question_boxs input{
     width: 100%;
     height: 40px;
     padding: 5px;
-    border: 1px solid dodgerblue;
+    border: 1px solid #0000a1;
     border-radius: 5px;
-    background: transparent;
-    color: white;
     font-size: 15px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+
 }
 .edit_loader{
     width: 100%;
@@ -505,10 +418,8 @@ a {
 }
 .edit_boxs{
     width: 100%;
-    height: 90%;
+    height: auto;
     margin-top: 30px;
-    overflow-y:auto;
-    gap: 10px;
     padding: 10px;
 }
 .edit_loader > div {
@@ -516,7 +427,7 @@ a {
     padding: 8px;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: dodgerblue;
+    background: #0000a1;
     --_m: 
       conic-gradient(#0000 10%,#000),
       linear-gradient(#000 0 0) content-box;
@@ -531,7 +442,7 @@ a {
 .edit_empty{
     width: 100%;
     height: 100px;
-    color: dodgerblue;
+    color: #0000a1;
     display: grid;
     justify-content: center;
     align-items: center;
@@ -541,23 +452,24 @@ a {
 }
 .edit_empty i{
     font-size: 50px;
-    color: dodgerblue;
+    color: #0000a1;
 }
 
-.edit_box{
+.box{
     width: 100%;
     height: 50px;
-    border: 1px solid dodgerblue;
+    background-color: white;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom:10px;
     overflow: hidden;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+
 }
-.edit_box p{
+.box p{
     max-width: 400px;
-    color: white;
     padding: 10px;
     white-space: nowrap;
     overflow: hidden; 
@@ -565,14 +477,14 @@ a {
     display: block;
 }
 .edit_box_crud{
-    width: 120px;
+    width: auto;
     height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .edit_box_crud span{
-    width: 400px;
+    width: 40px;
     height: 100px;
     display: flex;
     justify-content: center;
@@ -581,7 +493,7 @@ a {
     transition: 0.2s;
 }
 .edit_box_crud span:hover{
-    background-color: rgba(30, 143, 255, 0.555);
+    background-color: rgba(189, 189, 189, 0.384);
 }
 .fa-pencil{
     color: rgb(0, 255, 0);
@@ -597,8 +509,8 @@ a {
 }
 @media screen and (max-width: 1060px) {
     .question_menu {
-        display: grid;
         gap: 20px;
+        margin-left: 10px;
     }
 
     .question_menu div {
@@ -615,10 +527,9 @@ a {
     .question_boxs h1 {
         display: block;
     }
-
-    .modals>div,
-    .modal {
-        transform: scale(0.6);
+    .modals{
+        width: 760px !important;
+        height: 1500px !important;
     }
 
     .modal .exit {
