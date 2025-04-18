@@ -2,80 +2,82 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-    <!-- Navbar -->
-    <form method="post" class="quiz-form">
-        <nav class="quiz-navbar">
-            <ul id="quiz-navbar-questions">
-                {% for question in questions %}
-                    <li class="quiz-navbar-item" id="quiz-navbar-item-{{ question.id }}"style="background-color: hsl({{ loop.index * 30 }}, 100%, 60%);">
-                        <a class="quiz-a" href="javascript:void(0);" onclick="navigateToQuestion({{ loop.index0 }})">{{ loop.index }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </nav>
-        
-        <h1 class="quiz-title">Testni yeching</h1>
-
-        <div id="quiz-questions-container">
+<!-- Navbar -->
+<form method="post" class="quiz-form">
+    <nav class="quiz-navbar">
+        <ul id="quiz-navbar-questions">
             {% for question in questions %}
-            <div class="quiz-question" id="quiz-question-{{ question.id }}"
-                style="display: {% if loop.index != 1 %} none {% endif %};">
-                <p class="quiz-question-text"><strong>{{ question.question }}</strong></p>
-                {% for option in question.options %}
-                <label class="quiz-option">
-                    <input type="radio" name="question-{{ question.id }}" value="{{ option }}" required>
-                    {{ option }}
-                </label><br>
-                {% endfor %}
-            </div>
+            <li class="quiz-navbar-item" id="quiz-navbar-item-{{ question.id }}"
+                style="background-color: hsl({{ loop.index * 30 }}, 100%, 60%);">
+                <a class="quiz-a" href="javascript:void(0);" onclick="navigateToQuestion({{ loop.index0 }})">{{
+                    loop.index }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <h1 class="quiz-title">Testni yeching</h1>
+
+    <div id="quiz-questions-container">
+        {% for question in questions %}
+        <div class="quiz-question" id="quiz-question-{{ question.id }}"
+            style="display: {% if loop.index != 1 %} none {% endif %};">
+            <p class="quiz-question-text"><strong>{{ question.question }}</strong></p>
+            {% for option in question.options %}
+            <label class="quiz-option">
+                <input type="radio" name="question-{{ question.id }}" value="{{ option }}" required>
+                {{ option }}
+            </label><br>
             {% endfor %}
         </div>
+        {% endfor %}
+    </div>
 
-        <div class="quiz-navigation-buttons">
-            <button class="quiz-button" type="button" id="quiz-prev-btn" onclick="navigate(-1)">Orqaga</button>
-            <button class="quiz-button" type="button" id="quiz-next-btn" onclick="navigate(1)">Keyingi</button>
-        </div>
+    <div class="quiz-navigation-buttons">
+        <button class="quiz-button" type="button" id="quiz-prev-btn" onclick="navigate(-1)">Orqaga</button>
+        <button class="quiz-button" type="button" id="quiz-next-btn" onclick="navigate(1)">Keyingi</button>
+    </div>
 
-        <button type="submit" class="quiz-submit-btn">Yuborish</button>
-    </form>
+    <button type="submit" class="quiz-submit-btn">Yuborish</button>
+</form>
 
-    <script>
-        let currentQuestionIndex = 0;
-        const questions = document.querySelectorAll('.quiz-question');
-        const prevBtn = document.getElementById('quiz-prev-btn');
-        const nextBtn = document.getElementById('quiz-next-btn');
-        const navbarItems = document.querySelectorAll('.quiz-navbar-item');
+<script>
+    let currentQuestionIndex = 0;
+    const questions = document.querySelectorAll('.quiz-question');
+    const prevBtn = document.getElementById('quiz-prev-btn');
+    const nextBtn = document.getElementById('quiz-next-btn');
+    const navbarItems = document.querySelectorAll('.quiz-navbar-item');
 
-        function navigate(direction) {
-            questions[currentQuestionIndex].style.display = 'none';
-            currentQuestionIndex += direction;
-            questions[currentQuestionIndex].style.display = 'block';
-            updateNavbarIndicators();
-            prevBtn.disabled = currentQuestionIndex === 0;
-            nextBtn.disabled = currentQuestionIndex === questions.length - 1;
-        }
-
-        function navigateToQuestion(index) {
-            questions[currentQuestionIndex].style.display = 'none';
-            currentQuestionIndex = index;
-            questions[currentQuestionIndex].style.display = 'block';
-            updateNavbarIndicators();
-        }
-
-        function updateNavbarIndicators() {
-            navbarItems.forEach((item, index) => {
-                const radioButtons = questions[index].querySelectorAll('input[type="radio"]');
-                let isAnswered = Array.from(radioButtons).some(radio => radio.checked);
-                item.style.backgroundColor = isAnswered ? 'green' : 'red';
-            });
-        }
-
-        if (currentQuestionIndex === 0) {
-            prevBtn.disabled = true;
-        }
-
+    function navigate(direction) {
+        questions[currentQuestionIndex].style.display = 'none';
+        currentQuestionIndex += direction;
+        questions[currentQuestionIndex].style.display = 'block';
         updateNavbarIndicators();
-    </script>
+        prevBtn.disabled = currentQuestionIndex === 0;
+        nextBtn.disabled = currentQuestionIndex === questions.length - 1;
+    }
+
+    function navigateToQuestion(index) {
+        questions[currentQuestionIndex].style.display = 'none';
+        currentQuestionIndex = index;
+        questions[currentQuestionIndex].style.display = 'block';
+        updateNavbarIndicators();
+    }
+
+    function updateNavbarIndicators() {
+        navbarItems.forEach((item, index) => {
+            const radioButtons = questions[index].querySelectorAll('input[type="radio"]');
+            let isAnswered = Array.from(radioButtons).some(radio => radio.checked);
+            item.style.backgroundColor = isAnswered ? 'green' : 'red';
+        });
+    }
+
+    if (currentQuestionIndex === 0) {
+        prevBtn.disabled = true;
+    }
+
+    updateNavbarIndicators();
+</script>
 {% endblock %}
 
 {% block page_content %}
