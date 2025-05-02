@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Elektr Zanjiri Laboratoriyasi</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin: 20px; }
+    input, button { margin: 5px; width: 100px; }
+    canvas { border: 1px solid #333; background: #f0f0f0; margin-top: 10px; }
+    #currentDisplay { font-size: 24px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Virtual Elektr Zanjiri Laboratoriyasi</h1>
+  <div>
+    <input type="number" id="voltage" placeholder="Kuchlanish V" />
+    <input type="number" id="resistance" placeholder="Qarshilik R" />
+    <button id="calcBtn">Hisobla</button>
+  </div>
+  <div id="currentDisplay">Oqim I: 0 A</div>
+  <canvas id="circuitCanvas" width="600" height="300"></canvas>
+
+  <script>
+    const voltageInput = document.getElementById('voltage');
+    const resistanceInput = document.getElementById('resistance');
+    const calcBtn = document.getElementById('calcBtn');
+    const currentDisplay = document.getElementById('currentDisplay');
+    const canvas = document.getElementById('circuitCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let current = 0;
+
+    function drawCircuit(current) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2, cy = canvas.height / 2;
+
+      // Batareya (chapda)
+      ctx.fillStyle = 'gray';
+      ctx.fillRect(cx - 250, cy - 20, 20, 40);
+      ctx.fillStyle = 'black';
+      ctx.fillRect(cx - 230, cy - 10, 10, 20);
+
+      // Qarshilik (rezistor, markazda)
+      ctx.strokeStyle = 'brown';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(cx - 100, cy);
+      ctx.lineTo(cx + 100, cy);
+      ctx.stroke();
+
+      // Chiroq (o‘ngda)
+      const intensity = Math.min(current / 5, 1); // max 1
+      ctx.beginPath();
+      ctx.arc(cx + 200, cy, 30, 0, 2 * Math.PI);
+      ctx.fillStyle = `rgba(255, 215, 0, ${intensity})`; // sariq nur
+      ctx.fill();
+      ctx.strokeStyle = 'black';
+      ctx.stroke();
+
+      // Simlar
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx - 230, cy);
+      ctx.lineTo(cx - 100, cy);
+      ctx.moveTo(cx + 100, cy);
+      ctx.lineTo(cx + 200, cy);
+      ctx.stroke();
+    }
+
+    calcBtn.addEventListener('click', () => {
+      const V = parseFloat(voltageInput.value);
+      const R = parseFloat(resistanceInput.value);
+      if (!V || !R) return alert('V va R kiriting');
+
+      current = V / R;
+      currentDisplay.textContent = `Oqim I: ${current.toFixed(2)} A`;
+      drawCircuit(current);
+    });
+
+    // Dastlabki chizma
+    drawCircuit(0);
+  </script>
+</body>
+</html>

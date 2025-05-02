@@ -354,13 +354,7 @@ def leaderboard():
 def lab():
     return render_template("lab_list.html")
 
-
-@main.route("/lab/<id>")
-def show_lab(id):
-    return render_template("lab.html", id=id)
-
-
-@main.route("/labaratory/<int:id>")
+@main.route("/labaratory/<id>")
 def lab_page(id):
     return render_template(f"lab/{id}/index.html")
 

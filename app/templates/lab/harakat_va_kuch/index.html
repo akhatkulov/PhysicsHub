@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Virtual laboratoriya</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin: 20px; }
+    input { margin: 5px; width: 80px; }
+    canvas { border: 1px solid #333; margin: 10px 0; }
+    #output { margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>Virtual laboratoriya</h1>
+  <div>
+    <input type="number" id="mass" placeholder="massa (kg)" />
+    <input type="number" id="force" placeholder="kuch (N)" />
+    <input type="number" id="friction" placeholder="ishqalanish (N)" />
+    <button id="startBtn">Boshlash</button>
+  </div>
+  <div id="output">
+    Tezlanish (m/s²): <span id="accel">0</span><br>
+    Tezlik (m/s): <span id="velocity">0</span><br>
+    Yo‘l (m): <span id="distance">0</span>
+  </div>
+  <canvas id="simCanvas" width="600" height="100"></canvas>
+  <canvas id="chartCanvas" width="600" height="200"></canvas>
+
+  <script>
+    const massInput = document.getElementById('mass');
+    const forceInput = document.getElementById('force');
+    const frictionInput = document.getElementById('friction');
+    const accelEl = document.getElementById('accel');
+    const velocityEl = document.getElementById('velocity');
+    const distanceEl = document.getElementById('distance');
+    const startBtn = document.getElementById('startBtn');
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const chartCtx = document.getElementById('chartCanvas').getContext('2d');
+
+    let chart = new Chart(chartCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label: 'Tezlanish (m/s²)', data: [], borderColor: 'red', fill: false },
+          { label: 'Yo‘l (m)', data: [], borderColor: 'blue', fill: false }
+        ]
+      },
+      options: { animation: false, scales: { x: { title: { display: true, text: 'Vaqt (s)' } } } }
+    });
+
+    startBtn.addEventListener('click', () => {
+      const m = parseFloat(massInput.value);
+      const F = parseFloat(forceInput.value);
+      const f = parseFloat(frictionInput.value);
+      if (m <= 0) return alert('Massa 0 dan katta bo‘lishi kerak');
+
+      const a = (F - f) / m;
+      accelEl.textContent = a.toFixed(2);
+      
+      let velocity = 0;
+      let distance = 0;
+      let x = 10;
+      let time = 0;
+      let lastTime = null;
+
+      chart.data.labels = [];
+      chart.data.datasets[0].data = [];
+      chart.data.datasets[1].data = [];
+      chart.update();
+
+      function animate(timestamp) {
+        if (!lastTime) lastTime = timestamp;
+        const dt = (timestamp - lastTime) / 1000;
+        lastTime = timestamp;
+
+        velocity += a * dt;
+        distance += velocity * dt;
+        x += velocity * dt * 50; // scale for canvas
+
+        if (x > canvas.width) x = canvas.width;
+        if (x < 0) x = 0;
+
+        accelEl.textContent = a.toFixed(2);
+        velocityEl.textContent = velocity.toFixed(2);
+        distanceEl.textContent = distance.toFixed(2);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.arc(x, canvas.height / 2, 10, 0, Math.PI * 2);
+        ctx.fillStyle = 'green';
+        ctx.fill();
+
+        chart.data.labels.push(time.toFixed(1));
+        chart.data.datasets[0].data.push(a);
+        chart.data.datasets[1].data.push(distance);
+        chart.update();
+
+        time += dt;
+        if (x < canvas.width) requestAnimationFrame(animate);
+      }
+
+      requestAnimationFrame(animate);
+    });
+  </script>
+</body>
+</html>

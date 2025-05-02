@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Optika laboratoriyasi</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin: 20px; }
+    input, select, button { margin: 5px; width: 100px; }
+    canvas { border: 1px solid #333; margin: 10px 0; background: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>Virtual Optika Laboratoriyasi</h1>
+  <div>
+    <select id="lensType">
+      <option value="convex">Yig‘uvchi linza</option>
+      <option value="concave">Tarqatuvchi linza</option>
+    </select>
+    <input type="number" id="focalLength" placeholder="fokus (f)" />
+    <input type="number" id="objectDistance" placeholder="predmet (dₒ)" />
+    <button id="drawBtn">Chizish</button>
+    <button id="zoomIn">+</button>
+    <button id="zoomOut">-</button>
+  </div>
+  <div>
+    Tasvir masofasi dᵢ: <span id="imageDistance">0</span>
+  </div>
+  <canvas id="opticsCanvas" width="800" height="400"></canvas>
+
+  <script>
+    const lensType = document.getElementById('lensType');
+    const fInput = document.getElementById('focalLength');
+    const doInput = document.getElementById('objectDistance');
+    const drawBtn = document.getElementById('drawBtn');
+    const zoomIn = document.getElementById('zoomIn');
+    const zoomOut = document.getElementById('zoomOut');
+    const imageDistanceEl = document.getElementById('imageDistance');
+    const canvas = document.getElementById('opticsCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let scale = 20; // px per unit
+
+    function calculateImageDistance(f, do_) {
+      if (lensType.value === 'concave') f = -f;
+      return 1 / (1 / f - 1 / do_);
+    }
+
+    function drawScene(f, do_, di) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      // linza
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - 50);
+      ctx.lineTo(cx, cy + 50);
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // predmet (chapda)
+      const objX = cx - do_ * scale;
+      ctx.beginPath();
+      ctx.moveTo(objX, cy);
+      ctx.lineTo(objX, cy - 50);
+      ctx.strokeStyle = 'green';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // tasvir (o‘ngda yoki chapda)
+      const imgX = cx + di * scale;
+      ctx.beginPath();
+      ctx.moveTo(imgX, cy);
+      ctx.lineTo(imgX, cy - 50 * Math.abs(di / do_));
+      ctx.strokeStyle = 'red';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // asosiy nurlar
+      ctx.strokeStyle = 'orange';
+      ctx.lineWidth = 1;
+
+      // Parallel nurlar
+      ctx.beginPath();
+      ctx.moveTo(objX, cy - 30);
+      ctx.lineTo(cx, cy - 30);
+      if (lensType.value === 'convex') {
+        ctx.lineTo(imgX, cy);
+      } else {
+        ctx.lineTo(cx - 100, cy - 60); // tarqatuvchi linza: orqaga cho‘zish
+      }
+      ctx.stroke();
+
+      // markazdan o‘tgan nur
+      ctx.beginPath();
+      ctx.moveTo(objX, cy - 30);
+      ctx.lineTo(cx, cy);
+      ctx.stroke();
+    }
+
+    drawBtn.addEventListener('click', () => {
+      const f = parseFloat(fInput.value);
+      const do_ = parseFloat(doInput.value);
+      if (!f || !do_) return alert('f va dₒ kiriting');
+
+      const di = calculateImageDistance(f, do_);
+      imageDistanceEl.textContent = di.toFixed(2);
+      drawScene(f, do_, di);
+    });
+
+    zoomIn.addEventListener('click', () => {
+      scale *= 1.2;
+      drawBtn.click();
+    });
+
+    zoomOut.addEventListener('click', () => {
+      scale /= 1.2;
+      drawBtn.click();
+    });
+  </script>
+</body>
+</html>

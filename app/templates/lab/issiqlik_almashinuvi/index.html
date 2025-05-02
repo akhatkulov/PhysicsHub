@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issiqlik Almashinuvi Laboratoriyasi</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin: 20px; }
+    input, button { margin: 5px; width: 120px; }
+    canvas { border: 1px solid #333; background: #f0f0f0; margin-top: 20px; }
+    #chartContainer { margin-top: 20px; width: 100%; height: 300px; }
+    #result { font-size: 24px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Virtual Issiqlik Almashinuvi Laboratoriyasi</h1>
+  
+  <div>
+    <input type="number" id="m1" placeholder="m1 (kg)" />
+    <input type="number" id="m2" placeholder="m2 (kg)" />
+    <input type="number" id="T1" placeholder="T1 (°C)" />
+    <input type="number" id="T2" placeholder="T2 (°C)" />
+    <input type="number" id="c1" placeholder="c1 (J/kg°C)" />
+    <input type="number" id="c2" placeholder="c2 (J/kg°C)" />
+    <button id="calcBtn">Hisobla</button>
+  </div>
+
+  <div id="result">Yakuniy harorat: 0 °C</div>
+
+  <canvas id="temperatureCanvas" width="600" height="200"></canvas>
+  
+  <div id="chartContainer">
+    <canvas id="temperatureChart"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const m1Input = document.getElementById('m1');
+    const m2Input = document.getElementById('m2');
+    const T1Input = document.getElementById('T1');
+    const T2Input = document.getElementById('T2');
+    const c1Input = document.getElementById('c1');
+    const c2Input = document.getElementById('c2');
+    const calcBtn = document.getElementById('calcBtn');
+    const resultDiv = document.getElementById('result');
+    const canvas = document.getElementById('temperatureCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let chart;
+    
+    // Grafik sozlash
+    function createChart(data) {
+      const ctxChart = document.getElementById('temperatureChart').getContext('2d');
+      if (chart) chart.destroy();
+      
+      chart = new Chart(ctxChart, {
+        type: 'line',
+        data: {
+          labels: data.time,
+          datasets: [{
+            label: 'Harorat (°C)',
+            data: data.temperature,
+            borderColor: 'rgb(255, 99, 132)',
+            fill: false,
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            }
+          }
+        }
+      });
+    }
+
+    // Hisoblash va animatsiya
+    function calculateAndAnimate() {
+      const m1 = parseFloat(m1Input.value);
+      const m2 = parseFloat(m2Input.value);
+      const T1 = parseFloat(T1Input.value);
+      const T2 = parseFloat(T2Input.value);
+      const c1 = parseFloat(c1Input.value);
+      const c2 = parseFloat(c2Input.value);
+      
+      if (!m1 || !m2 || !T1 || !T2 || !c1 || !c2) {
+        alert('Barcha maydonlarni to\'ldiring!');
+        return;
+      }
+
+      // Yakuniy haroratni hisoblash
+      const Tf = (m1 * c1 * T1 + m2 * c2 * T2) / (m1 * c1 + m2 * c2);
+      resultDiv.textContent = `Yakuniy harorat: ${Tf.toFixed(2)} °C`;
+
+      // Harorat animatsiyasi
+      let time = 0;
+      const maxTime = 100;
+      const temperatures = [];
+      const times = [];
+      
+      const interval = setInterval(() => {
+        time++;
+        let currentTemp = T1 + ((Tf - T1) * (time / maxTime));
+        temperatures.push(currentTemp);
+        times.push(time);
+
+        // Rangni hisoblash (sovuq - ko'k, qaynoq - qizil)
+        const color = `rgb(${Math.min((Tf - currentTemp) * 10, 255)}, 0, ${Math.min((currentTemp - Tf) * 10, 255)})`;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Sovuq suv (ko'k)
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(50, 100, 100, 60);
+
+        // Qaynoq suv (qizil)
+        ctx.fillStyle = 'red';
+        ctx.fillRect(200, 100, 100, 60);
+
+        // Haroratni ko'rsatish
+        ctx.fillStyle = color;
+        ctx.fillRect(350, 100, 100, 60);
+
+        // Grafik yaratish
+        if (time === maxTime) {
+          clearInterval(interval);
+          createChart({ time: times, temperature: temperatures });
+        }
+      }, 100);
+    }
+
+    calcBtn.addEventListener('click', calculateAndAnimate);
+  </script>
+</body>
+</html>
