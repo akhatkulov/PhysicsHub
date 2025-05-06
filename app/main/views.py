@@ -200,33 +200,35 @@ def edit_quiz():
 @main.put("/api/edit_matter")
 @login_required
 def edit_matter():
-    if current_user.username == "admin":
-        data = request.get_json()
-        id = data['id']
-        title = data["title"]
-        main = data["main"]
-        helper = data["helper"]
-        theme = data["theme"]
-        correct = data["correct"]
-        ball = int(data["ball"])
-        status = bool(data["status"])
+    try:
+        if current_user.username == "admin":
+            data = request.get_json()
+            id = data['id']
+            title = data["title"]
+            main = data["main"]
+            helper = data["helper"]
+            theme = data["theme"]
+            correct = data["correct"]
+            ball = int(data["ball"])
+            status = bool(data["status"])
 
-        matter = Matter.query.filter(Matter.id == id).first()
-        if matter:
-            matter.title = title
-            matter.main = main
-            matter.helper = helper
-            matter.theme = theme
-            matter.correct = correct
-            matter.ball = ball
-            matter.status = status
-            db.session.commit()
-            return jsonify({"status": "done"}), 200
+            matter = Matter.query.filter(Matter.id == id).first()
+            if matter:
+                matter.title = title
+                matter.main = main
+                matter.helper = helper
+                matter.theme = theme
+                matter.correct = correct
+                matter.ball = ball
+                matter.status = status
+                db.session.commit()
+                return jsonify({"status": "done"}), 200
+            else:
+                return jsonify({"error": "mavjud emas"}), 404
         else:
-            return jsonify({"error": "mavjud emas"}), 404
-    else:
-        abort(404, description="san admin massan")
-
+            abort(404, description="san admin massan")
+    except Exception as e:
+        print("Errorn in Edit Matter: ",e)
 
 @main.route("/matters/")
 def matters():
