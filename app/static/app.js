@@ -24,6 +24,9 @@ const qFormEdit = document.querySelector(".q_form_edit");
 const tForm = document.querySelector(".t_form");
 const tFormEdit = document.querySelector(".t_form_edit");
 const mForm = document.querySelector(".m_form");
+const qSearch = document.getElementById("q_search_input");
+const tSearch = document.getElementById("t_search_input");
+
 
 const inputs = {
     q: {
@@ -200,9 +203,15 @@ function loadThemes() {
     });
 }
 
+qSearch.addEventListener("input", (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    loadQuestions(searchValue);
+})
+
 // Load question list
-function loadQuestions() {
-    fetch("/api/get_matter").then(res => res.json()).then(data => {
+function loadQuestions(searchE) {
+    let prefix = searchE ? `?prefix=${searchE}` : "";
+    fetch("/api/get_matter"+prefix).then(res => res.json()).then(data => {
         questionContainer.innerHTML = data.length ? data.map(item => `
       <div class="box">
         <p class="box_title">#${item.id} | ${item.title}</p>
@@ -216,9 +225,14 @@ function loadQuestions() {
     });
 }
 
+tSearch.addEventListener("input", (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    loadQuizzes(searchValue);
+})
 // Load quiz list
-function loadQuizzes() {
-    fetch("/api/get_quiz").then(res => res.json()).then(data => {
+function loadQuizzes(searchE) {
+    let prefix = searchE ? `?prefix=${searchE}` : "";
+    fetch("/api/get_quiz"+prefix).then(res => res.json()).then(data => {
         quizContainer.innerHTML = data.length ? data.map(item => `
       <div class="box">
         <p class="box_title">#${item.id} | ${item.title}</p>
@@ -245,6 +259,7 @@ function loadThemeList() {
     `).join('') : `<span class="edit_empty"><i class="fa-solid fa-box-open"></i><p>Ma'lumot topilmadi</p></span>`;
     });
 }
+
 
 // Delete handlers
 window.deleteQuestion = id => { if (confirm("Masala o'chirilsinmi ?")) fetch(`/api/delete_matter/${id}`, { method: 'DELETE' }).then(loadQuestions); };
@@ -376,8 +391,6 @@ window.hiddenQuiz = function (id) {
     })
         .then(res => res.json())
         .then(({ new_status }) => {
-            // kerak bo'lsa statusni ekranga chiqarish yoki styling o'zgartirish:
-            console.log('Yangi status:', new_status);
             loadQuizzes();    // ma'lumotlarni qayta yuklash
             closeModals();    // modal oynani yopish
         })
