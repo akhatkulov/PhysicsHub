@@ -1,26 +1,12 @@
 from flask import (
-    render_template,
-    session,
-    redirect,
-    url_for,
-    request,
-    flash,
-    current_app,
-    jsonify,
-    abort
+    render_template, session, redirect, url_for, request, flash, current_app,
+    jsonify, abort
 )
 from .. import db
 from ..models import (
-    User,
-    Theme,
-    Matter,
-    Quiz,
-    get_all_themes,
-    save_user_progress,
-    check_history,
-    get_leaderboard,
-    get_matter,
-    get_quiz,
+    User, Theme, Matter, Quiz,
+    get_all_themes, save_user_progress, check_history,
+    get_leaderboard, get_matter, get_quiz
 )
 from ..email import send_email
 from . import main
@@ -38,86 +24,65 @@ def home_page():
 @main.route("/admin")
 @login_required
 def admin():
-    if current_user.username == "admin":
-        return render_template("admin/index.html")
-    else:
-        return render_template("404.html")
+    if not current_user.username == "admin":
+        abort(404)
+    return render_template("admin/index.html")
 
 
-@main.post("/admin/add_matter")
+@main.route("/admin/add_matter", methods=["POST"])
 @login_required
 def add_matter():
-    res_data = json.loads(request.data)
-    title = res_data["title"]
-    main = res_data["main"]
-    helper = res_data["helper"]
-    theme = res_data["theme"]
-    correct = res_data["correct"]
-    ball = res_data["ball"]
-    status = True
-    if current_user.username == "admin":
-        new_matter = Matter(
-            title=title,
-            main=main,
-            helper=helper,
-            theme=theme,
-            correct=correct,
-            status=True,
-            ball=int(ball),
-        )
-        db.session.add(new_matter)
-        db.session.commit()
-        return "Yeah!!!"
-    else:
-        return render_template("404.html")
+    if current_user.username != "admin":
+        abort(403)
+    data = request.get_json(force=True)
+    new_matter = Matter(
+        title=data["title"],
+        main=data["main"],
+        helper=data["helper"],
+        theme=data["theme"],
+        correct=data["correct"],
+        status=True,
+        ball=int(data["ball"])
+    )
+    db.session.add(new_matter)
+    db.session.commit()
+    return jsonify({"message": "Matter added successfully"}), 201
 
 
-@main.post("/admin/add_quiz")
+@main.route("/admin/add_quiz", methods=["POST"])
 @login_required
 def add_quiz():
-    try:
-        res_data = json.loads(request.data)
-        print()
-        print(res_data)
-        title = res_data.get("title", "")
-        theme = res_data.get("theme", "").lower()
-        status = True
-        data = json.dumps(res_data.get("data", {}))
-        print(data)
-        print()
-        if not title or not theme:
-            return jsonify({"error": "Title va Theme kerak"}), 400
-
-        if current_user.is_authenticated and current_user.username == "admin":
-            new_quiz = Quiz(title=title, theme=theme, status=status, data=data)
-            db.session.add(new_quiz)
-            db.session.commit()
-            return jsonify({"message": "Quiz qo'shildi!"}), 201
-        else:
-            return render_template("404.html"), 403
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    if current_user.username != "admin":
+        abort(403)
+    data = request.get_json(force=True)
+    if not data.get("title") or not data.get("theme"):
+        return jsonify({"error": "Title va Theme kerak"}), 400
+    new_quiz = Quiz(
+        title=data["title"],
+        theme=data["theme"].lower(),
+        status=True,
+        data=json.dumps(data.get("data", {}))
+    )
+    db.session.add(new_quiz)
+    db.session.commit()
+    return jsonify({"message": "Quiz added successfully"}), 201
 
 
-@main.post("/admin/add_theme")
+@main.route("/admin/add_theme", methods=["POST"])
 @login_required
 def add_theme():
-    res_data = json.loads(request.data)
-    name = res_data["name"]
-    about = res_data["about"]
-    if current_user.username == "admin":
-        new_theme = Theme(name=name, about=about)
-        db.session.add(new_theme)
-        db.session.commit()
-        return "Yeah!!!"
-    else:
-        return render_template("404.html")
+    if current_user.username != "admin":
+        abort(403)
+    data = request.get_json(force=True)
+    new_theme = Theme(name=data["name"], about=data["about"])
+    db.session.add(new_theme)
+    db.session.commit()
+    return jsonify({"message": "Theme added successfully"}), 201
 
 
 @main.route("/api/themes", methods=["GET"])
 def get_themes():
-    themes = get_all_themes()
-    return jsonify(themes)
+    return jsonify(get_all_themes())
 
 
 @main.route("/api/get_quiz", methods=["GET"])
@@ -135,357 +100,143 @@ def get_matter_list():
 @main.route("/api/delete_theme/<int:item_id>", methods=["DELETE"])
 @login_required
 def delete_theme(item_id):
-    print("user",current_user)
-    if current_user.username == "admin":
-        item = Theme.query.get(item_id)
-        if item:
-            db.session.delete(item)
-            db.session.commit()
-            return jsonify({"message": "Item deleted successfully"}), 200
-        return jsonify({"error": "Item not found"}), 404
-    else:
-        return "Doom shot, Mother Fucker)"
+    if current_user.username != "admin":
+        abort(403)
+    item = Theme.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({"message": "Item deleted successfully"}), 200
 
 
 @main.route("/api/delete_quiz/<int:item_id>", methods=["DELETE"])
 @login_required
 def delete_quiz(item_id):
-     if current_user.username == "admin":
-         item = Quiz.query.get(item_id)
-         if item:
-             db.session.delete(item)
-             db.session.commit()
-             return jsonify({"message": "Item deleted successfully"}), 200
-         return jsonify({"error": "Item not found"}), 404
-     else:
-         return "Doom shot, Mother Fucker)"
- 
+    if current_user.username != "admin":
+        abort(403)
+    item = Quiz.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({"message": "Item deleted successfully"}), 200
+
+
 @main.route("/api/delete_matter/<int:item_id>", methods=["DELETE"])
 @login_required
 def delete_matter(item_id):
-     if current_user.username == "admin":
-         item = Matter.query.get(item_id)
-         if item:
-             db.session.delete(item)
-             db.session.commit()
-             return jsonify({"message": "Item deleted successfully"}), 200
-         return jsonify({"error": "Item not found"}), 404
-     else:
-         return "Doom shot, Mother Fucker)"              
- 
-@main.put("/api/edit_quiz")
+    if current_user.username != "admin":
+        abort(403)
+    item = Matter.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({"message": "Item deleted successfully"}), 200
+
+
+@main.route("/api/edit_quiz", methods=["PUT"])
 @login_required
 def edit_quiz():
-    if current_user.username == "admin":
-        data = request.get_json()
-        title = data.get("title")
-        theme = data.get("theme").lower()
-        status = bool(data["status"])
-        quiz_data = json.dumps(data.get("data"))
+    if current_user.username != "admin":
+        abort(403)
+    data = request.get_json(force=True)
+    quiz = Quiz.query.get_or_404(data.get("id"))
+    quiz.title = data.get("title", quiz.title)
+    quiz.theme = data.get("theme", quiz.theme).lower()
+    quiz.data = json.dumps(data.get("data", []))
+    quiz.status = bool(data.get("status", quiz.status))
+    db.session.commit()
+    return jsonify({"status": "done"}), 200
 
-        quiz = Quiz.query.filter(Quiz.title == title).first()
-        if quiz:
-            quiz.title = title
-            quiz.theme = theme
-            quiz.data = quiz_data
-            quiz.status = status
-            db.session.commit()
-            return jsonify({"status": "done"}), 200
-        else:
-            return jsonify({"error": "mavjud emas"}), 404
-    else:
-        abort(404)
 
-@main.put("/api/toggle_quiz_status")
+@main.route("/api/toggle_quiz_status", methods=["PUT"])
 @login_required
 def toggle_quiz_status():
-    # Faqat adminlar ishlatsin
     if current_user.username != "admin":
-        abort(404)
-
-    data = request.get_json()
-    quiz_id = data.get("id")
-    quiz = Quiz.query.get(quiz_id)
-    if not quiz:
-        return jsonify({"error": "Quiz topilmadi"}), 404
-
-    # Statusni teskarisiga o'zgartiramiz
+        abort(403)
+    data = request.get_json(force=True)
+    quiz = Quiz.query.get_or_404(data.get("id"))
     quiz.status = not quiz.status
     db.session.commit()
+    return jsonify({"status": "done", "new_status": quiz.status}), 200
 
-    return jsonify({
-        "status": "done",
-        "new_status": quiz.status
-    }), 200
 
-@main.put("/api/edit_matter")
+@main.route("/api/edit_matter", methods=["PUT"])
 @login_required
 def edit_matter():
-    if current_user.username == "admin":
-        data = request.get_json()
-        id = data['id']
-        title = data["title"]
-        main = data["main"]
-        helper = data["helper"]
-        theme = data["theme"]
-        correct = data["correct"]
-        ball = int(data["ball"])
-        status = bool(data["status"])
+    if current_user.username != "admin":
+        abort(403)
+    data = request.get_json(force=True)
+    matter = Matter.query.get_or_404(data.get("id"))
+    matter.title = data.get("title", matter.title)
+    matter.main = data.get("main", matter.main)
+    matter.helper = data.get("helper", matter.helper)
+    matter.theme = data.get("theme", matter.theme)
+    matter.correct = data.get("correct", matter.correct)
+    matter.ball = int(data.get("ball", matter.ball))
+    matter.status = bool(data.get("status", matter.status))
+    db.session.commit()
+    return jsonify({"status": "done"}), 200
 
-        matter = Matter.query.filter(Matter.id == id).first()
-        if matter:
-            matter.title = title
-            matter.main = main
-            matter.helper = helper
-            matter.theme = theme
-            matter.correct = correct
-            matter.ball = ball
-            matter.status = status
-            db.session.commit()
-            return jsonify({"status": "done"}), 200
-        else:
-            return jsonify({"error": "mavjud emas"}), 404
-    else:
-        abort(404, description="san admin massan")
 
-@main.put("/api/toggle_matter_status")
+@main.route("/api/toggle_matter_status", methods=["PUT"])
 @login_required
 def toggle_matter_status():
     if current_user.username != "admin":
-        abort(404)
-    data = request.get_json()
-    matter = Matter.query.get(data.get('id'))
-    if not matter:
-        return jsonify({"error": "topilmadi"}), 404
-
+        abort(403)
+    data = request.get_json(force=True)
+    matter = Matter.query.get_or_404(data.get("id"))
     matter.status = not matter.status
     db.session.commit()
     return jsonify({"status": "done", "new_status": matter.status}), 200
 
+
 @main.route("/matters/")
 def matters():
-    themes = get_all_themes()
-    return render_template("matters.html", themes=themes)
+    return render_template("matters.html", themes=get_all_themes())
 
 
 @main.route("/tests/")
 def tests():
-    themes = get_all_themes()
-    return render_template("tests.html", themes=themes)
+    return render_template("tests.html", themes=get_all_themes())
 
 
 @main.route("/tests/<name>")
 def show_tests(name):
-    tests = Quiz.query.filter(Quiz.theme == name).all()
+    tests = Quiz.query.filter_by(theme=name).all()
     user_id = current_user.id
-    quiz_status = {}
-    for test in tests:
-        quiz_status[test.id] = check_history(user_id, test.id, "quiz")
-
-    return render_template(
-        "show_tests.html", name=name, tests=tests, quiz_status=quiz_status
-    )
+    quiz_status = {test.id: check_history(user_id, test.id, "quiz") for test in tests}
+    return render_template("show_tests.html", name=name, tests=tests, quiz_status=quiz_status)
 
 
 @main.route("/tests/<theme>/<int:quiz_id>", methods=["GET", "POST"])
 def calc_test(theme, quiz_id):
-    quiz = Quiz.query.filter_by(id=quiz_id).first()
-    print(quiz.data)
-    if not quiz:
-        abort(404)
-
+    quiz = Quiz.query.get_or_404(quiz_id)
     questions = json.loads(quiz.data)
     if request.method == "POST":
-        questions_dict = {f'question-{q["id"]}': q for q in questions}
-        answers = {
-            f'question-{q["id"]}': request.form.get(f'question-{q["id"]}')
-            for q in questions
-        }
-        correct_answers = {f'question-{q["id"]}': q["answer"] for q in questions}
-        score = users_ball = 0
-        for qid, answer in answers.items():
-            correct_answer = correct_answers.get(qid)
-            if answer == correct_answer:
-                score += 1
-                users_ball += int(questions_dict[qid]["ball"])
-
-        save_user_progress(
-            user_id=current_user.id, item_id=quiz.id, points=users_ball, x_type="quiz"
-        )
-        return render_template(
-            "result_test.html", ball=users_ball, score=score, total=len(correct_answers)
-        )
-    else:
-        return render_template("calc_test.html", questions=questions, theme=theme)
+        answers = {f'question-{q["id"]}': request.form.get(f'question-{q["id"]}') for q in questions}
+        users_ball = sum(int(q["ball"]) for q in questions if answers.get(f'question-{q["id"]}') == q["answer"])
+        score = sum(1 for q in questions if answers.get(f'question-{q["id"]}') == q["answer"])
+        save_user_progress(current_user.id, quiz.id, users_ball, "quiz")
+        return render_template("result_test.html", ball=users_ball, score=score, total=len(questions))
+    return render_template("calc_test.html", questions=questions, theme=theme)
 
 
 @main.route("/matters/<name>")
 def show_matter(name):
     page = request.args.get("page", 1, type=int)
     per_page = 10
-
-    matters = Matter.query.filter(Matter.theme == name).paginate(
-        page=page, per_page=per_page, error_out=False
-    )
-
+    matters = Matter.query.filter_by(theme=name).paginate(page=page, per_page=per_page, error_out=False)
     user_id = current_user.id
-
     for matter in matters.items:
-        history = check_history(user_id, matter.id, "matter")
-        matter.solved = history["status"]
-
+        matter.solved = check_history(user_id, matter.id, "matter")["status"]
     return render_template("show_matter.html", name=name, matters=matters)
 
 
 @main.route("/matters/<theme>/<int:matter_id>", methods=["GET", "POST"])
 def calc_matter(theme, matter_id):
-    matter = Matter.query.filter_by(id=matter_id).first()
-
-    if not matter:
-        abort(404)
-
+    matter = Matter.query.get_or_404(matter_id)
     if request.method == "POST":
         user_answer = request.form["answer"].strip()
-        correct_answer = matter.correct
-
-        if user_answer == correct_answer:
-            save_user_progress(
-                user_id=current_user.id,
-                item_id=matter.id,
-                points=matter.ball,
-                x_type="matter",
-            )
+        if user_answer == matter.correct:
+            save_user_progress(current_user.id, matter.id, matter.ball, "matter")
             flash(f"✅ To‘g‘ri javob! ({user_answer})", "success")
-
         else:
-            flash(f"❌ Noto‘g‘ri javob! To‘g‘ri javob: {correct_answer}", "danger")
-
-        return redirect(url_for("main.calc_matter", theme=theme, matter_id=matter_id))
-
-    return render_template("calc_matter.html", problem=matter, theme=theme)
-
-
-@main.route("/team")
-def team():
-    return render_template("team.html")
-
-
-@main.route("/leaderboard")
-def leaderboard():
-    top_users = get_leaderboard()
-    ranked_users = [
-        (rank + 1, user, total_points)
-        for rank, (user, total_points) in enumerate(top_users)
-    ]
-
-    print("top_users:", top_users)
-    print("ranked_users:", ranked_users)
-
-    return render_template("leaderboard.html", ranked_users=ranked_users)
-
-
-@main.route("/lab")
-def lab():
-    return render_template("lab_list.html")
-
-@main.route("/labaratory/<id>")
-def lab_page(id):
-    return render_template(f"lab/{id}/index.html")
-
-
-@main.route("/signup", methods=["GET", "POST"])
-def signup():
-    form = SignUpForm()
-    if form.validate_on_submit():
-        try:
-            name = form.name.data
-            surname = form.surname.data
-            username = form.username.data.replace(" ", "")
-            university = form.university.data
-            password = form.password.data
-
-            user = User.query.filter_by(username=username).first()
-            if user:
-                flash("Bu taxallusda foydalanuvchi mavjud.", "error")
-                return redirect(url_for("main.signup"))
-
-            hashed_password = generate_password_hash(
-                password, method="pbkdf2:sha256", salt_length=8
-            )
-            new_user = User(
-                name=name,
-                surname=surname,
-                username=username,
-                university=university,
-                password=hashed_password,
-            )
-            db.session.add(new_user)
-            db.session.commit()
-
-            flash("Ma'lumotlar muvaffaqiyatli yuborildi!", "success")
-            return redirect(url_for("main.login_page"))
-
-        except Exception as e:
-            current_app.logger.error(f"Signup error: {e}")
-            flash("Noma'lum xatolik yuz berdi, iltimos qayta urinib ko'ring.", "error")
-            return redirect(url_for("main.signup"))
-    return render_template("signup.html", form=form)
-
-
-@main.route("/signin", methods=["GET", "POST"])
-def login_page():
-    form = SignInForm()
-    if form.validate_on_submit():
-        username = form.username.data.replace(" ", "")
-        password = form.password.data
-
-        user = User.query.filter_by(username=username).first()
-        if user and user.password and check_password_hash(user.password, password):
-            login_user(user)
-            flash("Kirish muvaffaqiyatli!", "success")
-            if current_user.username == "admin":
-                return redirect(url_for("main.admin"))
-            else:
-                return redirect(url_for("main.home_page"))
-
-        flash("Taxallus yoki parol noto'g'ri", "error")
-    return render_template("login.html", form=form)
-
-
-@main.route("/profile", methods=["GET", "POST"])
-@login_required
-def profile():
-    form = UpdateData()
-    user = current_user
-    ball = user.points
-    if form.validate_on_submit():
-        print("olindi")
-        name = form.name.data
-        surname = form.surname.data
-        university = form.university.data
-        password = form.password.data
-
-        user.name = name
-        user.surname = surname
-        user.university = university
-        if password:
-            user.password = generate_password_hash(password)
-
-        try:
-            db.session.commit()
-            flash("Malumotlar yangilandi!", "success")
-        except Exception as e:
-            db.session.rollback()
-            flash(f"Error updating profile: {str(e)}", "danger")
-
-        return redirect(url_for("main.profile"))
-
-    return render_template("profile.html", ball=ball, user=current_user, form=form)
-
-
-@main.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    flash("Siz muvaffaqiyatli chiqdingiz.", "success")
-    return redirect(url_for("main.login_page"))
+            flash(f"❌ Noto‘g‘ri javob... To‘g‘ri javob: {matter.correct}", "danger")
+    return render_template("calc_matter.html", matter=matter, theme=theme)

@@ -1,0 +1,15 @@
+[Unit]
+Description=Flask Web Application
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/physicshub/web/physicshub.uz/public_html/PhysicsHub
+Environment="FLASK_APP=flasky.py"
+Environment="FLASK_ENV=production"
+ExecStart=/home/physicshub/web/physicshub.uz/public_html/env/bin/flask run --host=0.0.0.0 --port=4242
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
