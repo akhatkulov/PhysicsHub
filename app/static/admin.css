@@ -38,6 +38,7 @@ body {
     width: 50px;
     height: 50px;
     background-color: rgba(0, 0, 161, 0.7);
+    backdrop-filter: blur(10px);
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -81,6 +82,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.600);
+    backdrop-filter: blur(10px);
     display: none;
     justify-content: center;
     align-items: center;
@@ -95,7 +97,7 @@ body {
     padding: 20px;
     background-color: #fff;
     position: relative;
-    box-shadow: 0 3 6 rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
 
@@ -186,7 +188,7 @@ body {
     font-size: 12px;
 }
 
-.modals button {
+.modals button, .modal button {
     width: 100%;
     height: 40px;
     background-color: #0000a1;
@@ -243,7 +245,7 @@ body {
     padding: 20px;
     color: #000;
 }
-.tests--wrapper{
+.tests--wrapper, .tests_edit--wrapper{
     width: 100%;
     margin-top: 50px;
 }
@@ -252,7 +254,7 @@ a {
     text-decoration: none;
 }
 
-.t_plus {
+.t_plus, .t_plus_edit {
     width: 50px;
     height: 50px !important;
     background-color: #0000a1 !important;

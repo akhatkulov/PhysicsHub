@@ -196,6 +196,27 @@ def edit_quiz():
     else:
         abort(404)
 
+@main.put("/api/toggle_quiz_status")
+@login_required
+def toggle_quiz_status():
+    # Faqat adminlar ishlatsin
+    if current_user.username != "admin":
+        abort(404)
+
+    data = request.get_json()
+    quiz_id = data.get("id")
+    quiz = Quiz.query.get(quiz_id)
+    if not quiz:
+        return jsonify({"error": "Quiz topilmadi"}), 404
+
+    # Statusni teskarisiga o'zgartiramiz
+    quiz.status = not quiz.status
+    db.session.commit()
+
+    return jsonify({
+        "status": "done",
+        "new_status": quiz.status
+    }), 200
 
 @main.put("/api/edit_matter")
 @login_required
@@ -227,6 +248,19 @@ def edit_matter():
     else:
         abort(404, description="san admin massan")
 
+@main.put("/api/toggle_matter_status")
+@login_required
+def toggle_matter_status():
+    if current_user.username != "admin":
+        abort(404)
+    data = request.get_json()
+    matter = Matter.query.get(data.get('id'))
+    if not matter:
+        return jsonify({"error": "topilmadi"}), 404
+
+    matter.status = not matter.status
+    db.session.commit()
+    return jsonify({"status": "done", "new_status": matter.status}), 200
 
 @main.route("/matters/")
 def matters():
