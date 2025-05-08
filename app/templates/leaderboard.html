@@ -6,38 +6,27 @@
 <section class="main-display">
     <div class="leaderboard-container">
         <h1 class="title">Reyting</h1>
-        <table class="leaderboard-table">
-            <thead>
-                <tr>
-                    <th class="leaderboard-th">
-                        <div><span class="material-icons">military_tech</span>O'rin</div>
-                    </th>
-                    <th class="leaderboard-th">
-                        <div><span class="material-icons">person</span>Foydalanuvchi</div>
-                    </th>
-                    <th class="leaderboard-th">
-                        <div><span class="material-icons">stars</span>Ball</div>
-                    </th>
-                    <th class="leaderboard-th">
-                        <div><span class="material-icons">calculate</span>Yechilgan masalalar</div>
-                    </th>
-                    <th class="leaderboard-th">
-                        <div><span class="material-icons">checklist</span>O'tgan testlar</div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
+
+        <div class="leaderboard">
+            <div class="leader-head">
+                <h4>O'rin</h4>
+                <h4>User</h4>
+                <h4>Ball</h4>
+                <h4>Masalalar</h4>
+                <h4>Testlar</h4>
+            </div>
+            <div class="leader-body">
                 {% for rank, user, total_points in ranked_users %}
-                <tr class="leaderboard-row">
-                    <td class="leaderboard-td">#{{ rank }}</td>
-                    <td class="leaderboard-td">{{ user.username }}</td>
-                    <td class="leaderboard-td">{{ total_points }}</td>
-                    <td class="leaderboard-td">{{ user.problems_solved }}</td>
-                    <td class="leaderboard-td">{{ user.tests_passed }}</td>
-                </tr>
+                <div class="leader-body-item">
+                    <span class="leaderboard-td">{{ rank }}</span>
+                    <span class="leaderboard-td">{{ user.username }}</span>
+                    <span class="leaderboard-td">{{ total_points }}</span>
+                    <span class="leaderboard-td">{{ user.problems_solved }}</span>
+                    <span class="leaderboard-td">{{ user.tests_passed }}</span>
+                </div>
                 {% endfor %}
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
 </section>
 

@@ -235,6 +235,7 @@ header {
         transition: all 0.3s ease-in-out;
     }
 
+
     & nav .nav-button:hover {
         transform: scale(1.02);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
@@ -451,6 +452,7 @@ header {
         margin: 10px 0;
     }
 }
+
 
 @media (max-width: 1136px) {
     .theme-card {
@@ -702,6 +704,7 @@ header {
     margin-bottom: 10px;
 }
 
+
 .calc-form button {
     width: 100%;
     padding: 10px;
@@ -937,6 +940,7 @@ header {
     font-size: 22px;
     color: #0078ff;
 
+
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -1009,36 +1013,54 @@ header {
 
 
 /* leader board */
-.leaderboard-container {
-    .leaderboard-table {
+.leaderboard {
+    margin-top: 15px;
+    overflow-x: auto;
+
+    .leader-head {
         width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        color: #000;
-        font-size: 14px;
-    }
-
-    .leaderboard-th,
-    .leaderboard-td {
-        padding: 5px 0;
-        border: 1px solid #000;
-        text-align: center;
-    }
-
-    .leaderboard-th {
-        background: rgba(255, 255, 255, 0.2);
-        color: #000;
-    }
-
-    .leaderboard-th div {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
+        background-color: #f6f8fbcc;
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 14px;
+        min-width: 800px;
+
+        & h4 {
+            width: 170px;
+        }
+    }
+
+    .leader-body {
+
+        & .leader-body-item {
+            display: flex;
+            padding: 12px;
+            border-radius: 12px;
+            min-width: 800px;
+
+            & span {
+                width: 170px;
+                text-align: left;
+            }
+
+            &:nth-child(odd) {
+                background-color: #f6f8fbcc;
+            }
+
+            &:hover {
+                background-color: #edf1f5;
+            }
+        }
     }
 }
 
 /* TEAM PART */
+
+.team {
+    background-color: #fff;
+    width: 100%;
+}
 
 .team-container {
     width: 100%;
@@ -1153,6 +1175,7 @@ header {
     text-transform: capitalize;
     margin-bottom: 8px;
 }
+
 
 .our-team .social-links {
     list-style: none;
