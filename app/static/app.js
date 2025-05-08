@@ -1,539 +1,405 @@
 const con = document.querySelector(".con");
 const modals = document.querySelector(".modals");
-const modal = document.querySelector(".modal");
-const q_modal = document.querySelector(".question_modal");
-const t_modal = document.querySelector(".test_modal");
-const question = document.querySelector(".question");
-const test = document.querySelector(".test");
-const exit_q = document.querySelector(".q_exit");
-const exit_t = document.querySelector(".t_exit");
-const exit_l = document.querySelector(".l_exit");
-const exit_m = document.querySelector(".m_exit");
-const sv_q = document.querySelector(".sv_q");
-const little_modal = document.querySelector(".little_modal");
-const t_plus = document.querySelector(".t_plus");
-const q_form = document.querySelector(".q_form");
-const q_form_edit = document.querySelector(".q_form_edit");
-const t_form = document.querySelector(".t_form");
-const m_form = document.querySelector(".m_form");
-const title = document.getElementById("title");
-const title_edit = document.getElementById("title_edit");
-const t_title = document.getElementById("t_title");
-const m_title = document.getElementById("m_title");
-const m_about = document.getElementById("m_about");
-const shart = document.getElementById("shart");
-const shart_edit = document.getElementById("shart_edit");
-const izoh = document.getElementById("izoh");
-const izoh_edit = document.getElementById("izoh_edit");
-const javob = document.getElementById("javob");
-const javob_edit = document.getElementById("javob_edit");
-const ball_q = document.getElementById("ball_q");
-const ball_q_edit = document.getElementById("ball_q_edit");
-const mavzusi = document.getElementById("mavzusi");
-const mavzusi_edit = document.getElementById("mavzusi_edit");
-const t_mavzusi = document.getElementById("t_mavzusi");
-const l_savol = document.getElementById("l_savol");
-const l_ball = document.getElementById("l_ball");
-const variant1 = document.getElementById("variant1");
-const variant2 = document.getElementById("variant2");
-const variant3 = document.getElementById("variant3");
-const variant4 = document.getElementById("variant4");
-const tests_w = document.querySelector(".tests--wrapper");
-const radio = document.querySelectorAll(".radio");
-const q_number = document.querySelector(".q_number");
-const theme = document.querySelector(".theme");
-const themes = document.querySelector(".theme_modal");
-const q_box = document.querySelector(".q_box");
-const t_box = document.querySelector(".t_box");
-const th_box = document.querySelector(".th_box");
-const edit_q = document.querySelector(".edit_q");
-const edit_t = document.querySelector(".edit_t");
+const qModal = document.querySelector(".question_modal");
+const tModal = document.querySelector(".test_modal");
+const littleModal = document.querySelector(".little_modal");
+const themeModal = document.querySelector(".theme_modal");
 
-question.addEventListener("click", () => {
-    modals.style.display = "flex"
-    q_modal.style.display = "grid"
-    q_form.style.display = "grid"
-    q_form_edit.style.display = "none"
-    con.style.height = "100vh"
-    con.style.overflow = "hidden"
-})
-let id = 0;
-test.addEventListener("click", () => {
-    modals.style.display = "flex"
-    t_modal.style.display = "grid"
-    con.style.height = "100vh"
-    con.style.overflow = "hidden"
-    let tests_arr = []
-    l = 0
-    s = 0
-    sv_q.addEventListener("submit", (e) => {
-        e.preventDefault()
-        let tests_obj = {
-            id: id,
-            question: l_savol.value,
-            ball: l_ball.value,
-            options: [
-                variant1.value,
-                variant2.value,
-                variant3.value,
-                variant4.value,
-            ],
-            answer: "",
-        }
-        id++;
-        radio.forEach(e => {
-            if (e.checked) {
-                tests_obj.answer = tests_obj.options[e.value];
-            }
+// Buttons
+const btnQuestion = document.querySelector(".question");
+const btnTest = document.querySelector(".test");
+const btnLTest = document.querySelector(".t_plus");
+const btnLEditTest = document.querySelector(".t_plus_edit")
+const btnTheme = document.querySelector(".theme");
 
-        })
-        l_savol.value = ""
-        l_ball.value = ""
-        variant1.value = ""
-        variant2.value = ""
-        variant3.value = ""
-        variant4.value = ""
-        tests_arr.push(tests_obj)
-        s += 1
-        q_number.innerHTML = s
-        l++
-        tests_w.innerHTML += `
-                <div class="box test_savol">
-                        <p class="box_title">${tests_obj.question}</p>
-                        <div class="edit_box_crud">
-                            <span class="edit_box_dq t_edit ${l}"> 
-                                <i class="fa-solid fa-trash"></i>
-                            </span>
-                        <div>
-                </div>
-        `
-        const t_edit = document.querySelectorAll(".t_edit")
-        const test_box = document.querySelectorAll(".test_savol")
-        t_edit.forEach(e => {
-            e.addEventListener("click", () => {
-                delete_obj = Number(e.classList[2])
-                delete tests_arr[delete_obj - 1]
-                test_box[delete_obj - 1].style.display = "none"
-                s -= 1
-                q_number.innerHTML = s
-            })
-        })
-        little_modal.style.display = "none"
-    })
-    t_form.addEventListener("submit", (e) => {
-        console.log(t_mavzusi);
+// Exit buttons
+const exitQM = document.querySelector(".q_exit");
+const exitTM = document.querySelector(".t_exit");
+const exitLM = document.querySelector(".l_exit");
+const exitMM = document.querySelector(".m_exit");
 
-        if (s != 0) {
-            e.preventDefault()
-            tests_arr = tests_arr.filter(item => item !== undefined);
-            let t_obj = {
-                title: t_title.value,
-                theme: t_mavzusi.value,
-                data: tests_arr,
-                status: "active"
-            }
-            fetch("/admin/add_quiz", {
-                method: "POST",
-                body: JSON.stringify({
-                    title: t_obj.title,
-                    theme: t_obj.theme,
-                    data: t_obj.data
-                })
-            })
+// Forms & inputs
+const qForm = document.querySelector(".q_form");
+const qFormEdit = document.querySelector(".q_form_edit");
+const tForm = document.querySelector(".t_form");
+const tFormEdit = document.querySelector(".t_form_edit");
+const mForm = document.querySelector(".m_form");
+const qSearch = document.getElementById("q_search_input");
+const tSearch = document.getElementById("t_search_input");
 
-            modals.style.display = "none"
-            t_modal.style.display = "none"
-            console.log(t_obj);
-            location.reload()
-        }
 
-    })
-})
-
-exit_q.addEventListener("click", () => {
-    modals.style.display = "none"
-    q_modal.style.display = "none"
-    q_form.display = "none"
-    q_form_edit.style.display = "none"
-    con.style.height = "auto"
-    con.style.overflow = "auto"
-})
-exit_t.addEventListener("click", () => {
-    modals.style.display = "none"
-    t_modal.style.display = "none"
-    con.style.height = "auto"
-    con.style.overflow = "auto"
-})
-exit_l.addEventListener("click", () => {
-    modals.style.display = "none"
-    t_modal.style.display = "none"
-    con.style.height = "auto"
-    con.style.overflow = "auto"
-})
-exit_m.addEventListener("click", () => {
-    modals.style.display = "none"
-    themes.style.display = "none"
-    con.style.height = "auto"
-    con.style.overflow = "auto"
-})
-
-t_plus.addEventListener("click", () => {
-    little_modal.style.display = "flex"
-    modal.style.display = "grid"
-})
-exit_l.addEventListener("click", () => {
-    little_modal.style.display = "none"
-    modal.style.display = "none"
-    modals.style.display = "flex"
-    t_modal.style.display = "grid"
-    con.style.height = "auto"
-    con.style.overflow = "auto"
-})
-q_form.addEventListener("submit", (e) => {
-    e.preventDefault()
-    let q_obj = {
-        title: title.value,
-        shart: shart.value,
-        izoh: izoh.value,
-        javob: javob.value,
-        ball_q: ball_q.value,
-        mavzular: mavzusi.value,
-        act: "active"
+const inputs = {
+    q: {
+        title: document.getElementById("title"),
+        main: document.getElementById("shart"),
+        helper: document.getElementById("izoh"),
+        answer: document.getElementById("javob"),
+        score: document.getElementById("ball_q"),
+        theme: document.getElementById("mavzusi")
+    },
+    qEdit: {
+        title: document.getElementById("title_edit"),
+        main: document.getElementById("shart_edit"),
+        helper: document.getElementById("izoh_edit"),
+        answer: document.getElementById("javob_edit"),
+        score: document.getElementById("ball_q_edit"),
+        theme: document.getElementById("mavzusi_edit")
+    },
+    t: {
+        title: document.getElementById("t_title"),
+        theme: document.getElementById("t_mavzusi")
+    },
+    tEdit: {
+        title: document.getElementById("t_title_edit"),
+        theme: document.getElementById("t_mavzusi_edit")
+    },
+    m: {
+        title: document.getElementById("m_title"),
+        about: document.getElementById("m_about")
     }
-    title.value = ""
-    shart.value = ""
-    izoh.value = ""
-    javob.value = ""
-    ball_q.value = ""
-    console.log(q_obj);
+};
+
+// Containers
+const questionContainer = document.querySelector(".q_boxs");
+const quizContainer = document.querySelector(".t_boxs");
+const themesContainer = document.querySelector(".th_box");
+
+// Test question elements
+const svQ = document.querySelector(".sv_q");
+const variants = [
+    document.getElementById("variant1"),
+    document.getElementById("variant2"),
+    document.getElementById("variant3"),
+    document.getElementById("variant4")
+];
+const radios = document.querySelectorAll(".radio");
+const qNumber = document.querySelector(".q_number");
+const qEditNumber = document.querySelector(".q_number_edit");
+const testsWrapper = document.querySelector(".tests--wrapper");
+const testsEditWrapper = document.querySelector(".tests_edit--wrapper");
+
+let testData = [];
+let currentId = 0;
+let questionCount = 0;
+
+// Utility: open modal
+function openModal(modal) {
+    modals.style.display = "flex";
+    modal.style.display = "grid";
+    con.style.height = "100vh";
+    con.style.overflow = "hidden";
+}
+
+// Utility: close all modals
+function closeModals() {
+    [qModal, tModal, littleModal, themeModal].forEach(m => m && (m.style.display = "none"));
+    modals.style.display = "none";
+    con.style.height = "auto";
+    con.style.overflow = "auto";
+}
+
+// Show modals
+btnQuestion.addEventListener("click", () => {
+    openModal(qModal);
+    qForm.style.display = "grid";
+    qFormEdit.style.display = "none";
+});
+btnTest.addEventListener("click", () => {
+    openModal(tModal);
+    littleModal.style.display = "none";
+    tForm.style.display = "grid";
+    tFormEdit.style.display = "none";
+    testData = [];
+    currentId = 0;
+    questionCount = 0;
+    testsWrapper.innerHTML = "";
+    testsEditWrapper.innerHTML = "";
+    qNumber.textContent = "0";
+});
+btnTheme.addEventListener("click", () => openModal(themeModal));
+btnLTest.addEventListener("click", () => openModal(littleModal));
+btnLEditTest.addEventListener("click", () => openModal(littleModal));
+// Exit listeners
+exitQM.addEventListener("click", closeModals);
+exitTM.addEventListener("click", closeModals);
+exitLM.addEventListener("click", () => { littleModal.style.display = "none" });
+exitMM.addEventListener("click", closeModals);
+
+// Add a test question
+svQ.addEventListener("submit", e => {
+    e.preventDefault();
+    const questionText = document.getElementById("l_savol").value.trim();
+    const score = document.getElementById("l_ball").value;
+    const opts = variants.map(v => v.value.trim());
+    const answerIndex = Array.from(radios).findIndex(r => r.checked);
+    if (!questionText || answerIndex < 0) return;
+    const obj = { id: currentId++, question: questionText, score, options: opts, answer: opts[answerIndex] };
+    testData.push(obj);
+    questionCount++;
+    qNumber.textContent = questionCount;
+    const box = document.createElement('div');
+    box.className = 'box test_savol';
+    box.dataset.id = obj.id;
+    box.innerHTML = `<p class="box_title">${obj.question}</p><div class="edit_box_crud">
+        <span class="delete-btn"><i class="fa-solid fa-trash"></i></span>
+        </div>`;
+    testsWrapper.appendChild(box);
+    testsEditWrapper.appendChild(box.cloneNode(true));
+    box.querySelector('.delete-btn').addEventListener('click', () => {
+        testsWrapper.removeChild(box);
+        testsEditWrapper.removeChild(box);
+        testData = testData.filter(q => q.id !== obj.id);
+        questionCount--;
+        qNumber.textContent = questionCount;
+    });
+    document.getElementById("l_savol").value = "";
+    document.getElementById("l_ball").value = "";
+    variants.forEach(v => v.value = "");
+    radios.forEach(r => r.checked = false);
+    littleModal.style.display = "none"
+});
+
+// Submit full quiz
+tForm.addEventListener("submit", e => {
+    if (!testData.length) return;
+    e.preventDefault();
+    fetch("/admin/add_quiz", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: inputs.t.title.value, theme: inputs.t.theme.value, data: testData })
+    }).then(() => location.reload());
+});
+
+// Submit question
+qForm.addEventListener("submit", e => {
+    e.preventDefault();
     fetch("/admin/add_matter", {
         method: "POST",
-        body: JSON.stringify({
-            title: q_obj.title,
-            main: q_obj.shart,
-            helper: q_obj.izoh,
-            theme: q_obj.mavzular,
-            correct: q_obj.javob,
-            ball: q_obj.ball_q
-        })
-    })
-    //bach-endga post yuborish-------
-    modals.style.display = "none"
-    q_modal.style.display = "none"
-    location.reload()
-})
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: inputs.q.title.value, main: inputs.q.main.value, helper: inputs.q.helper.value, correct: inputs.q.answer.value, ball: inputs.q.score.value, theme: inputs.q.theme.value })
+    }).then(() => location.reload());
+});
 
-theme.addEventListener("click", () => {
-    modals.style.display = "flex"
-    themes.style.display = "grid"
-    con.style.height = "100vh"
-    con.style.overflow = "hidden"
-})
-
-m_form.addEventListener("submit", (e) => {
-    e.preventDefault()
+// Submit theme
+mForm.addEventListener("submit", e => {
+    e.preventDefault();
     fetch("/admin/add_theme", {
         method: "POST",
-        body: JSON.stringify({
-            name: m_title.value,
-            about: m_about.value
-        })
-    })
-    console.log({
-        name: m_title.value,
-        about: m_about.value
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: inputs.m.title.value, about: inputs.m.about.value })
+    }).then(() => location.reload());
+});
+
+// Load themes into selects
+function loadThemes() {
+    fetch("/api/themes").then(res => res.json()).then(data => {
+        data.forEach(item => {
+            const opt = `<option value="${item.name}">${item.name}</option>`;
+            inputs.q.theme.insertAdjacentHTML('beforeend', opt);
+            inputs.qEdit.theme.insertAdjacentHTML('beforeend', opt);
+            inputs.t.theme.insertAdjacentHTML('beforeend', opt);
+            inputs.tEdit.theme.insertAdjacentHTML('beforeend', opt);
+        });
     });
-
-    modals.style.display = "none"
-    themes.style.display = "none"
-    m_title.value = ""
-    location.reload()
-})
-
-fetch("/api/themes")
-    .then(rec => rec.json())
-    .then(data => {
-        data.forEach(item => {
-            th_box.innerHTML += `
-                <div class="box">
-                        <p class="box_title">
-                        #${item.id} |    
-                        ${item.name}
-                        </p>
-                        <div class="edit_box_crud">
-                            <span class="edit_box_dq" onclick="theme_delete(${item.id})"> 
-                                <i class="fa-solid fa-trash"></i>
-                            </span>
-                        <div>
-                    </div>
-            `
-        })
-    })
-function theme_delete(id) {
-    if (confirm("Mavzu o'chirilsinmi ?")) {
-        console.log("Deleted theme ");
-        fetch(`/api/delete_theme/${id}`, {
-            method: "DELETE",
-        })
-            .then(rec => rec.json())
-            .then(data => console.log(data))
-        window.location.reload();
-    }
-}
-fetch("/api/themes")
-    .then(rec => rec.json())
-    .then(data => {
-        data.forEach(item => {
-            mavzusi.innerHTML += `
-                <option value="${item.name}">${item.name}</option>
-            `
-            mavzusi_edit.innerHTML += `
-                <option value="${item.name}">${item.name}</option>
-            `
-            t_mavzusi.innerHTML += `
-                <option value="${item.name}">${item.name}</option>
-            `
-
-        })
-    })
-
-fetch("/api/get_matter")
-    .then(rec => rec.json())
-    .then(data => {
-        document.querySelector(".q_boxs").innerHTML = "";
-        if (data.length > 0) {
-            data.forEach(item => {
-                document.querySelector(".q_boxs").innerHTML += `
-                    <div class="box">
-                        <p class="box_title">
-                        #${item.id} |    
-                        ${item.title}
-                        </p>
-                        <div class="edit_box_crud">
-                            <span class="edit_box_eq" onclick="edit_question_func(${item.id})">
-                                <i class="fa-solid fa-pencil"></i>
-                            </span>
-                            <span class="edit_box_aq">
-                                <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
-                            </span>
-                            <span class="edit_box_dq" onclick="question_delete(${item.id})">
-                                <i class="fa-solid fa-trash"></i>
-                            </span>
-                        <div>
-                    </div>
-                `;
-            })
-        } else {
-            document.querySelector(".q_boxs").innerHTML = `
-                <span class="edit_empty">
-                    <i class="fa-solid fa-box-open"></i>
-                    <p>Ma'lumot topilmadi</p>
-                </span>
-            `;
-        }
-    })
-    .catch(error => console.log(error))
-function question_delete(id) {
-    if (confirm("Masala o'chirilsinmi ?")) {
-        console.log("Deleted question ");
-        fetch(`/api/delete_matter/${id}`, {
-            method: "DELETE",
-        })
-            .then(rec => rec.json())
-            .then(data => console.log(data))
-        window.location.reload();
-    }
-}
-fetch("/api/get_quiz")
-    .then(rec => rec.json())
-    .then(data => {
-        document.querySelector(".t_boxs").innerHTML = "";
-        if (data.length > 0) {
-            data.forEach(item => {
-                document.querySelector(".t_boxs").innerHTML += `
-                        <div class="box">
-                            <p class="box_title">
-                            #${item.id} |    
-                            ${item.title}
-                            </p>
-                            <div class="edit_box_crud">
-                                <span class="edit_box_et">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </span>
-                                <span class="edit_box_at">
-                                    <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
-                                </span>
-                                <span class="edit_box_dt" onclick="test_delete(${item.id})">
-                                    <i class="fa-solid fa-trash"></i>
-                                </span>
-                            <div>
-                        </div>
-                    `;
-            })
-        } else {
-            document.querySelector(".t_boxs").innerHTML = `
-                    <span class="edit_empty">
-                        <i class="fa-solid fa-box-open"></i>
-                        <p>Ma'lumot topilmadi</p>
-                    </span>
-                `;
-        }
-    })
-    .catch(error => console.log(error))
-function test_delete(id) {
-    if (confirm("Test o'chirilsinmi ?")) {
-        console.log("Deleted test ");
-        fetch(`/api/delete_quiz/${id}`, {
-            method: "DELETE",
-        })
-            .then(rec => rec.json())
-            .then(data => console.log(data))
-        window.location.reload();
-    }
 }
 
-let interval1 = null;
-document.getElementById("q_search_input").addEventListener("input", (e) => {
-    if (interval1) return
-    interval1 = setTimeout(() => {
-        let prefix = e.target.value.trim();
-
-        let url = prefix === "" ? "/api/get_matter" : `/api/get_matter?prefix=${prefix}`;
-
-        document.querySelector(".q_loader").style.display = "flex";
-
-        fetch(url)
-            .then(rec => rec.json())
-            .then(data => {
-                document.querySelector(".q_boxs").innerHTML = "";
-                if (data.length > 0) {
-                    data.forEach(item => {
-                        document.querySelector(".q_boxs").innerHTML += `
-                                <div class="box">
-                                    <p class="box_title">
-                                    #${item.id} |    
-                                    ${item.title}
-                                    </p>
-                                    <div class="edit_box_crud">
-                                        <span class="edit_box_eq" onclick="edit_question_func(${item.id})">
-                                            <i class="fa-solid fa-pencil"></i>
-                                        </span>
-                                        <span class="edit_box_aq">
-                                            <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
-                                        </span>
-                                        <span class="edit_box_dq">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </span>
-                                    <div>
-                                </div>
-                            `;
-                    })
-                } else {
-                    document.querySelector(".q_boxs").innerHTML = `
-                            <span class="edit_empty">
-                                <i class="fa-solid fa-box-open"></i>
-                                <p>Ma'lumot topilmadi</p>
-                            </span>
-                        `;
-                }
-            })
-            .catch(error => console.log(error))
-        document.querySelector(".q_loader").style.display = "none";
-        interval1 = null;
-    }, 500);
+qSearch.addEventListener("input", (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    loadQuestions(searchValue);
 })
 
+// Load question list
+function loadQuestions(searchE) {
+    let prefix = searchE ? `?prefix=${searchE}` : "";
+    fetch("/api/get_matter"+prefix).then(res => res.json()).then(data => {
+        questionContainer.innerHTML = data.length ? data.map(item => `
+      <div class="box">
+        <p class="box_title">#${item.id} | ${item.title}</p>
+        <div class="edit_box_crud">
+          <span class="edit_box_eq" onclick="editQuestion(${item.id})"><i class="fa-solid fa-pencil"></i></span>
+          <span class="edit_box_aq" onclick="hiddenQuestion(${item.id})"><i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i></span>
+          <span class="edit_box_dq" onclick="deleteQuestion(${item.id})"><i class="fa-solid fa-trash"></i></span>
+        </div>
+      </div>
+    `).join('') : `<span class="edit_empty"><i class="fa-solid fa-box-open"></i><p>Ma'lumot topilmadi</p></span>`;
+    });
+}
 
-let interval2 = null;
-document.getElementById("t_search_input").addEventListener("input", (e) => {
-    if (interval2) return
-    interval2 = setTimeout(() => {
-        let prefix = e.target.value.trim();
-
-        let url = prefix === "" ? "/api/get_quiz" : `/api/get_quiz?prefix=${prefix}`;
-
-        document.querySelector(".t_loader").style.display = "flex";
-
-        fetch(url)
-            .then(rec => rec.json())
-            .then(data => {
-                document.querySelector(".t_boxs").innerHTML = "";
-                if (data.length > 0) {
-                    data.forEach(item => {
-                        document.querySelector(".t_boxs").innerHTML += `
-                                <div class="box">
-                                    <p class="box_title">
-                                    #${item.id} |    
-                                    ${item.title}
-                                    </p>
-                                    <div class="edit_box_crud">
-                                        <span class="edit_box_et">
-                                            <i class="fa-solid fa-pencil"></i>
-                                        </span>
-                                        <span class="edit_box_at">
-                                            <i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i>
-                                        </span>
-                                        <span class="edit_box_dt">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </span>
-                                    <div>
-                                </div>
-                            `;
-                    })
-                } else {
-                    document.querySelector(".t_boxs").innerHTML = `
-                            <span class="edit_empty">
-                                <i class="fa-solid fa-box-open"></i>
-                                <p>Ma'lumot topilmadi</p>
-                            </span>
-                        `;
-                }
-            })
-            .catch(error => console.log(error))
-        document.querySelector(".t_loader").style.display = "none";
-        interval2 = null;
-    }, 500);
+tSearch.addEventListener("input", (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    loadQuizzes(searchValue);
 })
+// Load quiz list
+function loadQuizzes(searchE) {
+    let prefix = searchE ? `?prefix=${searchE}` : "";
+    fetch("/api/get_quiz"+prefix).then(res => res.json()).then(data => {
+        quizContainer.innerHTML = data.length ? data.map(item => `
+      <div class="box">
+        <p class="box_title">#${item.id} | ${item.title}</p>
+        <div class="edit_box_crud">
+          <span class="edit_box_et" onclick="editQuiz(${item.id})"><i class="fa-solid fa-pencil"></i></span>
+          <span class="edit_box_at" onclick="hiddenQuiz(${item.id})"><i class="fa-solid fa-eye${item.status ? "" : "-slash"}"></i></span>
+          <span class="edit_box_dt" onclick="deleteQuiz(${item.id})"><i class="fa-solid fa-trash"></i></span>
+        </div>
+      </div>
+    `).join('') : `<span class="edit_empty"><i class="fa-solid fa-box-open"></i><p>Ma'lumot topilmadi</p></span>`;
+    });
+}
 
-function edit_question_func(id) {
-    modals.style.display = "flex"
-    q_modal.style.display = "grid"
-    fetch("/api/get_matter")
-        .then(rec => rec.json())
+// Load theme list display
+function loadThemeList() {
+    fetch("/api/themes").then(res => res.json()).then(data => {
+        themesContainer.innerHTML = data.length ? data.map(item => `
+      <div class="box">
+        <p class="box_title">#${item.id} | ${item.name}</p>
+        <div class="edit_box_crud">
+          <span onclick="deleteTheme(${item.id})"><i class="fa-solid fa-trash"></i></span>
+        </div>
+      </div>
+    `).join('') : `<span class="edit_empty"><i class="fa-solid fa-box-open"></i><p>Ma'lumot topilmadi</p></span>`;
+    });
+}
+
+
+// Delete handlers
+window.deleteQuestion = id => { if (confirm("Masala o'chirilsinmi ?")) fetch(`/api/delete_matter/${id}`, { method: 'DELETE' }).then(loadQuestions); };
+window.deleteQuiz = id => { if (confirm("Test o'chirilsinmi ?")) fetch(`/api/delete_quiz/${id}`, { method: 'DELETE' }).then(loadQuizzes); };
+window.deleteTheme = id => { if (confirm("Mavzu o'chirilsinmi ?")) fetch(`/api/delete_theme/${id}`, { method: 'DELETE' }).then(loadThemeList); };
+window.editQuestion = function (id) {
+    // Open edit modal
+    openModal(qModal);
+    qForm.style.display = "none";
+    qFormEdit.style.display = "grid";
+    // Fetch single question data
+    fetch(`/api/get_matter`) // or endpoint `/api/get_matter/${id}` if available
+        .then(res => res.json())
         .then(data => {
-            data.forEach(item => {
-                if (item.id === id) {
-                    title_edit.value = item.title;
-                    shart_edit.value = item.main;
-                    izoh_edit.value = item.helper;
-                    mavzusi_edit.value = item.theme;
-                    javob_edit.value = item.correct;
-                    ball_q_edit.value = item.ball;
-                }
-            })
-        })
-    q_form_edit.style.display = "grid";
-    q_form.style.display = "none"
-    con.style.height = "100vh"
-    con.style.overflow = "hidden"
-    q_form_edit.addEventListener("submit", (e) => {
+            const item = data.find(q => q.id === id);
+            if (!item) return;
+            // Populate edit inputs
+            inputs.qEdit.title.value = item.title;
+            inputs.qEdit.main.value = item.main || item.shart;
+            inputs.qEdit.helper.value = item.helper || item.izoh;
+            inputs.qEdit.answer.value = item.correct;
+            inputs.qEdit.score.value = item.ball;
+            inputs.qEdit.theme.value = item.theme;
+        });
+    // Handle edit form submission
+    qFormEdit.onsubmit = function (e) {
         e.preventDefault();
-        console.log(title.value);
+        const payload = {
+            id: id,
+            title: inputs.qEdit.title.value,
+            main: inputs.qEdit.main.value,
+            helper: inputs.qEdit.helper.value,
+            correct: inputs.qEdit.answer.value,
+            ball: inputs.qEdit.score.value,
+            theme: inputs.qEdit.theme.value,
+            status: true
+        };
         fetch("/api/edit_matter", {
-            method: "POST",
-            body: JSON.stringify({
-                id: id,
-                title: title.value,
-                main: shart.value,
-                helper: izoh.value,
-                theme: mavzusi.value,
-                correct: javob.value,
-                ball: ball_q.value,
-                status: true
-            })
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         })
-            .then(rec => rec.json())
-            .then(data => console.log(data))
+            .then(res => res.json())
+            .then(() => {
+                closeModals();
+                loadQuestions();
+            })
+            .catch(err => console.error(err));
+    };
+};
+window.editQuiz = function (id) {
+    testsEditWrapper.innerHTML = '';
+    openModal(tModal);
+    tForm.style.display = 'none';
+    tFormEdit.style.display = 'grid';
+    littleModal.style.display = 'none';
+    testData = [];
+    currentId = 0;
+    questionCount = 0;
+    testsWrapper.innerHTML = '';
+    qNumber.textContent = '0';
+    fetch('/api/get_quiz')
+        .then(res => res.json())
+        .then(data => {
+            const item = data.find(q => q.id === id);
+            if (!item) return;
+            inputs.tEdit.title.value = item.title;
+            inputs.tEdit.theme.value = item.theme;
+            // Safely parse questions array
+            let questions;
+            try {
+                questions = Array.isArray(item.data) ? item.data : JSON.parse(item.data);
+            } catch (e) {
+                console.error('Failed to parse quiz data', e);
+                return;
+            }
+            questions.forEach(q => {
+                testData.push(q);
+                const box = document.createElement('div');
+                box.className = 'box test_savol';
+                box.dataset.id = q.id;
+                box.innerHTML = `<p class="box_title">${q.question}</p><div class="edit_box_crud">
+                <span class="delete-btn"><i class="fa-solid fa-trash"></i></span>
+                </div>`;
+                testsEditWrapper.appendChild(box);
+                box.querySelector('.delete-btn').addEventListener('click', () => {
+                    testsEditWrapper.removeChild(box);
+                    testData = testData.filter(item => item.id !== q.id);
+                    questionCount--;
+                    qEditNumber.textContent = questionCount;
+                });
+                questionCount++;
+            });
+            qEditNumber.textContent = questionCount;
+        });
+    tFormEdit.onsubmit = function (e) {
+        e.preventDefault();
+        fetch("/api/edit_quiz", {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, title: inputs.tEdit.title.value, theme: inputs.tEdit.theme.value, data: testData, status: true })
+        })
+            .then(res => res.json())
+            .then(() => {
+                closeModals();
+                loadQuizzes();
+            })
+            .catch(err => console.error(err));
+    };
+};
+window.hiddenQuestion = function (id) {
+    fetch('/api/toggle_matter_status', {
+        method: "PUT",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
     })
-
+        .then(res => res.json())
+        .then(() => {
+            loadQuestions();
+            closeModals();
+        })
+        .catch(err => console.error(err));
 }
+window.hiddenQuiz = function (id) {
+    fetch('/api/toggle_quiz_status', {
+        method: "PUT",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+    })
+        .then(res => res.json())
+        .then(({ new_status }) => {
+            loadQuizzes();    // ma'lumotlarni qayta yuklash
+            closeModals();    // modal oynani yopish
+        })
+        .catch(err => console.error(err));
+}
+
+// Initialize
+loadThemes();
+loadQuestions();
+loadQuizzes();
+loadThemeList();
+
