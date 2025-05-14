@@ -103,31 +103,23 @@ header {
     position: relative;
     flex: 30%;
     background: #2e3d7c;
-    /* Silliq gradient fon */
-    
-    /* Yorqin chegaralar */
     padding: 20px 15px;
-    /* Yaxshi bo'shliq */
     border-radius: 5px;
-    /* Yumaloqlash */
     color: white;
 }
 
 .container nav .nav-button {
     text-align: left;
     background-color: #0056b3;
-    /* Tugma rangi */
     margin: 10px 0;
     padding: 12px 20px;
     border-radius: 8px;
     transition: all 0.3s ease-in-out;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    /* Tugmaga silliq soya */
 }
 
 .container nav .nav-button:hover {
     background-color: #003f8c;
-    /* Hover paytida rang o'zgaradi */
     transform: scale(1.05);
     /* Kattalashish animatsiyasi */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
