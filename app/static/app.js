@@ -34,7 +34,7 @@ const inputs = {
         main: document.getElementById("shart"),
         helper: document.getElementById("izoh"),
         answer: document.getElementById("javob"),
-        score: document.getElementById("ball_q"),
+        ball: document.getElementById("ball_q"),
         theme: document.getElementById("mavzusi")
     },
     qEdit: {
@@ -42,7 +42,7 @@ const inputs = {
         main: document.getElementById("shart_edit"),
         helper: document.getElementById("izoh_edit"),
         answer: document.getElementById("javob_edit"),
-        score: document.getElementById("ball_q_edit"),
+        ball: document.getElementById("ball_q_edit"),
         theme: document.getElementById("mavzusi_edit")
     },
     t: {
@@ -129,11 +129,11 @@ exitMM.addEventListener("click", closeModals);
 svQ.addEventListener("submit", e => {
     e.preventDefault();
     const questionText = document.getElementById("l_savol").value.trim();
-    const score = document.getElementById("l_ball").value;
+    const ball = document.getElementById("l_ball").value;
     const opts = variants.map(v => v.value.trim());
     const answerIndex = Array.from(radios).findIndex(r => r.checked);
     if (!questionText || answerIndex < 0) return;
-    const obj = { id: currentId++, question: questionText, score, options: opts, answer: opts[answerIndex] };
+    const obj = { id: currentId++, question: questionText, ball, options: opts, answer: opts[answerIndex] };
     testData.push(obj);
     questionCount++;
     qNumber.textContent = questionCount;
@@ -176,7 +176,7 @@ qForm.addEventListener("submit", e => {
     fetch("/admin/add_matter", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: inputs.q.title.value, main: inputs.q.main.value, helper: inputs.q.helper.value, correct: inputs.q.answer.value, ball: inputs.q.score.value, theme: inputs.q.theme.value })
+        body: JSON.stringify({ title: inputs.q.title.value, main: inputs.q.main.value, helper: inputs.q.helper.value, correct: inputs.q.answer.value, ball: inputs.q.ball.value, theme: inputs.q.theme.value })
     }).then(() => location.reload());
 });
 
@@ -281,7 +281,7 @@ window.editQuestion = function (id) {
             inputs.qEdit.main.value = item.main || item.shart;
             inputs.qEdit.helper.value = item.helper || item.izoh;
             inputs.qEdit.answer.value = item.correct;
-            inputs.qEdit.score.value = item.ball;
+            inputs.qEdit.ball.value = item.ball;
             inputs.qEdit.theme.value = item.theme;
         });
     // Handle edit form submission
@@ -293,7 +293,7 @@ window.editQuestion = function (id) {
             main: inputs.qEdit.main.value,
             helper: inputs.qEdit.helper.value,
             correct: inputs.qEdit.answer.value,
-            ball: inputs.qEdit.score.value,
+            ball: inputs.qEdit.ball.value,
             theme: inputs.qEdit.theme.value,
             status: true
         };
