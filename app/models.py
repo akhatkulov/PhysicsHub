@@ -121,7 +121,7 @@ class SolvedProblems(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     matter_id = db.Column(
-        db.Integer, db.ForeignKey("matter.id"), nullable=False, unique=True
+        db.Integer, db.ForeignKey("matter.id"), nullable=False
     )
 
 
@@ -129,7 +129,7 @@ class TestResults(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     quiz_id = db.Column(
-        db.Integer, db.ForeignKey("quiz.id"), nullable=False, unique=True
+        db.Integer, db.ForeignKey("quiz.id"), nullable=False
     )
 
 

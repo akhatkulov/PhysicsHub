@@ -55,6 +55,7 @@ def add_quiz():
     if current_user.username != "admin":
         abort(403)
     data = request.get_json(force=True)
+    print("quiz:::::g",data)
     if not data.get("title") or not data.get("theme"):
         return jsonify({"error": "Title va Theme kerak"}), 400
     new_quiz = Quiz(
@@ -207,7 +208,7 @@ def show_tests(name):
 
 @main.route("/tests/<theme>/<int:quiz_id>", methods=["GET", "POST"])
 def calc_test(theme, quiz_id):
-    quiz = Quiz.query.get_or_404(quiz_id)
+    quiz = Quiz.query.get_or_404(int(quiz_id))
     questions = json.loads(quiz.data)
     if request.method == "POST":
         answers = {f'question-{q["id"]}': request.form.get(f'question-{q["id"]}') for q in questions}
