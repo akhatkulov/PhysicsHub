@@ -240,3 +240,131 @@ def calc_matter(theme, matter_id):
         else:
             flash(f"❌ Noto‘g‘ri javob... To‘g‘ri javob: {matter.correct}", "danger")
     return render_template("calc_matter.html", matter=matter, theme=theme)
+
+
+
+
+@main.route("/team")
+def team():
+    return render_template("team.html")
+
+
+@main.route("/leaderboard")
+def leaderboard():
+    top_users = get_leaderboard()
+    ranked_users = [
+        (rank + 1, user, total_points)
+        for rank, (user, total_points) in enumerate(top_users)
+    ]
+
+    print("top_users:", top_users)
+    print("ranked_users:", ranked_users)
+
+    return render_template("leaderboard.html", ranked_users=ranked_users)
+
+
+@main.route("/lab")
+def lab():
+    return render_template("lab_list.html")
+
+@main.route("/labaratory/<id>")
+def lab_page(id):
+    return render_template(f"lab/{id}/index.html")
+
+
+@main.route("/signup", methods=["GET", "POST"])
+def signup():
+    form = SignUpForm()
+    if form.validate_on_submit():
+        try:
+            name = form.name.data
+            surname = form.surname.data
+            username = form.username.data.replace(" ", "")
+            university = form.university.data
+            password = form.password.data
+
+            user = User.query.filter_by(username=username).first()
+            if user:
+                flash("Bu taxallusda foydalanuvchi mavjud.", "error")
+                return redirect(url_for("main.signup"))
+
+            hashed_password = generate_password_hash(
+                password, method="pbkdf2:sha256", salt_length=8
+            )
+            new_user = User(
+                name=name,
+                surname=surname,
+                username=username,
+                university=university,
+                password=hashed_password,
+            )
+            db.session.add(new_user)
+            db.session.commit()
+
+            flash("Ma'lumotlar muvaffaqiyatli yuborildi!", "success")
+            return redirect(url_for("main.login_page"))
+
+        except Exception as e:
+            current_app.logger.error(f"Signup error: {e}")
+            flash("Noma'lum xatolik yuz berdi, iltimos qayta urinib ko'ring.", "error")
+            return redirect(url_for("main.signup"))
+    return render_template("signup.html", form=form)
+
+
+@main.route("/signin", methods=["GET", "POST"])
+def login_page():
+    form = SignInForm()
+    if form.validate_on_submit():
+        username = form.username.data.replace(" ", "")
+        password = form.password.data
+
+        user = User.query.filter_by(username=username).first()
+        if user and user.password and check_password_hash(user.password, password):
+            login_user(user)
+            flash("Kirish muvaffaqiyatli!", "success")
+            if current_user.username == "admin":
+                return redirect(url_for("main.admin"))
+            else:
+                return redirect(url_for("main.home_page"))
+
+        flash("Taxallus yoki parol noto'g'ri", "error")
+    return render_template("login.html", form=form)
+
+
+@main.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    form = UpdateData()
+    user = current_user
+    ball = user.points
+    if form.validate_on_submit():
+        print("olindi")
+        name = form.name.data
+        surname = form.surname.data
+        university = form.university.data
+        password = form.password.data
+
+        user.name = name
+        user.surname = surname
+        user.university = university
+        if password:
+            user.password = generate_password_hash(password)
+
+        try:
+            db.session.commit()
+            flash("Malumotlar yangilandi!", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Error updating profile: {str(e)}", "danger")
+
+        return redirect(url_for("main.profile"))
+
+    return render_template("profile.html", ball=ball, user=current_user, form=form)
+
+
+@main.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Siz muvaffaqiyatli chiqdingiz.", "success")
+    return redirect(url_for("main.login_page"))
