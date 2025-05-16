@@ -24,40 +24,75 @@
                 <div class="test">
                     Test qo'shish
                 </div>
+                <div class="animation">
+                    Animatsiya qo'shish
+                </div>
                 <div class="theme">
                     Mavzu qo'shish
                 </div>
             </div>
         </div>
-        <div class="question_boxs">
-            <div>
-                <h1>Masalalar</h1>
-                <form id="q_search_form">
-                    <input type="search" id="q_search_input" name="prefix" placeholder="Qidirish..." autocomplete="off">
-                </form>
-                <div class="edit_boxs q_boxs">
+        <header>
+            <div class="nav2">
+                <div class="menu">
+                    <div class="question_page">
+                        Masalalar
+                    </div>
+                    <div class="test_page">
+                        Testlar
+                    </div>
+                    <div class="animation_page">
+                        Animatsiyalar
+                    </div>
+                    <div class="theme_page">
+                        Mavzular
+                    </div>
+                </div>
+            </div>
+            <div class="elem_boxs">
+                <div class="question_box">
+                    <h1>Masalalar</h1>
+                    <form id="q_search_form">
+                        <input type="search" id="q_search_input" name="prefix" placeholder="Qidirish..."
+                            autocomplete="off">
+                    </form>
+                    <div class="edit_boxs q_boxs">
 
+                    </div>
+                    <div class="edit_loader q_loader">
+                        <div></div>
+                    </div>
                 </div>
-                <div class="edit_loader q_loader">
-                    <div></div>
+                <div class="test_box">
+                    <h1>Testlar</h1>
+                    <form id="t_search_form">
+                        <input type="search" id="t_search_input" name="prefix" placeholder="Qidirish..."
+                            autocomplete="off">
+                    </form>
+                    <div class="edit_boxs t_boxs">
+                    </div>
+                    <div class="edit_loader t_loader">
+                        <div></div>
+                    </div>
+                </div>
+                <div class="animation_box">
+                    <h1>Animatsiyalar</h1>
+                    <form id="a_search_form">
+                        <input type="search" id="a_search_input" name="prefix" placeholder="Qidirish..."
+                            autocomplete="off">
+                    </form>
+                    <div class="edit_boxs a_boxs">
+                    </div>
+                    <div class="edit_loader a_loader">
+                        <div></div>
+                    </div>
+                </div>
+                <div class="theme_box">
+                    <h1>Mavzular</h1>
+                    <div class="th_box"></div>
                 </div>
             </div>
-            <div>
-                <h1>Testlar</h1>
-                <form id="t_search_form">
-                    <input type="search" id="t_search_input" name="prefix" placeholder="Qidirish..." autocomplete="off">
-                </form>
-                <div class="edit_boxs t_boxs">
-                </div>
-                <div class="edit_loader t_loader">
-                    <div></div>
-                </div>
-            </div>
-            <div class="theme_box">
-                <h1>Mavzular</h1>
-                <div class="th_box"></div>
-            </div>
-        </div>
+        </header>
     </div>
     <div class="modals">
         <div class="question_modal">
@@ -201,6 +236,38 @@
                     </span>
                 </div>
                 <button type="submit">Kiritish</button>
+            </form>
+        </div>
+        <div class="anima_modal">
+            <span class="a_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <h1>
+                Animatsiya qo'shish
+            </h1>
+            <form action="#" class="a_form">
+                <div class="input-i">
+                    <input type="text" id="a_title" required>
+                    <label for="a_title" class="title">
+                        Animatsiya nomi
+                    </label>
+                </div>
+                <div class="input-i">
+                    <select id="a_mavzusi"></select>
+                    <label for="a_mavzusi" class="mavzulari">
+                        Gif mavzusi
+                    </label>
+                </div>
+                <div class="input-i">
+                    <input type="file" accept="image/gif" id="a_gif" required>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="a_about" required>
+                    <label for="a_about" class="title">
+                        Ma'lumot
+                    </label>
+                </div>
+                <button type="submit">Qo'shish</button>
             </form>
         </div>
         <div class="theme_modal">

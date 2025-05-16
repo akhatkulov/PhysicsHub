@@ -3,11 +3,17 @@ const modals = document.querySelector(".modals");
 const qModal = document.querySelector(".question_modal");
 const tModal = document.querySelector(".test_modal");
 const littleModal = document.querySelector(".little_modal");
+const animationModal = document.querySelector(".anima_modal");
 const themeModal = document.querySelector(".theme_modal");
+const q_page = document.querySelector(".question_page");
+const t_page = document.querySelector(".test_page");
+const a_page = document.querySelector(".animation_page");
+const m_page = document.querySelector(".theme_page");
 
 // Buttons
 const btnQuestion = document.querySelector(".question");
 const btnTest = document.querySelector(".test");
+const btnAnimation = document.querySelector(".animation");
 const btnLTest = document.querySelector(".t_plus");
 const btnLEditTest = document.querySelector(".t_plus_edit")
 const btnTheme = document.querySelector(".theme");
@@ -15,6 +21,7 @@ const btnTheme = document.querySelector(".theme");
 // Exit buttons
 const exitQM = document.querySelector(".q_exit");
 const exitTM = document.querySelector(".t_exit");
+const exitAM = document.querySelector(".a_exit");
 const exitLM = document.querySelector(".l_exit");
 const exitMM = document.querySelector(".m_exit");
 
@@ -23,6 +30,7 @@ const qForm = document.querySelector(".q_form");
 const qFormEdit = document.querySelector(".q_form_edit");
 const tForm = document.querySelector(".t_form");
 const tFormEdit = document.querySelector(".t_form_edit");
+const aForm = document.querySelector(".a_form");
 const mForm = document.querySelector(".m_form");
 const qSearch = document.getElementById("q_search_input");
 const tSearch = document.getElementById("t_search_input");
@@ -53,6 +61,12 @@ const inputs = {
         title: document.getElementById("t_title_edit"),
         theme: document.getElementById("t_mavzusi_edit")
     },
+    a:{
+        title: document.getElementById("a_title"),
+        theme: document.getElementById("a_mavzusi"),
+        gif: document.getElementById("a_gif"),
+        about: document.getElementById("a_about")
+    },
     m: {
         title: document.getElementById("m_title"),
         about: document.getElementById("m_about")
@@ -63,7 +77,34 @@ const inputs = {
 const questionContainer = document.querySelector(".q_boxs");
 const quizContainer = document.querySelector(".t_boxs");
 const themesContainer = document.querySelector(".th_box");
-
+const questionBox = document.querySelector(".question_box");
+const testBox = document.querySelector(".test_box");
+const animationBox = document.querySelector(".animation_box");
+const themeBox = document.querySelector(".theme_box");
+q_page.addEventListener("click", () => {
+    questionBox.style.display = "block";
+    testBox.style.display = "none";
+    animationBox.style.display = "none";
+    themeBox.style.display = "none";
+})
+t_page.addEventListener("click", () => {
+    questionBox.style.display = "none";
+    testBox.style.display = "block";
+    animationBox.style.display = "none";
+    themeBox.style.display = "none";
+})
+a_page.addEventListener("click", () => {
+    questionBox.style.display = "none";
+    testBox.style.display = "none";
+    animationBox.style.display = "block";
+    themeBox.style.display = "none";
+})
+m_page.addEventListener("click", () => {
+    questionBox.style.display = "none";
+    testBox.style.display = "none";
+    animationBox.style.display = "none";
+    themeBox.style.display = "block";
+})
 // Test question elements
 const svQ = document.querySelector(".sv_q");
 const variants = [
@@ -92,7 +133,7 @@ function openModal(modal) {
 
 // Utility: close all modals
 function closeModals() {
-    [qModal, tModal, littleModal, themeModal].forEach(m => m && (m.style.display = "none"));
+    [qModal, tModal, littleModal,animationModal, themeModal].forEach(m => m && (m.style.display = "none"));
     modals.style.display = "none";
     con.style.height = "auto";
     con.style.overflow = "auto";
@@ -116,6 +157,7 @@ btnTest.addEventListener("click", () => {
     testsEditWrapper.innerHTML = "";
     qNumber.textContent = "0";
 });
+btnAnimation.addEventListener("click", () => {openModal(animationModal)});
 btnTheme.addEventListener("click", () => openModal(themeModal));
 btnLTest.addEventListener("click", () => openModal(littleModal));
 btnLEditTest.addEventListener("click", () => openModal(littleModal));
@@ -123,6 +165,7 @@ btnLEditTest.addEventListener("click", () => openModal(littleModal));
 exitQM.addEventListener("click", closeModals);
 exitTM.addEventListener("click", closeModals);
 exitLM.addEventListener("click", () => { littleModal.style.display = "none" });
+exitAM.addEventListener("click", closeModals);
 exitMM.addEventListener("click", closeModals);
 
 // Add a test question
@@ -179,7 +222,17 @@ qForm.addEventListener("submit", e => {
         body: JSON.stringify({ title: inputs.q.title.value, main: inputs.q.main.value, helper: inputs.q.helper.value, correct: inputs.q.answer.value, ball: inputs.q.ball.value, theme: inputs.q.theme.value })
     }).then(() => location.reload());
 });
-
+aForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const gif = inputs.a.gif.files[0];
+    if (!gif) return alert("GIF yuklang!");
+    
+    const formData = { title: inputs.a.title.value,gif: gif, about: inputs.a.about.value, theme: inputs.a.theme.value };
+    fetch("/admin/add_animation", {
+        method: "POST",
+        body: JSON.stringify(formData),
+    }).then(() => console.log(formData));
+});
 // Submit theme
 mForm.addEventListener("submit", e => {
     e.preventDefault();
@@ -197,6 +250,7 @@ function loadThemes() {
             const opt = `<option value="${item.name}">${item.name}</option>`;
             inputs.q.theme.insertAdjacentHTML('beforeend', opt);
             inputs.qEdit.theme.insertAdjacentHTML('beforeend', opt);
+            inputs.a.theme.insertAdjacentHTML('beforeend', opt);
             inputs.t.theme.insertAdjacentHTML('beforeend', opt);
             inputs.tEdit.theme.insertAdjacentHTML('beforeend', opt);
         });
