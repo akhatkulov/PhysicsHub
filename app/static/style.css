@@ -226,7 +226,7 @@ header {
         background: #fff;
         border-right: 1px solid rgba(255, 255, 255, 0.3);
         box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px 15px;
+        padding: 5px 10px;
         border-radius: 10px;
     }
 
@@ -1070,6 +1070,36 @@ header {
     gap: 10px;
 }
 
+.main-character_content {
+    margin-top: 10px;
+}
+
+.main-character {
+    display: flex;
+    gap: 30px;
+}
+
+.img-frame {
+    width: 300px;
+    height: 300px;
+    border: 1px dotted black;
+}
+
+.our-team_frame {
+    margin-top: 20px;
+}
+
+.our-team_title {
+    margin-bottom: 20px;
+}
+
+.taem-frame {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .our-team {
     text-align: center;
     overflow: hidden;
@@ -1096,8 +1126,8 @@ header {
 }
 
 .our-team img {
-    width: 250px;
-    object-fit: cover;
+    max-width: 340px;
+    object-fit: contain;
 }
 
 .our-team .team-content {
@@ -1123,7 +1153,7 @@ header {
     height: 38px;
     background: var(--mainColor);
     position: absolute;
-    top: -18px;
+    top: -15px;
     transform: rotate(15deg);
     z-index: -1;
 }
@@ -1156,9 +1186,14 @@ header {
     height: 93px;
     background: var(--secondColor);
     position: absolute;
-    top: -75px;
+    top: -67px;
     z-index: -2;
     transform: rotate(-74deg);
+}
+
+.our-team:last-child .title:before,
+.our-team:last-child .title:after {
+    top: -70px;
 }
 
 .our-team .title:before {
@@ -1281,10 +1316,52 @@ header {
 }
 
 /* GIF BOX */
+.gifs-frame {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 10px;
+    margin-top: 20px;
+}
+
 .gif-box {
+    max-width: calc(100% - 68%);
+    border-radius: 8px;
     border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    max-width: 500px;
+    overflow: hidden;
+
+    & img {
+        width: 100%;
+    }
+
+    & video {
+        width: 100%;
+    }
+}
+
+.gift-box_content {
+    padding: 10px;
+
+    & h2 {
+        margin-bottom: 5px;
+        font-size: 22px;
+
+
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+}
+
+@media (max-width: 900px) {
+    .gif-box {
+        max-width: calc(100% - 51%);
+    }
+}
+
+@media (max-width: 560px) {
+    .gif-box {
+        max-width: 100%;
+        width: 100%;
+    }
 }

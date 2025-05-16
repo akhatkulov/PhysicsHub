@@ -2,29 +2,30 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-<h1>Barcha Animationlar</h1>
-
-{% for gif in gifs %}
-    <div class="gif-box">
-        <h2>{{ gif.name }}</h2>
-        <p><strong>Mavzu:</strong> {{ gif.theme }}</p>
-        <p><strong>Haqida:</strong> {{ gif.about }}</p>
-
-        {% if gif.gif_path.endswith('.mp4') %}
+<section class="main-display">
+    <h1 class="title">Barcha Animationlar</h1>
+    <div class="gifs-frame">
+        {% for gif in gifs %}
+        <div class="gif-box">
+            {% if gif.gif_path.endswith('.mp4') %}
             <video width="400" controls autoplay loop muted>
                 <source src="{{ url_for('static', filename=gif.gif_path) }}" type="video/mp4">
                 Brauzeringiz video tagini qo‘llab-quvvatlamaydi.
             </video>
-        {% else %}
+            {% else %}
             <img src="{{ url_for('static', filename=gif.gif_path) }}" alt="GIF" width="400">
-        {% endif %}
+            {% endif %}
+            <div class="gift-box_content">
+                <h2>{{ gif.name }}</h2>
+                <p><strong>Mavzu:</strong> {{ gif.theme }}</p>
+                <p><strong>Haqida:</strong> {{ gif.about }}</p>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-{% endfor %}
 
-{% endblock %}
-
+    {% endblock %}
+</section>
 {% block page_content %}
 {{wtf.quick_form(form)}}
 {% endblock %}
-
-
