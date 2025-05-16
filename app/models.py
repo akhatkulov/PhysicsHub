@@ -94,7 +94,13 @@ class Quiz(db.Model):
     data = db.Column(db.String(36000), nullable=False)
     status = db.Column(db.Boolean, default=True)
 
-
+class Gifs(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    theme = db.Column(db.String(100), nullable=False)
+    gif_path  = db.Column(db.String(1000), nullable=False)
+    name = db.Column(db.String(80), nullable=False)
+    about = db.Column(db.String(10000), nullable=False)
+    
 class MatterPoints(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
@@ -116,7 +122,6 @@ class QuizPoints(db.Model):
     user = db.relationship("User", backref=db.backref("quiz_progress", lazy=True))
     quiz = db.relationship("Quiz", backref=db.backref("participants", lazy=True))
 
-
 class SolvedProblems(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
@@ -131,6 +136,7 @@ class TestResults(db.Model):
     quiz_id = db.Column(
         db.Integer, db.ForeignKey("quiz.id"), nullable=False
     )
+
 
 
 def save_user_progress(user_id, item_id, points, x_type):

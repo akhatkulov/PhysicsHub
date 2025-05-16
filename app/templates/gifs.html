@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<h1>Barcha Animationlar</h1>
+
+{% for gif in gifs %}
+    <div class="gif-box">
+        <h2>{{ gif.name }}</h2>
+        <p><strong>Mavzu:</strong> {{ gif.theme }}</p>
+        <p><strong>Haqida:</strong> {{ gif.about }}</p>
+
+        {% if gif.gif_path.endswith('.mp4') %}
+            <video width="400" controls autoplay loop muted>
+                <source src="{{ url_for('static', filename=gif.gif_path) }}" type="video/mp4">
+                Brauzeringiz video tagini qo‘llab-quvvatlamaydi.
+            </video>
+        {% else %}
+            <img src="{{ url_for('static', filename=gif.gif_path) }}" alt="GIF" width="400">
+        {% endif %}
+    </div>
+{% endfor %}
+
+{% endblock %}
+
+{% block page_content %}
+{{wtf.quick_form(form)}}
+{% endblock %}
+
+

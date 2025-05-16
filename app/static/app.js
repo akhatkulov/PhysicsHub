@@ -224,15 +224,22 @@ qForm.addEventListener("submit", e => {
 });
 aForm.addEventListener("submit", e => {
     e.preventDefault();
+
     const gif = inputs.a.gif.files[0];
     if (!gif) return alert("GIF yuklang!");
-    
-    const formData = { title: inputs.a.title.value,gif: gif, about: inputs.a.about.value, theme: inputs.a.theme.value };
+
+    const formData = new FormData();
+    formData.append("title", inputs.a.title.value);
+    formData.append("about", inputs.a.about.value);
+    formData.append("theme", inputs.a.theme.value);
+    formData.append("gif", gif); // 📁 Fayl shu yerda to‘g‘ri yuboriladi
+
     fetch("/admin/add_animation", {
         method: "POST",
-        body: JSON.stringify(formData),
-    }).then(() => console.log(formData));
+        body: formData, // ✅ Fayl bilan form-data yuboriladi
+    }).then(() => console.log("Yuborildi"));
 });
+
 // Submit theme
 mForm.addEventListener("submit", e => {
     e.preventDefault();

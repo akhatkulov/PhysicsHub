@@ -6,7 +6,7 @@ from .. import db
 from ..models import (
     User, Theme, Matter, Quiz,
     get_all_themes, save_user_progress, check_history,
-    get_leaderboard, get_matter, get_quiz
+    get_leaderboard, get_matter, get_quiz,Gifs
 )
 from ..email import send_email
 from . import main
@@ -14,11 +14,24 @@ from .forms import SignInForm, SignUpForm, UpdateData
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, logout_user, login_user, current_user
 import json
+from werkzeug.utils import secure_filename
+from datetime import datetime
+import os
+
+ALLOWED_EXTENSIONS = {'gif', 'mp4'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @main.route("/", methods=["GET", "POST"])
 def home_page():
     return render_template("index.html")
+    
+@main.route("/gifs")
+def show_gifs():
+    gifs = Gifs.query.all()
+    return render_template("gifs.html", gifs=gifs)
 
 
 @main.route("/admin")
@@ -28,6 +41,40 @@ def admin():
         abort(404)
     return render_template("admin/index.html")
 
+@main.route("/admin/add_animation", methods=["POST"])
+@login_required
+def add_get():
+    if current_user.username != "admin":
+        abort(403)
+
+    title = request.form.get("title")
+    about = request.form.get("about")
+    theme = request.form.get("theme")
+    media = request.files.get("gif")  # gif yoki mp4 shu joyga keladi
+
+    if not media or media.filename == '':
+        return "No file provided", 400
+
+    if allowed_file(media.filename):
+        filename = secure_filename(f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{media.filename}")
+        save_dir = os.path.join(current_app.root_path, 'static', 'gifs')
+        os.makedirs(save_dir, exist_ok=True)  # agar yo'q bo‘lsa papkani yaratadi
+        save_path = os.path.join(save_dir, filename)
+        media.save(save_path)
+
+        # Konsolga chiqarish
+        res = {
+            "title": title,
+            "about": about,
+            "theme": theme,
+            "media": f"gifs/{filename}"
+        }
+        new_gif = Gifs(name=res["title"],about=res["about"],gif_path=res["media"],theme=res["theme"])
+        db.session.add(new_gif)
+        db.session.commit()
+        return "Good"
+    else:
+        return "Only .gif or .mp4 files are allowed", 400
 
 @main.route("/admin/add_matter", methods=["POST"])
 @login_required

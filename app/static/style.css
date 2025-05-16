@@ -1279,3 +1279,12 @@ header {
         top: -83px;
     }
 }
+
+/* GIF BOX */
+.gif-box {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+}
