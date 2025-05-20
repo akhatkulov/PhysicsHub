@@ -107,7 +107,7 @@ class Labs(db.Model):
     about = db.Column(db.String(10000), nullable=False)
     link = db.Column(db.String(1000), nullable=False)
     pic_path = db.Column(db.String(1000), nullable=False)
-    
+
 class MatterPoints(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
@@ -272,6 +272,19 @@ def get_matter_list():
     ]
 
 
+def get_lab_list():
+    labs = Labs.query.all()
+    return [
+        {
+            "id": l.id,
+            "title": l.name,
+            "about"" l.about,
+            "link": l.link,
+            "pic_path":l.pic_path
+        }
+        for l in labs
+    ]
+
 def get_all_quizzes():
     quizzes = Quiz.query.all()
     return [
@@ -285,9 +298,13 @@ def get_all_quizzes():
         for q in quizzes
     ]
 
+def get_labs():
+    labs = get_lab_list()
+    return [q for q in quizzes if q["title"].startswith(prefix)]
+    
 def get_animation_func():
     gifs = get_animation_func_2()
-    return [q for q in quizzes if q["name"].startswith(prefix)]
+    return [q for q in quizzes if q["title"].startswith(prefix)]
 
 def get_quiz(prefix):
     quizzes = get_all_quizzes()

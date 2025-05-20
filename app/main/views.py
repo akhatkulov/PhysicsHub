@@ -6,7 +6,7 @@ from .. import db
 from ..models import (
     User, Theme, Matter, Quiz,
     get_all_themes, save_user_progress, check_history,
-    get_leaderboard, get_matter, get_quiz,Gifs,get_animation_func,Labs
+    get_leaderboard, get_matter, get_quiz,Gifs,get_animation_func,Labs,get_labs
 )
 from ..email import send_email
 from . import main
@@ -143,8 +143,8 @@ def get_animation_list():
 @main.route("/api/get_labs",methods=["GET"])
 def get_labs_list():
     prefix = request.args.get("prefix", "").lower()
-    return jsonify(get_animation_func(prefix))
-    2
+    return jsonify(get_labs(prefix))
+
 @main.route("/api/get_quiz", methods=["GET"])
 def get_quiz_list():
     prefix = request.args.get("prefix", "").lower()
