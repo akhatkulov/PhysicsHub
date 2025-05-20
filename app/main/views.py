@@ -6,7 +6,7 @@ from .. import db
 from ..models import (
     User, Theme, Matter, Quiz,
     get_all_themes, save_user_progress, check_history,
-    get_leaderboard, get_matter, get_quiz,Gifs
+    get_leaderboard, get_matter, get_quiz,Gifs,get_animation_func,Labs
 )
 from ..email import send_email
 from . import main
@@ -33,6 +33,9 @@ def show_gifs():
     gifs = Gifs.query.all()
     return render_template("gifs.html", gifs=gifs)
 
+@main.route("/chat")
+def chat():
+    return render_template("chat-ai.html")
 
 @main.route("/admin")
 @login_required
@@ -132,7 +135,16 @@ def add_theme():
 def get_themes():
     return jsonify(get_all_themes())
 
+@main.route("/api/get_animation",methods=["GET"])
+def get_animation_list():
+    prefix = request.args.get("prefix", "").lower()
+    return jsonify(get_animation_func(prefix))
 
+@main.route("/api/get_labs",methods=["GET"])
+def get_labs_list():
+    prefix = request.args.get("prefix", "").lower()
+    return jsonify(get_animation_func(prefix))
+    2
 @main.route("/api/get_quiz", methods=["GET"])
 def get_quiz_list():
     prefix = request.args.get("prefix", "").lower()
@@ -144,6 +156,16 @@ def get_matter_list():
     prefix = request.args.get("prefix", "").lower()
     return jsonify(get_matter(prefix))
 
+
+@main.route("/api/delete_animation/<int:item_id>",methods=["DELETE"])
+@login_required
+def delete_animation(item_id):
+    if current_user.username !="admin":
+        abort(403)
+    item = Gifs.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({"message": "Item deleted successfully"}), 200
 
 @main.route("/api/delete_theme/<int:item_id>", methods=["DELETE"])
 @login_required

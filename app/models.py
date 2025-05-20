@@ -100,6 +100,13 @@ class Gifs(db.Model):
     gif_path  = db.Column(db.String(1000), nullable=False)
     name = db.Column(db.String(80), nullable=False)
     about = db.Column(db.String(10000), nullable=False)
+
+class Labs(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    about = db.Column(db.String(10000), nullable=False)
+    link = db.Column(db.String(1000), nullable=False)
+    pic_path = db.Column(db.String(1000), nullable=False)
     
 class MatterPoints(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -235,6 +242,18 @@ def get_all_themes():
     themes = Theme.query.all()
     return [{"id": t.id, "name": t.name, "about": t.about} for t in themes]
 
+def get_animation_func_2():
+    gifs = Gifs.query.all()
+    return [
+        {
+            "id":g.id,
+            'title':g.name,
+            'theme':g.theme,
+            "about":g.about,
+            "gif_path":g.gif_path
+        }
+        for g in gifs
+    ]
 
 def get_matter_list():
     matters = Matter.query.all()
@@ -266,6 +285,9 @@ def get_all_quizzes():
         for q in quizzes
     ]
 
+def get_animation_func():
+    gifs = get_animation_func_2()
+    return [q for q in quizzes if q["name"].startswith(prefix)]
 
 def get_quiz(prefix):
     quizzes = get_all_quizzes()
