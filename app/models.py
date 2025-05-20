@@ -278,7 +278,7 @@ def get_lab_list():
         {
             "id": l.id,
             "title": l.name,
-            "about"" l.about,
+            "about": l.about,
             "link": l.link,
             "pic_path":l.pic_path
         }
@@ -301,7 +301,7 @@ def get_all_quizzes():
 def get_labs():
     labs = get_lab_list()
     return [q for q in quizzes if q["title"].startswith(prefix)]
-    
+
 def get_animation_func():
     gifs = get_animation_func_2()
     return [q for q in quizzes if q["title"].startswith(prefix)]

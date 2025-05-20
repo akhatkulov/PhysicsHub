@@ -6,7 +6,7 @@ from .. import db
 from ..models import (
     User, Theme, Matter, Quiz,
     get_all_themes, save_user_progress, check_history,
-    get_leaderboard, get_matter, get_quiz,Gifs,get_animation_func,Labs,get_labs
+    get_leaderboard, get_matter, get_quiz,Gifs,get_animation_func,Labs,get_labs,get_lab_list
 )
 from ..email import send_email
 from . import main
@@ -18,7 +18,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 
-ALLOWED_EXTENSIONS = {'gif', 'mp4'}
+ALLOWED_EXTENSIONS = {'gif', 'mp4', 'jpg', 'jpeg', 'png'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -73,6 +73,41 @@ def add_get():
             "media": f"gifs/{filename}"
         }
         new_gif = Gifs(name=res["title"],about=res["about"],gif_path=res["media"],theme=res["theme"])
+        db.session.add(new_gif)
+        db.session.commit()
+        return "Good"
+    else:
+        return "Only .gif or .mp4 files are allowed", 400
+
+@main.route("/admin/add_lab", methods=["POST"])
+@login_required
+def add_lab_v2():
+    if current_user.username != "admin":
+        abort(403)
+
+    title = request.form.get("title")
+    about = request.form.get("about")
+    link = request.form.get("link")
+    pic = request.files.get("pic") 
+
+    if not media or media.filename == '':
+        return "No file provided", 400
+
+    if allowed_file(media.filename):
+        filename = secure_filename(f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{media.filename}")
+        save_dir = os.path.join(current_app.root_path, 'static', 'pics')
+        os.makedirs(save_dir, exist_ok=True)  # agar yo'q bo‘lsa papkani yaratadi
+        save_path = os.path.join(save_dir, filename)
+        media.save(save_path)
+
+        # Konsolga chiqarish
+        res = {
+            "title": title,
+            "about": about,
+            "link": link,
+            "pic_path": f"pics/{filename}"
+        }
+        new_gif = Labs(name=res["title"],about=res["about"],pic_path=res["pic_path"],link=res["link"])
         db.session.add(new_gif)
         db.session.commit()
         return "Good"
@@ -156,6 +191,16 @@ def get_matter_list():
     prefix = request.args.get("prefix", "").lower()
     return jsonify(get_matter(prefix))
 
+@main.route("/api/delete_labs/<int:item_id>",methods=["DELETE"])
+@login_required
+def delete_labs(item_id):
+    if current_user.username !="admin":
+        abort(403)
+
+    item = Labs.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({"message": "Item deleted successfully"}), 200
 
 @main.route("/api/delete_animation/<int:item_id>",methods=["DELETE"])
 @login_required
@@ -307,9 +352,7 @@ def calc_matter(theme, matter_id):
         if user_answer == matter.correct:
             save_user_progress(current_user.id, matter.id, matter.ball, "matter")
             flash(f"✅ To‘g‘ri javob! ({user_answer})", "success")
-        else:
-            flash(f"❌ Noto‘g‘ri javob... To‘g‘ri javob: {matter.correct}", "danger")
-    return render_template("calc_matter.html", matter=matter, theme=theme)
+        else:get_lab_list
 
 
 
@@ -333,9 +376,10 @@ def leaderboard():
     return render_template("leaderboard.html", ranked_users=ranked_users)
 
 
-@main.route("/lab")
-def lab():
-    return render_template("lab_list.html")
+@main.route('/lab')
+def lab_list_view():
+    labs = get_lab_list()
+    return render_template('lab_list.html', labs=labs)
 
 @main.route("/labaratory/<id>")
 def lab_page(id):

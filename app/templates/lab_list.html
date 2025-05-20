@@ -77,6 +77,18 @@
                 <a href="/labaratory/harakat_va_kuch" class="lab1-enter-btn"><button>Kirish</button></a>
             </div>
         </div>
+        {% for lab in labs %}
+        <div class="lab1-card">
+            <div class="lab1-image">
+                <img src="{{ url_for('static', filename=lab.pic_path) }}" alt="{{ lab.title }}">
+            </div>
+            <div class="lab1-info">
+                <h2 class="lab1-title">{{ lab.title }}</h2>
+                <p class="lab1-description">{{ lab.about }}</p>
+                <a href="{{ lab.link }}" class="lab1-enter-btn"><button>Kirish</button></a>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}
