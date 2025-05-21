@@ -90,15 +90,15 @@ def add_lab_v2():
     link = request.form.get("link")
     pic = request.files.get("pic") 
 
-    if not media or media.filename == '':
+    if not pic or pic.filename == '':
         return "No file provided", 400
 
-    if allowed_file(media.filename):
-        filename = secure_filename(f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{media.filename}")
+    if allowed_file(pic.filename):
+        filename = secure_filename(f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{pic.filename}")
         save_dir = os.path.join(current_app.root_path, 'static', 'pics')
         os.makedirs(save_dir, exist_ok=True)  # agar yo'q bo‘lsa papkani yaratadi
         save_path = os.path.join(save_dir, filename)
-        media.save(save_path)
+        pic.save(save_path)
 
         # Konsolga chiqarish
         res = {

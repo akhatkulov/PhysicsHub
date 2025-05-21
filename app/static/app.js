@@ -5,15 +5,18 @@ const tModal = document.querySelector(".test_modal");
 const littleModal = document.querySelector(".little_modal");
 const animationModal = document.querySelector(".anima_modal");
 const themeModal = document.querySelector(".theme_modal");
+const labModal = document.querySelector(".lab_modal");
 const q_page = document.querySelector(".question_page");
 const t_page = document.querySelector(".test_page");
 const a_page = document.querySelector(".animation_page");
+const l_page = document.querySelector(".lab_page");
 const m_page = document.querySelector(".theme_page");
 
 // Buttons
 const btnQuestion = document.querySelector(".question");
 const btnTest = document.querySelector(".test");
 const btnAnimation = document.querySelector(".animation");
+const btnLabaratory = document.querySelector(".labaratory");
 const btnLTest = document.querySelector(".t_plus");
 const btnLEditTest = document.querySelector(".t_plus_edit")
 const btnTheme = document.querySelector(".theme");
@@ -24,6 +27,7 @@ const exitTM = document.querySelector(".t_exit");
 const exitAM = document.querySelector(".a_exit");
 const exitLM = document.querySelector(".l_exit");
 const exitMM = document.querySelector(".m_exit");
+const exitLAM = document.querySelector(".l_exit");
 
 // Forms & inputs
 const qForm = document.querySelector(".q_form");
@@ -31,9 +35,12 @@ const qFormEdit = document.querySelector(".q_form_edit");
 const tForm = document.querySelector(".t_form");
 const tFormEdit = document.querySelector(".t_form_edit");
 const aForm = document.querySelector(".a_form");
+const lForm = document.querySelector(".l_form");
 const mForm = document.querySelector(".m_form");
 const qSearch = document.getElementById("q_search_input");
 const tSearch = document.getElementById("t_search_input");
+const aSearch = document.getElementById("a_search_input");
+const lSearch = document.getElementById("l_search_input")
 
 
 const inputs = {
@@ -61,11 +68,17 @@ const inputs = {
         title: document.getElementById("t_title_edit"),
         theme: document.getElementById("t_mavzusi_edit")
     },
-    a:{
+    a: {
         title: document.getElementById("a_title"),
         theme: document.getElementById("a_mavzusi"),
         gif: document.getElementById("a_gif"),
         about: document.getElementById("a_about")
+    },
+    l: {
+        title: document.getElementById("l_title"),
+        image: document.getElementById("l_image"),
+        url: document.getElementById("l_url"),
+        about: document.getElementById("l_about")
     },
     m: {
         title: document.getElementById("m_title"),
@@ -77,32 +90,46 @@ const inputs = {
 const questionContainer = document.querySelector(".q_boxs");
 const quizContainer = document.querySelector(".t_boxs");
 const themesContainer = document.querySelector(".th_box");
+const animationContainer = document.querySelector(".a_boxs");
+const labContainer = document.querySelector(".l_boxs")
 const questionBox = document.querySelector(".question_box");
 const testBox = document.querySelector(".test_box");
 const animationBox = document.querySelector(".animation_box");
+const labaratoryBox = document.querySelector(".lab_box");
 const themeBox = document.querySelector(".theme_box");
 q_page.addEventListener("click", () => {
     questionBox.style.display = "block";
     testBox.style.display = "none";
     animationBox.style.display = "none";
+    labaratoryBox.style.display = "none"
     themeBox.style.display = "none";
 })
 t_page.addEventListener("click", () => {
     questionBox.style.display = "none";
     testBox.style.display = "block";
     animationBox.style.display = "none";
+    labaratoryBox.style.display = "none"
     themeBox.style.display = "none";
 })
 a_page.addEventListener("click", () => {
     questionBox.style.display = "none";
     testBox.style.display = "none";
     animationBox.style.display = "block";
+    labaratoryBox.style.display = "none"
+    themeBox.style.display = "none";
+})
+l_page.addEventListener("click", () => {
+    questionBox.style.display = "none";
+    testBox.style.display = "none";
+    animationBox.style.display = "none";
+    labaratoryBox.style.display = "block"
     themeBox.style.display = "none";
 })
 m_page.addEventListener("click", () => {
     questionBox.style.display = "none";
     testBox.style.display = "none";
     animationBox.style.display = "none";
+    labaratoryBox.style.display = "none"
     themeBox.style.display = "block";
 })
 // Test question elements
@@ -133,7 +160,7 @@ function openModal(modal) {
 
 // Utility: close all modals
 function closeModals() {
-    [qModal, tModal, littleModal,animationModal, themeModal].forEach(m => m && (m.style.display = "none"));
+    [qModal, tModal, littleModal, animationModal, labModal, themeModal].forEach(m => m && (m.style.display = "none"));
     modals.style.display = "none";
     con.style.height = "auto";
     con.style.overflow = "auto";
@@ -157,13 +184,15 @@ btnTest.addEventListener("click", () => {
     testsEditWrapper.innerHTML = "";
     qNumber.textContent = "0";
 });
-btnAnimation.addEventListener("click", () => {openModal(animationModal)});
+btnAnimation.addEventListener("click", () => { openModal(animationModal) });
 btnTheme.addEventListener("click", () => openModal(themeModal));
 btnLTest.addEventListener("click", () => openModal(littleModal));
 btnLEditTest.addEventListener("click", () => openModal(littleModal));
+btnLabaratory.addEventListener("click", () => openModal(labModal));
 // Exit listeners
 exitQM.addEventListener("click", closeModals);
 exitTM.addEventListener("click", closeModals);
+exitLAM.addEventListener("click", closeModals);
 exitLM.addEventListener("click", () => { littleModal.style.display = "none" });
 exitAM.addEventListener("click", closeModals);
 exitMM.addEventListener("click", closeModals);
@@ -237,8 +266,26 @@ aForm.addEventListener("submit", e => {
     fetch("/admin/add_animation", {
         method: "POST",
         body: formData, // ✅ Fayl bilan form-data yuboriladi
-    }).then(() => console.log("Yuborildi"));
+    }).then(() => location.reload());
 });
+
+lForm.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const image = inputs.l.image.files[0];
+    if (!image) return alert("Rasm yuklang!");
+
+    const formData = new FormData();
+    formData.append("title", inputs.l.title.value);
+    formData.append("about", inputs.l.about.value);
+    formData.append("link", inputs.l.url.value);
+    formData.append("pic", image);
+
+    fetch("/admin/add_lab", {
+        method: "POST",
+        body: formData,
+    }).then(data => location.reload());
+})
 
 // Submit theme
 mForm.addEventListener("submit", e => {
@@ -268,11 +315,19 @@ qSearch.addEventListener("input", (e) => {
     const searchValue = e.target.value.toLowerCase();
     loadQuestions(searchValue);
 })
+aSearch.addEventListener("input", (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    loadAnimationList(searchValue);
+})
+lSearch.addEventListener("input", (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    loadLabs(searchValue);
+})
 
 // Load question list
 function loadQuestions(searchE) {
     let prefix = searchE ? `?prefix=${searchE}` : "";
-    fetch("/api/get_matter"+prefix).then(res => res.json()).then(data => {
+    fetch("/api/get_matter" + prefix).then(res => res.json()).then(data => {
         questionContainer.innerHTML = data.length ? data.map(item => `
       <div class="box">
         <p class="box_title">#${item.id} | ${item.title}</p>
@@ -293,7 +348,7 @@ tSearch.addEventListener("input", (e) => {
 // Load quiz list
 function loadQuizzes(searchE) {
     let prefix = searchE ? `?prefix=${searchE}` : "";
-    fetch("/api/get_quiz"+prefix).then(res => res.json()).then(data => {
+    fetch("/api/get_quiz" + prefix).then(res => res.json()).then(data => {
         quizContainer.innerHTML = data.length ? data.map(item => `
       <div class="box">
         <p class="box_title">#${item.id} | ${item.title}</p>
@@ -320,12 +375,59 @@ function loadThemeList() {
     `).join('') : `<span class="edit_empty"><i class="fa-solid fa-box-open"></i><p>Ma'lumot topilmadi</p></span>`;
     });
 }
+function loadAnimationList(searchE) {
+    let prefix = searchE ? `?prefix=${searchE}` : "";
+    fetch("/api/get_animation" + prefix)
+        .then(res => res.json())
+        .then(data => {
+            animationContainer.innerHTML = data.length ? data.map(item => `
+            <div class="anima_box">
+                            <div>
+                            <img src="/static/${item.gif_path}" style="width: 300px;"
+                                alt="">
+                            <div class="anima_title">
+                                <p><b>Animatsiya nomi:</b> ${item.title}</p>
+                                <p><b>Ma'lumot:</b> ${item.about}</p>
+                                <p><b>Mavzu:</b> ${item.theme}</p>
+                            </div>
+                            </div>
+                            <div class="edit_box_crud">
+                                <span onclick="deleteAnima(${item.id})"><i class="fa-solid fa-trash"></i></span>
+                            </div>
+                        </div>
+            `).join('') : `<span class="edit_empty"><i class="fa-solid fa-box-open"></i><p>Ma'lumot topilmadi</p></span>`
+        })
+}
+function loadLabs(searchE) {
+    let prefix = searchE ? `?prefix=${searchE}` : "";
+    fetch("/api/get_labs" + prefix)
+        .then(res => res.json())
+        .then(data => {
+            labContainer.innerHTML = data.length ? data.map(item => `
+                <div class="anima_box">
+                                <div>
+                                <img src="/static/${item.pic_path}" style="width: 300px;"
+                                    alt="">
+                                <div class="anima_title">
+                                    <p><b>Animatsiya nomi:</b> ${item.title}</p>
+                                    <p><b>Ma'lumot:</b> ${item.about}</p>
+                                </div>
+                                </div>
+                                <div class="edit_box_crud">
+                                    <span onclick="deleteLab(${item.id})"><i class="fa-solid fa-trash"></i></span>
+                                </div>
+                            </div>
+                `).join('') : `<span class="edit_empty"><i class="fa-solid fa-box-open"></i><p>Ma'lumot topilmadi</p></span>`
 
+        })
+}
 
 // Delete handlers
 window.deleteQuestion = id => { if (confirm("Masala o'chirilsinmi ?")) fetch(`/api/delete_matter/${id}`, { method: 'DELETE' }).then(loadQuestions); };
 window.deleteQuiz = id => { if (confirm("Test o'chirilsinmi ?")) fetch(`/api/delete_quiz/${id}`, { method: 'DELETE' }).then(loadQuizzes); };
 window.deleteTheme = id => { if (confirm("Mavzu o'chirilsinmi ?")) fetch(`/api/delete_theme/${id}`, { method: 'DELETE' }).then(loadThemeList); };
+window.deleteAnima = id => { if (confirm("Animatsiya o'chirilsinmi ?")) fetch(`api/delete_animation/${id}`, { method: 'DELETE' }).then(loadAnimationList); };
+window.deleteLab = id => { if (confirm("Labaratoriya o'chirilsinmi ?")) fetch(`api/delete_labs/${id}`, { method: 'DELETE' }).then(loadLabs); }
 window.editQuestion = function (id) {
     // Open edit modal
     openModal(qModal);
@@ -463,4 +565,5 @@ loadThemes();
 loadQuestions();
 loadQuizzes();
 loadThemeList();
-
+loadAnimationList();
+loadLabs();

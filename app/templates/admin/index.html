@@ -17,7 +17,7 @@
                     <i class="fa-solid fa-sign-out"></i>
                 </div>
             </a>
-            <div class="question_menu">
+            <div class="question_menu" >
                 <div class="question">
                     Masala qo'shish
                 </div>
@@ -26,6 +26,9 @@
                 </div>
                 <div class="animation">
                     Animatsiya qo'shish
+                </div>
+                <div class="labaratory">
+                    Labaratoriya qo'shish
                 </div>
                 <div class="theme">
                     Mavzu qo'shish
@@ -43,6 +46,9 @@
                     </div>
                     <div class="animation_page">
                         Animatsiyalar
+                    </div>
+                    <div class="lab_page">
+                        Labaratoriyalar
                     </div>
                     <div class="theme_page">
                         Mavzular
@@ -81,7 +87,21 @@
                         <input type="search" id="a_search_input" name="prefix" placeholder="Qidirish..."
                             autocomplete="off">
                     </form>
-                    <div class="edit_boxs a_boxs">
+                    <div class="edit_boxs a_boxs" style="overflow-y: auto;">
+                        
+                    </div>
+                    <div class="edit_loader a_loader">
+                        <div></div>
+                    </div>
+                </div>
+                <div class="lab_box">
+                    <h1>Labaratoriyalar</h1>
+                    <form id="l_search_form">
+                        <input type="search" id="l_search_input" name="prefix" placeholder="Qidirish..."
+                            autocomplete="off">
+                    </form>
+                    <div class="edit_boxs l_boxs" style="overflow-y: auto;">
+                        
                     </div>
                     <div class="edit_loader a_loader">
                         <div></div>
@@ -264,6 +284,38 @@
                 <div class="input-i">
                     <input type="text" id="a_about" required>
                     <label for="a_about" class="title">
+                        Ma'lumot
+                    </label>
+                </div>
+                <button type="submit">Qo'shish</button>
+            </form>
+        </div>
+        <div class="lab_modal">
+            <span class="l_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <h1>
+                Labaratoriya qo'shish
+            </h1>
+            <form action="#" class="l_form">
+                <div class="input-i">
+                    <input type="text" id="l_title" required>
+                    <label for="l_title" class="title">
+                        Labaratoriya nomi
+                    </label>
+                </div>
+                <div class="input-i">
+                    <input type="file" accept="image/*" id="l_image" required>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="l_url" required>
+                    <label for="l_url" class="title">
+                        Labaratoriya linki (URL)
+                    </label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="l_about" required>
+                    <label for="l_about" class="title">
                         Ma'lumot
                     </label>
                 </div>
