@@ -298,13 +298,13 @@ def get_all_quizzes():
         for q in quizzes
     ]
 
-def get_labs():
+def get_labs(prefix):
     labs = get_lab_list()
-    return [q for q in quizzes if q["title"].startswith(prefix)]
+    return [q for q in labs if q["title"].startswith(prefix)]
 
-def get_animation_func():
+def get_animation_func(prefix):
     gifs = get_animation_func_2()
-    return [q for q in quizzes if q["title"].startswith(prefix)]
+    return [q for q in gifs if q["title"].startswith(prefix)]
 
 def get_quiz(prefix):
     quizzes = get_all_quizzes()
