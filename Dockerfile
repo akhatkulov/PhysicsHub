@@ -1,19 +1,18 @@
-FROM python:3.11-slim
+FROM python:3.6-slim
 
-ENV APP_HOME=/app
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-RUN mkdir -p $APP_HOME
-WORKDIR $APP_HOME
+WORKDIR /app
 
-COPY . .
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libpq-dev \
-    python3-dev \
-    gettext
+COPY . /app/
 
-RUN pip install -U pip && \
-    pip install -r requirements.txt
+# Run permissions for entrypoint script
+RUN chmod +x /app/entrypoint.sh
 
-CMD ["python3", "app.py"]
+EXPOSE 5000
+
+ENTRYPOINT ["/app/entrypoint.sh"]
