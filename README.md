@@ -29,8 +29,7 @@ docker run -d --restart unless-stopped -p 8086:5000 -v /root/DataBase/Physicshub
 
 
 
-### Nginx:
-
+### Nginx
 ```
 sudo nano /etc/nginx/sites-available/fizikaonline.uz
 ```
@@ -38,7 +37,13 @@ sudo nano /etc/nginx/sites-available/fizikaonline.uz
 ```
 server {
     listen 80;
+    listen [::]:80;
     server_name fizikaonline.uz;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+        allow all;
+    }
 
     location / {
         proxy_pass http://95.216.144.224:8086;
@@ -46,16 +51,7 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
-    location /.well-known/acme-challenge/ {
-        root /var/www/html;
-        allow all;
-    }
-
 }
-```
-
-```
-sudo ln -s /etc/nginx/sites-available/fizikaonline.uz /etc/nginx/sites-enabled/
 ```
 
 ```
@@ -64,4 +60,9 @@ sudo nginx -t
 
 ```
 sudo systemctl reload nginx
+```
+
+### SSL
+```
+sudo certbot --nginx -d fizikaonline.uz
 ```
