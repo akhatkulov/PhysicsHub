@@ -16,3 +16,13 @@ set FLASK_DEBUG=1
 flask db upgrade
 
 flask run
+
+
+Docker:
+```
+docker build -t physicshub -f Dockerfile .
+```
+
+```
+docker run -d --restart unless-stopped -p 8086:5000 -v /root/DataBase:/app/instance physicshub
+```
