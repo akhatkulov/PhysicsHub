@@ -256,21 +256,40 @@ function autoSave() {
 }
 
 
-$(document).ready(function() {
+// $(document).ready(function() {
 
-  const autosave = getAllCookies().join("");
+//   const autosave = getAllCookies().join("");
   
+//   if (autosave === "") { return; }
+
+//   try {
+//     JsonData = JSON.parse(autosave);
+//   } catch (e) {
+//     console.log(e);
+//     return;
+//   }
+  
+//   if (Object.keys(JsonData).length === 0) { return; }  
+  
+//   loadDiagram(JsonData);
+// });
+
+$(document).ready(function () {
+
+  const autosave = getAllCookies();  // JSON string expected
+
   if (autosave === "") { return; }
 
   try {
     JsonData = JSON.parse(autosave);
   } catch (e) {
-    console.log(e);
+    console.log("JSON parse error:", e);
+    console.log("Autosave data:", autosave);
     return;
   }
-  
-  if (Object.keys(JsonData).length === 0) { return; }  
-  
+
+  if (Object.keys(JsonData).length === 0) { return; }
+
   loadDiagram(JsonData);
 });
 
