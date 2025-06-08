@@ -24,5 +24,5 @@ docker build -t physicshub -f Dockerfile .
 ```
 
 ```
-docker run -d --restart unless-stopped -p 8086:5000 -v /root/DataBase:/app/instance physicshub
+docker run -d --restart unless-stopped -p 8086:5000 -v /root/DataBase/Physicshub:/app/db physicshub
 ```
