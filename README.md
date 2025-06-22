@@ -53,7 +53,9 @@ server {
     }
 }
 ```
-
+```
+sudo ln -s /etc/nginx/sites-available/fizikaonline.uz /etc/nginx/sites-enabled/
+```
 ```
 sudo nginx -t
 ```
