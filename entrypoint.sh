@@ -9,5 +9,8 @@ fi
 
 flask db upgrade
 
-# Gunicorn orqali appni ishga tushirish (WSGI faylingiz flasky.py deb taxmin qilinmoqda)
-exec gunicorn -b :5000 flasky:app
+export FLASK_APP=flasky
+export FLASK_RUN_HOST=0.0.0.0
+export FLASK_RUN_PORT=5000
+exec flask run
+
