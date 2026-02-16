@@ -17,7 +17,7 @@
                     <i class="fa-solid fa-sign-out"></i>
                 </div>
             </a>
-            <div class="question_menu" >
+            <div class="question_menu">
                 <div class="question">
                     Masala qo'shish
                 </div>
@@ -32,6 +32,9 @@
                 </div>
                 <div class="theme">
                     Mavzu qo'shish
+                </div>
+                <div class="handbook-add">
+                    Qo'llanma qo'shish
                 </div>
             </div>
         </div>
@@ -52,6 +55,9 @@
                     </div>
                     <div class="theme_page">
                         Mavzular
+                    </div>
+                    <div class="handbook_page">
+                        Qo'llanma
                     </div>
                 </div>
             </div>
@@ -88,7 +94,7 @@
                             autocomplete="off">
                     </form>
                     <div class="edit_boxs a_boxs" style="overflow-y: auto;">
-                        
+
                     </div>
                     <div class="edit_loader a_loader">
                         <div></div>
@@ -101,7 +107,7 @@
                             autocomplete="off">
                     </form>
                     <div class="edit_boxs l_boxs" style="overflow-y: auto;">
-                        
+
                     </div>
                     <div class="edit_loader a_loader">
                         <div></div>
@@ -110,6 +116,10 @@
                 <div class="theme_box">
                     <h1>Mavzular</h1>
                     <div class="th_box"></div>
+                </div>
+                <div class="handbook_box">
+                    <h1>Qo'llanma</h1>
+                    <div class="hb_box edit_boxs"></div>
                 </div>
             </div>
         </header>
@@ -305,10 +315,15 @@
                     </label>
                 </div>
                 <div class="input-i">
+                    <span>Muqova rasmi (Rasm yuklang):</span>
                     <input type="file" accept="image/*" id="l_image" required>
                 </div>
                 <div class="input-i">
-                    <input type="text" id="l_url" required>
+                    <span>Laboratoriya fayllari (ZIP yuklang):</span>
+                    <input type="file" accept=".zip" id="l_zip">
+                </div>
+                <div class="input-i">
+                    <input type="text" id="l_url" placeholder="Yoki link kiriting">
                     <label for="l_url" class="title">
                         Labaratoriya linki (URL)
                     </label>
@@ -341,6 +356,31 @@
                     <label for="m_about" class="title">
                         Ma'lumot
                     </label>
+                </div>
+                <button type="submit">Qo'shish</button>
+            </form>
+        </div>
+        <div class="handbook_modal">
+            <span class="h_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <h1>Qo'llanma qo'shish</h1>
+            <form action="#" class="h_form">
+                <div class="input-i">
+                    <input type="text" id="h_category" required>
+                    <label for="h_category" class="title">Kategoriya (masalan, Mexanika)</label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="h_title" required>
+                    <label for="h_title" class="title">Nomi (masalan, G = 9.8)</label>
+                </div>
+                <div class="input-i">
+                    <textarea id="h_content" required></textarea>
+                    <label for="h_content" class="title">Mazmuni / Formula</label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="h_about">
+                    <label for="h_about" class="title">Izoh (ixtiyoriy)</label>
                 </div>
                 <button type="submit">Qo'shish</button>
             </form>

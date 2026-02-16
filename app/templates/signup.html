@@ -1,42 +1,65 @@
 {% extends "base.html" %}
 
-{% block title %}Home - Physics Hub{% endblock %}
-
+{% block title %}Ro'yxatdan o'tish - Physics Hub{% endblock %}
 
 {% block content %}
 <div class="login-section">
-    <form method="POST" action="/signup" class="i42-form">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="flash-messages">
-            {% for category, message in messages %}
-            <div class="flash {{ category }}">
-                {{ message }}
+    <div class="glass-card"
+        style="padding: 40px; border-radius: var(--radius-lg); width: 100%; max-width: 500px; margin: 0 auto;">
+        <form method="POST" action="/signup" class="i42-form" style="width: 100%; max-width: none;">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">
+                    <i class="fas fa-exclamation-circle" style="margin-right: 10px;"></i>
+                    {{ message }}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
-        <div class="form-action-title">Ro'yxatdan o'tish</div>
-        {{ form.hidden_tag() }}
+            {% endif %}
+            {% endwith %}
 
-        <label for="name">Ism:</label>
-        {{ form.name(class="form-input") }}<br>
+            <div class="form-action-title text-gradient">Yangi Hisob</div>
+            <p style="text-align: center; color: var(--text-muted); margin-top: -30px; margin-bottom: 30px;">Physics Hub
+                olamiga qo'shiling</p>
 
-        <label for="surname">Familiya:</label>
-        {{ form.surname(class="form-input") }}<br>
+            {{ form.hidden_tag() }}
 
-        <label for="username">Taxallus:</label>
-        {{ form.username(class="form-input") }}<br>
+            <div class="form-group">
+                <label for="name"><i class="fas fa-user"></i> Ism</label>
+                {{ form.name(placeholder="Ismingizni kiriting") }}
+            </div>
 
-        <label for="university">O'qish joyi:</label>
-        {{ form.university(class="form-input") }}<br>
+            <div class="form-group">
+                <label for="surname"><i class="fas fa-signature"></i> Familiya</label>
+                {{ form.surname(placeholder="Familiyangizni kiriting") }}
+            </div>
 
-        <label for="password">Parol:</label>
-        {{ form.password(class="form-input") }}<br>
+            <div class="form-group">
+                <label for="username"><i class="fas fa-at"></i> Taxallus</label>
+                {{ form.username(placeholder="Usernameni tanlang") }}
+            </div>
 
-        <h3><a href="/signin">Ro'yxatdan o'tganmisiz?</a></h3>
-        <button type="submit">Yuborish</button>
-    </form>
+            <div class="form-group">
+                <label for="university"><i class="fas fa-university"></i> O'qish joyi</label>
+                {{ form.university(placeholder="Maktab yoki Universitet") }}
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Parol</label>
+                {{ form.password(placeholder="Kamida 8 ta belgi") }}
+            </div>
+
+            <button type="submit" class="btn-primary"
+                style="width: 100%; justify-content: center; margin-bottom: 20px;">
+                Ro'yxatdan o'tish <i class="fas fa-user-plus"></i>
+            </button>
+
+            <div style="text-align: center; font-size: 14px; color: var(--text-muted);">
+                Akkauntingiz bormi? <a href="/signin" style="color: var(--primary); font-weight: 700;">Kirish</a>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

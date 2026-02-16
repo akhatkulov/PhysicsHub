@@ -1,13 +1,89 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Physics Hub{% endblock %}
+{% block title %}Physics Hub - Kelajak Fizikasi{% endblock %}
 
 {% block content %}
-<section class="main-display">
-    <div class="main-content">
-        <img src="static/logo.png" alt="">
-        <h2>TATU Samarqand filiali akdemik litseyi</h2>
+<section class="hero">
+    <div class="container">
+        <h1 class="text-gradient">Fizika Olamiga<br>Xush Kelibsiz!</h1>
+        <p>7 yoshdan 70 yoshgacha bo'lganlar uchun mo'ljallangan interaktiv ta'lim platformasi.
+            Fizikani virtual tajribalar, 3D animatsiyalar va zamonaviy metodika orqali o'rganing.</p>
+
+        <div class="hero-btns">
+            <a href="/matters" class="btn-primary">Hozir boshlash <i class="fas fa-bolt"></i></a>
+            <a href="/lab" class="btn-secondary">Virtual Laboratoriya <i class="fas fa-flask"></i></a>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon-wrap"><i class="fas fa-rocket"></i></div>
+                <h3>Boshlang'ich</h3>
+                <p>Maktab o'quvchilari uchun asosiy tushunchalar sodda va qiziqarli animatsiyalar orqali tushuntiriladi.
+                </p>
+            </div>
+            <div class="feature-card" style="border-color: var(--primary);">
+                <div class="icon-wrap" style="background: linear-gradient(135deg, var(--secondary), var(--accent));"><i
+                        class="fas fa-atom"></i></div>
+                <h3>O'rta va Yuqori</h3>
+                <p>Talabalar va abituriyentlar uchun murakkab masalalar, testlar va chuqurlashtirilgan nazariya.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-wrap" style="background: linear-gradient(135deg, #10b981, #3b82f6);"><i
+                        class="fas fa-brain"></i></div>
+                <h3>Ilmiy Tadqiqot</h3>
+                <p>Kattalar va mutaxassislar uchun virtual tajribalar va doimiy yangilanib boruvchi ilmiy ma'lumotlar.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="info-section" style="padding: 100px 0;">
+    <div class="container">
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px; align-items: center;">
+            <div class="glass-card" style="padding: 40px; border-radius: var(--radius-lg);">
+                <h2 style="font-size: 40px; margin-bottom: 24px;">Nega aynan Physics Hub?</h2>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div style="display: flex; gap: 15px;">
+                        <i class="fas fa-check-circle"
+                            style="color: var(--accent); font-size: 24px; margin-top: 5px;"></i>
+                        <div>
+                            <h4 style="margin-bottom: 5px;">Interaktiv Tajribalar</h4>
+                            <p style="font-size: 14px; color: var(--text-muted);">Nazariyani amalda, virtual dunyoda
+                                sinab ko'ring.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 15px;">
+                        <i class="fas fa-check-circle"
+                            style="color: var(--accent); font-size: 24px; margin-top: 5px;"></i>
+                        <div>
+                            <h4 style="margin-bottom: 5px;">AI-Mentor</h4>
+                            <p style="font-size: 14px; color: var(--text-muted);">Tushunmagan mavzularingizni AI dars
+                                beruvchisidan so'rang.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 15px;">
+                        <i class="fas fa-check-circle"
+                            style="color: var(--accent); font-size: 24px; margin-top: 5px;"></i>
+                        <div>
+                            <h4 style="margin-bottom: 5px;">Global Reyting</h4>
+                            <p style="font-size: 14px; color: var(--text-muted);">Bilimingizni boshqalar bilan
+                                bellashuvda sinang.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="position: relative;">
+                <div
+                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: var(--primary-glow); filter: blur(100px); z-index: -1;">
+                </div>
+                <img src="/static/logo.png"
+                    style="width: 100%; border-radius: 40px; transform: perspective(1000px) rotateY(-10deg); box-shadow: 20px 20px 60px rgba(0,0,0,0.5);"
+                    alt="Physics Hub App">
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

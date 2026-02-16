@@ -1,31 +1,49 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Animatsiyalar - Physics Hub{% endblock %}
 
 {% block content %}
-<section class="main-display">
-    <h1 class="title">Barcha Animationlar</h1>
-    <div class="gifs-frame">
+<div class="gifs-page">
+    <h1 class="form-action-title text-gradient">Fizik Animatsiyalar</h1>
+    <p class="subtitle" style="text-align: center; color: var(--text-muted); margin-top: -30px; margin-bottom: 40px;">
+        Murakkab jarayonlarning vizual ko'rinishi</p>
+
+    <div class="gifs-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px;">
         {% for gif in gifs %}
-        <div class="gif-box">
-            {% if gif.gif_path.endswith('.mp4') %}
-            <video width="400" controls autoplay loop muted>
-                <source src="{{ url_for('static', filename=gif.gif_path) }}" type="video/mp4">
-                Brauzeringiz video tagini qo‘llab-quvvatlamaydi.
-            </video>
-            {% else %}
-            <img src="{{ url_for('static', filename=gif.gif_path) }}" alt="GIF" width="400">
-            {% endif %}
-            <div class="gift-box_content">
-                <h2>{{ gif.name }}</h2>
-                <p><strong>Mavzu:</strong> {{ gif.theme }}</p>
-                <p><strong>Haqida:</strong> {{ gif.about }}</p>
+        <div class="glass-card gif-card"
+            style="padding: 0; border-radius: var(--radius); overflow: hidden; transition: transform 0.3s ease;">
+            <div class="gif-box"
+                style="width: 100%; aspect-ratio: 16/9; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
+                {% if gif.gif_path.endswith('.mp4') %}
+                <video controls style="width: 100%; height: 100%; object-fit: contain;">
+                    <source src="{{ url_for('static', filename=gif.gif_path) }}" type="video/mp4">
+                    Brauzeringiz video tagini qo‘llab-quvvatlamaydi.
+                </video>
+                {% else %}
+                <img src="{{ url_for('static', filename=gif.gif_path) }}" alt="{{ gif.name }}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                {% endif %}
+            </div>
+            <div class="gif-content" style="padding: 20px;">
+                <div class="hb-category" style="margin-bottom: 8px;">{{ gif.theme }}</div>
+                <h2 style="font-size: 20px; margin-bottom: 12px;">{{ gif.name }}</h2>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">{{ gif.about }}</p>
+
+                <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
+                    <button class="btn-secondary" style="padding: 8px 16px; font-size: 13px;"><i
+                            class="fas fa-expand"></i> Kengaytirish</button>
+                </div>
             </div>
         </div>
         {% endfor %}
     </div>
+</div>
 
-    {% endblock %}
-</section>
-{% block page_content %}
-{{wtf.quick_form(form)}}
+<style>
+    .gif-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+</style>
 {% endblock %}

@@ -2,24 +2,25 @@
 
 {% block content %}
 <div class="quiz-container">
-    <h2>{{ name | capitalize }} | Testlar Ro'yxati</h2>
+    <h1 class="form-action-title">{{ name | capitalize }} | Testlar</h1>
 
     <ul class="quiz-list">
         {% for test in tests %}
-            {% set status = quiz_status[test.id] %}
-            <li class="quiz-item {% if status.status %}solved{% else %}unsolved{% endif %}">
-                <a href="/tests/{{ name }}/{{ test.id }}">
-                    <strong>{{ test.title | capitalize }}</strong>
-                    <!-- <span class="question-count">Savollar: {{ test.question_count }}</span>
-                     -->
+        {% set status = quiz_status[test.id] %}
+        <li class="quiz-item">
+            <a href="/tests/{{ name }}/{{ test.id }}">
+                <span class="matter-theme-name">{{ test.title | capitalize }}</span>
+                <div style="display: flex; align-items: center; gap: 15px;">
                     {% if status.status %}
-                        <span class="status solved">✅ Tugallangan | Ball: {{ status.points }}</span>
-                        <span class="time">{{ status.time }}</span>
+                    <span class="status solved">Tugallangan <i class="fas fa-check-double"></i></span>
+                    <span style="font-size: 13px; color: var(--accent); font-weight: 700;">{{ status.points }}
+                        ball</span>
                     {% else %}
-                        <span class="status unsolved">❌ Yechilmagan</span>
+                    <span class="status unsolved">Yechilmagan <i class="fas fa-play-circle"></i></span>
                     {% endif %}
-                </a>
-            </li>
+                </div>
+            </a>
+        </li>
         {% endfor %}
     </ul>
 </div>

@@ -11,6 +11,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     university = db.Column(db.String(120), nullable=False)
     password = db.Column(db.String(200), nullable=False)
+    messages = db.relationship('ChatMessage', backref='user', lazy=True)
 
     @hybrid_property
     def points(self):
@@ -27,6 +28,11 @@ class User(UserMixin, db.Model):
             or 0
         )
         return matter_points + quiz_points
+
+    @hybrid_property
+    def level(self):
+        # Simple level formula: Level = (Points / 100) + 1
+        return int(self.points / 100) + 1
 
     @hybrid_property
     def problems_solved(self):
@@ -94,6 +100,14 @@ class Quiz(db.Model):
     data = db.Column(db.String(36000), nullable=False)
     status = db.Column(db.Boolean, default=True)
 
+
+class ChatMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    response = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
 class Gifs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     theme = db.Column(db.String(100), nullable=False)
@@ -143,6 +157,13 @@ class TestResults(db.Model):
     quiz_id = db.Column(
         db.Integer, db.ForeignKey("quiz.id"), nullable=False
     )
+
+class HandbookItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(100), nullable=False) # e.g., 'Constants', 'Mechanics', 'Optics'
+    title = db.Column(db.String(200), nullable=False)    # e.g., 'Gravity', 'Force Formula'
+    content = db.Column(db.String(1000), nullable=False)  # e.g., 'g = 9.8 m/s^2', 'F = m * a'
+    about = db.Column(db.String(1000), nullable=True)
 
 
 

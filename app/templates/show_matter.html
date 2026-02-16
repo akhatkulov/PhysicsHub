@@ -1,41 +1,79 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Masalalar: {{ name | capitalize }} - Physics Hub{% endblock %}
 
 {% block content %}
-<div class="matter-list">
-    <h2>{{ name | capitalize }} | Masalalar ro'yxati</h2>
-    <ul id="matter-list-item">
-        {% for matter in matters.items %}
-            <li>
-                <a href="/matters/{{ name }}/{{ matter.id }}">
-                    <strong class="matter-theme-name" 
-                            class="{% if matter.solved %}matter-solved{% else %}matter-unsolved{% endif %}">
-                        {{ matter.title | capitalize }}
-                    </strong>
-                </a>
-                {% if matter.solved %}
-                    <span class="matter-solved"> | Yechilgan <span class="material-symbols-outlined">select_check_box</span></span>
-                {% else %}
-                    <span class="matter-unsolved">| Yechilmagan <span class="material-symbols-outlined">check_box_outline_blank</span></span>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+<div class="matter-list-page" style="max-width: 800px; margin: 0 auto; padding-bottom: 40px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">
+        <h1 class="form-action-title text-gradient" style="margin: 0; font-size: 28px;">{{ name | capitalize }}
+            Masalalari</h1>
+        <a href="/matters" class="btn-secondary" style="font-size: 14px; padding: 8px 16px;"><i
+                class="fas fa-arrow-left"></i> Ortga</a>
+    </div>
 
-    <!-- Pagination -->
-    <div class="matter-pagination">
-        {% if matters.has_prev %}
-            <a href="?page={{ matters.prev_num }}" style="color: #003366;">&laquo; Oldingi</a>
-        {% endif %}
-        <span> {{ matters.page }} / {{ matters.pages }} </span>
-        {% if matters.has_next %}
-            <a href="?page={{ matters.next_num }}" style="color: #003366;">Keyingi &raquo;</a>
-        {% endif %}
+    <div class="glass-card" style="padding: 0; border-radius: var(--radius); overflow: hidden;">
+        <div class="list-header"
+            style="background: rgba(255,255,255,0.05); padding: 15px 24px; display: flex; justify-content: space-between; font-weight: 700; color: var(--text-muted); font-size: 12px; text-transform: uppercase;">
+            <span>Mavzu</span>
+            <span>Holat</span>
+        </div>
+
+        <div class="list-body">
+            {% for matter in matters.items %}
+            <a href="/matters/{{ name }}/{{ matter.id }}" class="list-item"
+                style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border); transition: background 0.2s;">
+                <span class="matter-title" style="font-weight: 600; font-size: 16px;">{{ matter.title | capitalize
+                    }}</span>
+                {% if matter.solved %}
+                <span class="status solved"
+                    style="color: #10b981; font-size: 14px; display: flex; align-items: center; gap: 8px; font-weight: 600;">
+                    Yechilgan <i class="fas fa-check-circle"></i>
+                </span>
+                {% else %}
+                <span class="status unsolved"
+                    style="color: var(--text-muted); font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                    Yechilmagan <i class="far fa-circle"></i>
+                </span>
+                {% endif %}
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination"
+            style="padding: 20px; display: flex; justify-content: center; align-items: center; gap: 20px; background: rgba(0,0,0,0.1);">
+            {% if matters.has_prev %}
+            <a href="?page={{ matters.prev_num }}" class="btn-secondary" style="padding: 8px 16px; font-size: 13px;"><i
+                    class="fas fa-chevron-left"></i> Oldingi</a>
+            {% else %}
+            <span class="btn-secondary disabled"
+                style="opacity: 0.5; cursor: not-allowed; padding: 8px 16px; font-size: 13px;"><i
+                    class="fas fa-chevron-left"></i> Oldingi</span>
+            {% endif %}
+
+            <span class="page-info" style="font-weight: 600; color: var(--text-muted);">{{ matters.page }} / {{
+                matters.pages }}</span>
+
+            {% if matters.has_next %}
+            <a href="?page={{ matters.next_num }}" class="btn-secondary"
+                style="padding: 8px 16px; font-size: 13px;">Keyingi <i class="fas fa-chevron-right"></i></a>
+            {% else %}
+            <span class="btn-secondary disabled"
+                style="opacity: 0.5; cursor: not-allowed; padding: 8px 16px; font-size: 13px;">Keyingi <i
+                    class="fas fa-chevron-right"></i></span>
+            {% endif %}
+        </div>
     </div>
 </div>
 
-{% endblock %}
+<style>
+    .list-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        padding-left: 30px !important;
+    }
 
-{% block page_content %}
-{{ wtf.quick_form(form) }}
+    .list-item:last-child {
+        border-bottom: none;
+    }
+</style>
 {% endblock %}

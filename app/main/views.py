@@ -3,11 +3,6 @@ from flask import (
     jsonify, abort
 )
 from .. import db
-from ..models import (
-    User, Theme, Matter, Quiz,
-    get_all_themes, save_user_progress, check_history,
-    get_leaderboard, get_matter, get_quiz,Gifs,get_animation_func,Labs,get_labs,get_lab_list
-)
 from ..email import send_email
 from . import main
 from .forms import SignInForm, SignUpForm, UpdateData
@@ -17,6 +12,13 @@ import json
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
+import zipfile
+import shutil
+import requests
+from ..models import (
+    get_leaderboard, get_matter, get_quiz, Gifs, get_animation_func, Labs, get_labs,
+    get_lab_list, HandbookItem, ChatMessage, User
+)
 
 ALLOWED_EXTENSIONS = {'gif', 'mp4', 'jpg', 'jpeg', 'png'}
 
@@ -34,8 +36,40 @@ def show_gifs():
     return render_template("gifs.html", gifs=gifs)
 
 @main.route("/chat")
+@login_required
 def chat():
-    return render_template("chat-ai.html")
+    # Load chat history for the user
+    history = ChatMessage.query.filter_by(user_id=current_user.id).order_by(ChatMessage.timestamp).all()
+    return render_template("chat-ai.html", history=history)
+
+@main.route("/api/chat", methods=["POST"])
+@login_required
+def chat_api():
+    data = request.get_json(force=True)
+    user_message = data.get("message", "").strip()
+    
+    if not user_message:
+        return jsonify({"error": "Empty message"}), 400
+
+    try:
+        # Call external AI API
+        response = requests.get('https://api.u2s.uz/physics-ai', params={'savol': user_message}, timeout=10)
+        response.raise_for_status()
+        ai_response = response.json().get('javob', "Uzr, javobni ololmadim.")
+    except Exception as e:
+        current_app.logger.error(f"AI API error: {e}")
+        ai_response = "Tizimda vaqtincha xatolik yuz berdi. Keyinroq urinib ko'ring."
+
+    # Save to DB
+    chat_entry = ChatMessage(
+        user_id=current_user.id,
+        message=user_message,
+        response=ai_response
+    )
+    db.session.add(chat_entry)
+    db.session.commit()
+
+    return jsonify({"javob": ai_response})
 
 @main.route("/admin")
 @login_required
@@ -88,31 +122,53 @@ def add_lab_v2():
     title = request.form.get("title")
     about = request.form.get("about")
     link = request.form.get("link")
-    pic = request.files.get("pic") 
+    pic = request.files.get("pic")
+    zip_file = request.files.get("zip")
 
     if not pic or pic.filename == '':
-        return "No file provided", 400
+        return "No picture provided", 400
 
-    if allowed_file(pic.filename):
-        filename = secure_filename(f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{pic.filename}")
-        save_dir = os.path.join(current_app.root_path, 'static', 'pics')
-        os.makedirs(save_dir, exist_ok=True)  # agar yo'q bo‘lsa papkani yaratadi
-        save_path = os.path.join(save_dir, filename)
-        pic.save(save_path)
+    pic_filename = secure_filename(f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{pic.filename}")
+    pic_save_dir = os.path.join(current_app.root_path, 'static', 'pics')
+    os.makedirs(pic_save_dir, exist_ok=True)
+    pic_save_path = os.path.join(pic_save_dir, pic_filename)
+    pic.save(pic_save_path)
 
-        # Konsolga chiqarish
-        res = {
-            "title": title,
-            "about": about,
-            "link": link,
-            "pic_path": f"pics/{filename}"
-        }
-        new_gif = Labs(name=res["title"],about=res["about"],pic_path=res["pic_path"],link=res["link"])
-        db.session.add(new_gif)
-        db.session.commit()
-        return "Good"
-    else:
-        return "Only .gif or .mp4 files are allowed", 400
+    final_link = link
+    if zip_file and zip_file.filename.endswith('.zip'):
+        slug = secure_filename(title).lower()
+        if not slug:
+            slug = f"lab_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        
+        lab_dir = os.path.join(current_app.root_path, 'static', 'labs', slug)
+        os.makedirs(lab_dir, exist_ok=True)
+        
+        zip_path = os.path.join(lab_dir, secure_filename(zip_file.filename))
+        zip_file.save(zip_path)
+        
+        try:
+            with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                zip_ref.extractall(lab_dir)
+            os.remove(zip_path)
+            
+            # Check if there's an index.html in the extracted files
+            if os.path.exists(os.path.join(lab_dir, 'index.html')):
+                final_link = f"/static/labs/{slug}/index.html"
+            else:
+                # Maybe it extracted into a subfolder
+                items = [i for i in os.listdir(lab_dir) if not i.startswith('.')]
+                if len(items) == 1 and os.path.isdir(os.path.join(lab_dir, items[0])):
+                    subfolder = items[0]
+                    if os.path.exists(os.path.join(lab_dir, subfolder, 'index.html')):
+                        final_link = f"/static/labs/{slug}/{subfolder}/index.html"
+        except Exception as e:
+            current_app.logger.error(f"ZIP error: {e}")
+            # If ZIP fails, we still have the pic and possibly the manual link
+
+    new_lab = Labs(name=title, about=about, pic_path=f"pics/{pic_filename}", link=final_link or "")
+    db.session.add(new_lab)
+    db.session.commit()
+    return "Good"
 
 @main.route("/admin/add_matter", methods=["POST"])
 @login_required
@@ -198,6 +254,29 @@ def delete_labs(item_id):
         abort(403)
 
     item = Labs.query.get_or_404(item_id)
+    
+    # Try to delete the picture
+    if item.pic_path:
+        try:
+            pic_path = os.path.join(current_app.root_path, 'static', item.pic_path)
+            if os.path.exists(pic_path):
+                os.remove(pic_path)
+        except Exception as e:
+            current_app.logger.error(f"Error deleting lab pic: {e}")
+            
+    # Try to delete the lab folder if it's dynamic
+    if item.link and "/static/labs/" in item.link:
+        try:
+            # item.link is like "/static/labs/slug/index.html"
+            parts = item.link.split('/')
+            if len(parts) >= 4:
+                slug = parts[3]
+                lab_dir = os.path.join(current_app.root_path, 'static', 'labs', slug)
+                if os.path.exists(lab_dir):
+                    shutil.rmtree(lab_dir)
+        except Exception as e:
+            current_app.logger.error(f"Error deleting lab folder: {e}")
+
     db.session.delete(item)
     db.session.commit()
     return jsonify({"message": "Item deleted successfully"}), 200
@@ -208,6 +287,16 @@ def delete_animation(item_id):
     if current_user.username !="admin":
         abort(403)
     item = Gifs.query.get_or_404(item_id)
+    
+    # Try to delete the gif/media file
+    if item.gif_path:
+        try:
+            file_path = os.path.join(current_app.root_path, 'static', item.gif_path)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        except Exception as e:
+            current_app.logger.error(f"Error deleting animation file: {e}")
+
     db.session.delete(item)
     db.session.commit()
     return jsonify({"message": "Item deleted successfully"}), 200
@@ -218,6 +307,43 @@ def delete_theme(item_id):
     if current_user.username != "admin":
         abort(403)
     item = Theme.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({"message": "Item deleted successfully"}), 200
+
+@main.route("/api/handbook", methods=["GET"])
+def get_handbook():
+    items = HandbookItem.query.all()
+    return jsonify([{
+        "id": i.id,
+        "category": i.category,
+        "title": i.title,
+        "content": i.content,
+        "about": i.about
+    } for i in items])
+
+@main.route("/admin/add_handbook", methods=["POST"])
+@login_required
+def add_handbook():
+    if current_user.username != "admin":
+        abort(403)
+    data = request.get_json(force=True)
+    new_item = HandbookItem(
+        category=data["category"],
+        title=data["title"],
+        content=data["content"],
+        about=data.get("about", "")
+    )
+    db.session.add(new_item)
+    db.session.commit()
+    return jsonify({"message": "Handbook item added successfully"}), 201
+
+@main.route("/api/delete_handbook/<int:item_id>", methods=["DELETE"])
+@login_required
+def delete_handbook(item_id):
+    if current_user.username != "admin":
+        abort(403)
+    item = HandbookItem.query.get_or_404(item_id)
     db.session.delete(item)
     db.session.commit()
     return jsonify({"message": "Item deleted successfully"}), 200
@@ -313,6 +439,7 @@ def tests():
 
 
 @main.route("/tests/<name>")
+@login_required
 def show_tests(name):
     tests = Quiz.query.filter_by(theme=name).all()
     user_id = current_user.id
@@ -321,6 +448,7 @@ def show_tests(name):
 
 
 @main.route("/tests/<theme>/<int:quiz_id>", methods=["GET", "POST"])
+@login_required
 def calc_test(theme, quiz_id):
     quiz = Quiz.query.get_or_404(int(quiz_id))
     questions = json.loads(quiz.data)
@@ -334,6 +462,7 @@ def calc_test(theme, quiz_id):
 
 
 @main.route("/matters/<name>")
+@login_required
 def show_matter(name):
     page = request.args.get("page", 1, type=int)
     per_page = 10
@@ -345,6 +474,7 @@ def show_matter(name):
 
 
 @main.route("/matters/<theme>/<int:matter_id>", methods=["GET", "POST"])
+@login_required
 def calc_matter(theme, matter_id):
     matter = Matter.query.get_or_404(matter_id)
     if request.method == "POST":
@@ -352,7 +482,9 @@ def calc_matter(theme, matter_id):
         if user_answer == matter.correct:
             save_user_progress(current_user.id, matter.id, matter.ball, "matter")
             flash(f"✅ To‘g‘ri javob! ({user_answer})", "success")
-        else:get_lab_list
+        else:
+            flash(f"❌ Noto‘g‘ri javob! ({user_answer})", "error")
+    return render_template("calc_matter.html", matter=matter, theme=theme)
 
 
 
@@ -381,6 +513,13 @@ def lab_list_view():
     labs = get_lab_list()
     return render_template('lab_list.html', labs=labs)
 
+@main.route('/handbook')
+def handbook_view():
+    items = HandbookItem.query.all()
+    categories = db.session.query(HandbookItem.category).distinct().all()
+    categories = [c[0] for c in categories]
+    return render_template('handbook.html', items=items, categories=categories)
+
 @main.route("/labaratory/<id>")
 def lab_page(id):
     return render_template(f"lab/{id}/index.html")
@@ -388,6 +527,9 @@ def lab_page(id):
 
 @main.route("/signup", methods=["GET", "POST"])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.profile'))
+        
     form = SignUpForm()
     if form.validate_on_submit():
         try:
@@ -399,12 +541,10 @@ def signup():
 
             user = User.query.filter_by(username=username).first()
             if user:
-                flash("Bu taxallusda foydalanuvchi mavjud.", "error")
-                return redirect(url_for("main.signup"))
+                flash("Bu taxallus allaqachon band qilingan.", "error")
+                return render_template("signup.html", form=form)
 
-            hashed_password = generate_password_hash(
-                password, method="pbkdf2:sha256", salt_length=8
-            )
+            hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
             new_user = User(
                 name=name,
                 surname=surname,
@@ -415,18 +555,31 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
 
-            flash("Ma'lumotlar muvaffaqiyatli yuborildi!", "success")
-            return redirect(url_for("main.login_page"))
+            # Auto-login after signup
+            login_user(new_user)
+            flash("Ro'yxatdan o'tish muvaffaqiyatli yakunlandi!", "success")
+            return redirect(url_for("main.profile"))
 
         except Exception as e:
             current_app.logger.error(f"Signup error: {e}")
-            flash("Noma'lum xatolik yuz berdi, iltimos qayta urinib ko'ring.", "error")
-            return redirect(url_for("main.signup"))
+            db.session.rollback()
+            flash("Tizimda xatolik yuz berdi. Iltimos, qayta urinib ko'ring.", "error")
+            return render_template("signup.html", form=form)
+    
+    # Show strict validation errors
+    if form.errors:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"{getattr(form, field).label.text}: {error}", "error")
+
     return render_template("signup.html", form=form)
 
 
 @main.route("/signin", methods=["GET", "POST"])
 def login_page():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.profile'))
+
     form = SignInForm()
     if form.validate_on_submit():
         username = form.username.data.replace(" ", "")
@@ -435,13 +588,12 @@ def login_page():
         user = User.query.filter_by(username=username).first()
         if user and user.password and check_password_hash(user.password, password):
             login_user(user)
-            flash("Kirish muvaffaqiyatli!", "success")
-            if current_user.username == "admin":
-                return redirect(url_for("main.admin"))
-            else:
-                return redirect(url_for("main.home_page"))
-
-        flash("Taxallus yoki parol noto'g'ri", "error")
+            flash("Xush kelibsiz!", "success")
+            next_page = request.args.get("next")
+            return redirect(next_page) if next_page else redirect(url_for("main.profile"))
+        
+        flash("Taxallus yoki parol noto'g'ri.", "error")
+    
     return render_template("login.html", form=form)
 
 

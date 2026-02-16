@@ -1,85 +1,209 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Test Yechish - Physics Hub{% endblock %}
 
 {% block content %}
-<!-- Navbar -->
-<form method="post" class="quiz-form">
-    <nav class="quiz-navbar">
-        <ul id="quiz-navbar-questions">
-            {% for question in questions %}
-            <li class="quiz-navbar-item" id="quiz-navbar-item-{{ question.id }}"
-                style="background-color: hsl({{ loop.index * 30 }}, 100%, 60%);">
-                <a class="quiz-a" href="javascript:void(0);" onclick="navigateToQuestion({{ loop.index0 }})">{{
-                    loop.index }}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </nav>
+<div class="test-page"
+    style="max-width: 900px; margin: 0 auto; min-height: calc(100vh - 140px); display: flex; flex-direction: column;">
 
-    <h1 class="quiz-title">Testni yeching</h1>
-
-    <div id="quiz-questions-container">
-        {% for question in questions %}
-        <div class="quiz-question" id="quiz-question-{{ question.id }}"
-            style="display: {% if loop.index != 1 %} none {% endif %};">
-            <p class="quiz-question-text"><strong>{{ question.question }}</strong></p>
-            {% for option in question.options %}
-            <label class="quiz-option">
-                <input type="radio" name="question-{{ question.id }}" value="{{ option }}" required>
-                {{ option }}
-            </label><br>
-            {% endfor %}
+    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <h1 class="form-action-title text-gradient" style="margin: 0; font-size: 24px;">Mavzulashtirilgan Testlar</h1>
+        <div class="timer"
+            style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 99px; font-family: monospace; font-size: 16px;">
+            <i class="fas fa-clock"></i> <span id="timer">00:00</span>
         </div>
-        {% endfor %}
     </div>
 
-    <div class="quiz-navigation-buttons">
-        <button class="quiz-button" type="button" id="quiz-prev-btn" onclick="navigate(-1)">Orqaga</button>
-        <button class="quiz-button" type="button" id="quiz-next-btn" onclick="navigate(1)">Keyingi</button>
-    </div>
+    <div class="glass-card quiz-container"
+        style="flex: 1; padding: 0; border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column;">
 
-    <button type="submit" class="quiz-submit-btn">Yuborish</button>
-</form>
+        <!-- Progress Bar -->
+        <div class="progress-container"
+            style="padding: 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border);">
+            <div
+                style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: var(--text-muted);">
+                <span>Jarayon: <span id="current-q">1</span>/{{ questions|length }}</span>
+                <span>Fan: {{ theme | capitalize }}</span>
+            </div>
+            <div class="progress-track"
+                style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden;">
+                <div id="progress-bar"
+                    style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 0.3s ease;">
+                </div>
+            </div>
+
+            <!-- Quick Navigation -->
+            <div class="quiz-nav"
+                style="display: flex; gap: 8px; margin-top: 15px; overflow-x: auto; padding-bottom: 5px;">
+                {% for question in questions %}
+                <button type="button" class="nav-dot" onclick="jumpTo({{ loop.index0 }})" id="nav-dot-{{ loop.index0 }}"
+                    style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; flex-shrink: 0;">
+                    {{ loop.index }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <form method="POST" id="quiz-form" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="questions-wrapper" style="flex: 1; position: relative;">
+                {% for question in questions %}
+                <div class="quiz-slide" id="slide-{{ loop.index0 }}" style="display: none; padding: 40px;">
+                    <h3 class="question-text" style="font-size: 20px; margin-bottom: 30px; line-height: 1.6;">
+                        <span style="color: var(--primary); font-weight: 800; margin-right: 10px;">{{ loop.index
+                            }}.</span>
+                        {{ question.question }}
+                    </h3>
+
+                    <div class="options-grid" style="display: grid; gap: 15px;">
+                        {% for option in question.options %}
+                        <label class="option-card"
+                            style="display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="question-{{ question.id }}" value="{{ option }}"
+                                onchange="markAnswered({{ loop.index0 }})"
+                                style="width: 18px; height: 18px; accent-color: var(--primary);">
+                            <span style="font-size: 16px;">{{ option }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Controls -->
+            <div class="quiz-controls"
+                style="padding: 20px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.2); display: flex; justify-content: space-between;">
+                <button type="button" id="prev-btn" class="btn-secondary" onclick="changeSlide(-1)" disabled>
+                    <i class="fas fa-arrow-left"></i> Oldingi
+                </button>
+
+                <button type="button" id="next-btn" class="btn-primary" onclick="changeSlide(1)">
+                    Keyingi <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <button type="submit" id="submit-btn" class="btn-primary" style="display: none; background: #10b981;">
+                    Yakunlash <i class="fas fa-check"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .option-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--primary);
+    }
+
+    .option-card input:checked+span {
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .nav-dot.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+
+    .nav-dot.answered {
+        background: rgba(16, 185, 129, 0.2);
+        border-color: #10b981;
+        color: #10b981;
+    }
+
+    .nav-dot.active.answered {
+        background: #10b981;
+        color: white;
+    }
+
+    /* Scrollbar for nav dots */
+    .quiz-nav::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .quiz-nav::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 4px;
+    }
+</style>
 
 <script>
-    let currentQuestionIndex = 0;
-    const questions = document.querySelectorAll('.quiz-question');
-    const prevBtn = document.getElementById('quiz-prev-btn');
-    const nextBtn = document.getElementById('quiz-next-btn');
-    const navbarItems = document.querySelectorAll('.quiz-navbar-item');
+    let currentSlide = 0;
+    const totalSlides = {{ questions| length }};
+    const form = document.getElementById('quiz-form');
 
-    function navigate(direction) {
-        questions[currentQuestionIndex].style.display = 'none';
-        currentQuestionIndex += direction;
-        questions[currentQuestionIndex].style.display = 'block';
-        updateNavbarIndicators();
-        prevBtn.disabled = currentQuestionIndex === 0;
-        nextBtn.disabled = currentQuestionIndex === questions.length - 1;
+    function showSlide(index) {
+        // Hide all slides
+        document.querySelectorAll('.quiz-slide').forEach(slide => slide.style.display = 'none');
+
+        // Show current
+        const slide = document.getElementById(`slide-${index}`);
+        if (slide) {
+            slide.style.display = 'block';
+            // Animation
+            slide.style.opacity = 0;
+            slide.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                slide.style.opacity = 1;
+                slide.style.transform = 'translateY(0)';
+            }, 50);
+        }
+
+        // Update Buttons
+        document.getElementById('prev-btn').disabled = index === 0;
+
+        if (index === totalSlides - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'flex';
+        } else {
+            document.getElementById('next-btn').style.display = 'flex';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        // Update Progress
+        document.getElementById('current-q').innerText = index + 1;
+        const progress = ((index + 1) / totalSlides) * 100;
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+
+        // Update Nav Dots
+        document.querySelectorAll('.nav-dot').forEach(d => d.classList.remove('active'));
+        document.getElementById(`nav-dot-${index}`).classList.add('active');
+
+        // Scroll nav dot into view
+        const dot = document.getElementById(`nav-dot-${index}`);
+        dot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+        currentSlide = index;
     }
 
-    function navigateToQuestion(index) {
-        questions[currentQuestionIndex].style.display = 'none';
-        currentQuestionIndex = index;
-        questions[currentQuestionIndex].style.display = 'block';
-        updateNavbarIndicators();
+    function changeSlide(direction) {
+        const next = currentSlide + direction;
+        if (next >= 0 && next < totalSlides) {
+            showSlide(next);
+        }
     }
 
-    function updateNavbarIndicators() {
-        navbarItems.forEach((item, index) => {
-            const radioButtons = questions[index].querySelectorAll('input[type="radio"]');
-            let isAnswered = Array.from(radioButtons).some(radio => radio.checked);
-            item.style.backgroundColor = isAnswered ? 'green' : 'red';
-        });
+    function jumpTo(index) {
+        showSlide(index);
     }
 
-    if (currentQuestionIndex === 0) {
-        prevBtn.disabled = true;
+    function markAnswered(index) {
+        document.getElementById(`nav-dot-${index}`).classList.add('answered');
     }
 
-    updateNavbarIndicators();
+    // Initialize
+    showSlide(0);
+
+    // Timer
+    let seconds = 0;
+    setInterval(() => {
+        seconds++;
+        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const s = (seconds % 60).toString().padStart(2, '0');
+        document.getElementById('timer').innerText = `${m}:${s}`;
+    }, 1000);
+
+    // Add CSS transitions via JS to avoid initial flash
+    document.querySelectorAll('.quiz-slide').forEach(s => s.style.transition = 'opacity 0.3s ease, transform 0.3s ease');
 </script>
-{% endblock %}
-
-{% block page_content %}
-{{wtf.quick_form(form)}}
 {% endblock %}

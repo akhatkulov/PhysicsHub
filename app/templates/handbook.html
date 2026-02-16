@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}HandBook - Physics Hub{% endblock %}
+
+{% block content %}
+<div class="handbook-page">
+    <h1 class="form-action-title text-gradient">Fizika Qo'llanmasi</h1>
+    <p class="subtitle" style="text-align: center; color: var(--text-muted); margin-top: -30px; margin-bottom: 40px;">
+        Asosiy konstantalar va formulalar to'plami</p>
+
+    <div class="categories-nav"
+        style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;">
+        <button class="btn-secondary cat-btn active" data-category="all"
+            style="border-radius: 99px; padding: 10px 24px; font-weight: 600;">Barchasi</button>
+        {% for category in categories %}
+        <button class="btn-secondary cat-btn" data-category="{{ category }}"
+            style="border-radius: 99px; padding: 10px 24px; font-weight: 600;">{{ category }}</button>
+        {% endfor %}
+    </div>
+
+    <div class="handbook-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
+        {% for item in items %}
+        <div class="glass-card hb-card" data-category="{{ item.category }}"
+            style="padding: 24px; border-radius: var(--radius); transition: transform 0.3s ease;">
+            <div class="hb-category"
+                style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: var(--accent); letter-spacing: 1px; margin-bottom: 8px;">
+                {{ item.category }}</div>
+            <h3 class="hb-title" style="margin-bottom: 12px;">{{ item.title }}</h3>
+            <div class="hb-formula"
+                style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: 8px; border: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; color: var(--secondary); margin-bottom: 12px; text-align: center;">
+                {{ item.content }}</div>
+            {% if item.about %}
+            <p class="hb-about" style="color: var(--text-muted); font-size: 14px; line-height: 1.5;">{{ item.about }}
+            </p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.cat-btn');
+        const cards = document.querySelectorAll('.hb-card');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+
+                // Update active button style
+                buttons.forEach(b => {
+                    b.classList.remove('active');
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-secondary');
+                });
+                btn.classList.add('active');
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-primary');
+
+                // Filter cards with Animation
+                cards.forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'scale(1)';
+                        }, 50);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Initialize active state styling
+        const activeBtn = document.querySelector('.cat-btn.active');
+        if (activeBtn) {
+            activeBtn.classList.remove('btn-secondary');
+            activeBtn.classList.add('btn-primary');
+        }
+    });
+</script>
+{% endblock %}

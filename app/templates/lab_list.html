@@ -1,98 +1,176 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Laboratoriyalar - Physics Hub{% endblock %}
 
 {% block content %}
-<section class="main-display">
-    <div class="lab-container">
-        <div class="lab1-card">
-            <div class="lab1-image">
-                <img src="{{ url_for('static', filename='lab_list/lab1.png')}}" alt="Elektr laboratoriyasi">
+<div class="lab-page">
+    <h1 class="form-action-title text-gradient">Virtual Laboratoriyalar</h1>
+    <p class="subtitle" style="text-align: center; color: var(--text-muted); margin-top: -30px; margin-bottom: 40px;">
+        Nazariyani amaliyotda sinab ko'ring</p>
+
+    <div class="lab-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px;">
+
+        <!-- Hardcoded Labs -->
+        <div class="glass-card lab-card"
+            style="overflow: hidden; padding: 0; border-radius: var(--radius); transition: transform 0.3s ease;">
+            <div class="lab-image" style="height: 200px; overflow: hidden; position: relative;">
+                <img src="{{ url_for('static', filename='lab_list/lab1.png')}}" alt="Elektr laboratoriyasi"
+                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                <div class="overlay"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.8));">
+                </div>
             </div>
-            <div class="lab1-info">
-                <h2 class="lab1-title">Elektr laboratoriyasi</h2>
-                <p class="lab1-description">Bu laboratoriyada elektrga oid tajribalarni bajarish mumkin. Asosiy maqsad
-                    talabalarga amaliy bilim berishdir.</p>
-                <a href="/labaratory/1" class="lab1-enter-btn"><button>Kirish</button></a>
+            <div class="lab-content" style="padding: 24px;">
+                <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Elektr zanjiri asoslari</h3>
+                <p class="lab-description"
+                    style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Elektr
+                    zanjirini yig'ish, kuchlanish va tok kuchini o'lchash bo'yicha bazaviy tajribalar.</p>
+                <a href="/labaratory/1" class="btn-primary"
+                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
+                        style="margin-left: 8px;"></i></a>
             </div>
         </div>
 
-        <div class="lab1-card">
-            <div class="lab1-image">
-                <img src="{{ url_for('static', filename='lab_list/lab2.png')}}" alt="Elektr laboratoriyasi">
+        <div class="glass-card lab-card" style="overflow: hidden; padding: 0; border-radius: var(--radius);">
+            <div class="lab-image" style="height: 200px; overflow: hidden; position: relative;">
+                <img src="{{ url_for('static', filename='lab_list/lab2.png')}}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="overlay"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.8));">
+                </div>
             </div>
-            <div class="lab1-info">
-                <h2 class="lab1-title">Newton qonunlarining interaktiv simulyatsiyasini</h2>
-                <p class="lab1-description">Bu uchta asosiy mexanik qonunni tushunish va tajriba o'tkazish uchun
-                    yaratilgan vizual va dinamik model.</p>
-                <a href="/labaratory/2" class="lab1-enter-btn"><button>Kirish</button></a>
-            </div>
-        </div>
-        <div class="lab1-card">
-            <div class="lab1-image">
-                <img src="{{ url_for('static', filename='lab_list/elektr_zanjiri.jpg')}}" alt="Elektr laboratoriyasi">
-            </div>
-            <div class="lab1-info">
-                <h2 class="lab1-title">Elektr zanjiri laboratoriyasi</h2>
-                <p class="lab1-description">Foydalanuvchi qarshilik, kuchlanish va oqimni sozlab, Ohm qonunini tekshiradi.</p>
-                <a href="/labaratory/elektr_zanjiri" class="lab1-enter-btn"><button>Kirish</button></a>
+            <div class="lab-content" style="padding: 24px;">
+                <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Newton Qonunlari</h3>
+                <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+                    Mexanikaning uchta asosiy qonunini vizual model orqali o'rganing.</p>
+                <a href="/labaratory/2" class="btn-primary"
+                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
+                        style="margin-left: 8px;"></i></a>
             </div>
         </div>
-        <div class="lab1-card">
-            <div class="lab1-image">
-                <img src="{{ url_for('static', filename='lab_list/mexanik_tebranish.jpg')}}" alt="mexanik tebranish">
+
+        <div class="glass-card lab-card" style="overflow: hidden; padding: 0; border-radius: var(--radius);">
+            <div class="lab-image" style="height: 200px; overflow: hidden; position: relative;">
+                <img src="{{ url_for('static', filename='lab_list/elektr_zanjiri.jpg')}}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="overlay"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.8));">
+                </div>
             </div>
-            <div class="lab1-info">
-                <h2 class="lab1-title">Mexanik tebranish laboratoriyasi</h2>
-                <p class="lab1-description">Foydalanuvchi massali prujinali osma sistemaning tebranish chastotasini va amplitudasini o‘rganadi..</p>
-                <a href="/labaratory/mexanik_tebranish" class="lab1-enter-btn"><button>Kirish</button></a>
-            </div>
-        </div>
-        <div class="lab1-card">
-            <div class="lab1-image">
-                <img src="{{ url_for('static', filename='lab_list/optika_labaratoriyasi.jpg')}}" alt="optika labaratoriyasi">
-            </div>
-            <div class="lab1-info">
-                <h2 class="lab1-title">Optika laboratoriyasi (linza va nurlar)</h2>
-                <p class="lab1-description">Foydalanuvchi linza turini (yig‘uvchi/tarqatuvchi), fokus masofasini va predmet masofasini o‘rnatadi va tasvir hosil bo‘lishini ko‘radi.</p>
-                <a href="/labaratory/optika_labaratoriyasi" class="lab1-enter-btn"><button>Kirish</button></a>
+            <div class="lab-content" style="padding: 24px;">
+                <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Elektr Zanjiri (Ohm Qonuni)</h3>
+                <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+                    Qarshilik, kuchlanish va tok kuchi orasidagi bog'liqlikni tekshiring.</p>
+                <a href="/labaratory/elektr_zanjiri" class="btn-primary"
+                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
+                        style="margin-left: 8px;"></i></a>
             </div>
         </div>
-        <div class="lab1-card">
-            <div class="lab1-image">
-                <img src="{{ url_for('static', filename='lab_list/issiqlik_almashinuvi.jpg')}}" alt="optika labaratoriyasi">
+
+        <div class="glass-card lab-card" style="overflow: hidden; padding: 0; border-radius: var(--radius);">
+            <div class="lab-image" style="height: 200px; overflow: hidden; position: relative;">
+                <img src="{{ url_for('static', filename='lab_list/mexanik_tebranish.jpg')}}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="overlay"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.8));">
+                </div>
             </div>
-            <div class="lab1-info">
-                <h2 class="lab1-title">Issiqlik almashinuvi laboratoriyasi</h2>
-                <p class="lab1-description">Foydalanuvchi linza turini (yig‘uvchi/tarqatuvchi), fokus masofasini va predmet masofasini o‘rnatadi va tasvir hosil bo‘lishini ko‘radi.</p>
-                <a href="/labaratory/issiqlik_almashinuvi" class="lab1-enter-btn"><button>Kirish</button></a>
-            </div>
-        </div>
-        <div class="lab1-card">
-            <div class="lab1-image">
-                <img src="{{ url_for('static', filename='lab_list/harakat_va_kuch.jpg')}}" alt="optika labaratoriyasi">
-            </div>
-            <div class="lab1-info">
-                <h2 class="lab1-title">Harakat va kuch (Newton qonunlari) laboratoriyasi</h2>
-                <p class="lab1-description">Foydalanuvchi yuk (massa), kuch va ishqalanish qiymatlarini o‘zgartirib, tananing tezlanishini kuzatadi.</p>
-                <a href="/labaratory/harakat_va_kuch" class="lab1-enter-btn"><button>Kirish</button></a>
+            <div class="lab-content" style="padding: 24px;">
+                <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Mexanik Tebranishlar</h3>
+                <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+                    Prujinali mayatnikning tebranish chastotasi va amplitudasini o'rganish.</p>
+                <a href="/labaratory/mexanik_tebranish" class="btn-primary"
+                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
+                        style="margin-left: 8px;"></i></a>
             </div>
         </div>
+
+        <div class="glass-card lab-card" style="overflow: hidden; padding: 0; border-radius: var(--radius);">
+            <div class="lab-image" style="height: 200px; overflow: hidden; position: relative;">
+                <img src="{{ url_for('static', filename='lab_list/optika_labaratoriyasi.jpg')}}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="overlay"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.8));">
+                </div>
+            </div>
+            <div class="lab-content" style="padding: 24px;">
+                <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Optika Laboratoriyasi</h3>
+                <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+                    Linzalar, fokus masofasi va tasvir hosil bo'lishini o'rganing.</p>
+                <a href="/labaratory/optika_labaratoriyasi" class="btn-primary"
+                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
+                        style="margin-left: 8px;"></i></a>
+            </div>
+        </div>
+
+        <div class="glass-card lab-card" style="overflow: hidden; padding: 0; border-radius: var(--radius);">
+            <div class="lab-image" style="height: 200px; overflow: hidden; position: relative;">
+                <img src="{{ url_for('static', filename='lab_list/issiqlik_almashinuvi.jpg')}}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="overlay"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.8));">
+                </div>
+            </div>
+            <div class="lab-content" style="padding: 24px;">
+                <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Issiqlik Almashinuvi</h3>
+                <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+                    Termodinamika qonunlari va issiqlik o'tkazuvchanlik jarayonlari.</p>
+                <a href="/labaratory/issiqlik_almashinuvi" class="btn-primary"
+                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
+                        style="margin-left: 8px;"></i></a>
+            </div>
+        </div>
+
+        <div class="glass-card lab-card" style="overflow: hidden; padding: 0; border-radius: var(--radius);">
+            <div class="lab-image" style="height: 200px; overflow: hidden; position: relative;">
+                <img src="{{ url_for('static', filename='lab_list/harakat_va_kuch.jpg')}}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="overlay"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.8));">
+                </div>
+            </div>
+            <div class="lab-content" style="padding: 24px;">
+                <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Harakat va Kuch</h3>
+                <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Kuch
+                    ta'sirida jismlarning harakatlanishi va tezlanishini kuzating.</p>
+                <a href="/labaratory/harakat_va_kuch" class="btn-primary"
+                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
+                        style="margin-left: 8px;"></i></a>
+            </div>
+        </div>
+
+        <!-- Dynamic Labs -->
         {% for lab in labs %}
-        <div class="lab1-card">
-            <div class="lab1-image">
-                <img src="{{ url_for('static', filename=lab.pic_path) }}" alt="{{ lab.title }}">
+        <div class="glass-card lab-card" style="overflow: hidden; padding: 0; border-radius: var(--radius);">
+            <div class="lab-image" style="height: 200px; overflow: hidden; position: relative;">
+                <img src="{{ url_for('static', filename=lab.pic_path) }}" alt="{{ lab.title }}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="overlay"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.8));">
+                </div>
             </div>
-            <div class="lab1-info">
-                <h2 class="lab1-title">{{ lab.title }}</h2>
-                <p class="lab1-description">{{ lab.about }}</p>
-                <a href="{{ lab.link }}" class="lab1-enter-btn"><button>Kirish</button></a>
+            <div class="lab-content" style="padding: 24px;">
+                <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">{{ lab.title }}</h3>
+                <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">{{
+                    lab.about }}</p>
+                <a href="{{ lab.link }}" class="btn-primary"
+                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
+                        style="margin-left: 8px;"></i></a>
             </div>
         </div>
         {% endfor %}
     </div>
-</section>
-{% endblock %}
+</div>
 
-{% block page_content %}
-{{wtf.quick_form(form)}}
+<style>
+    .lab-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--primary-glow);
+    }
+
+    .lab-card:hover .lab-image img {
+        transform: scale(1.1);
+    }
+</style>
 {% endblock %}

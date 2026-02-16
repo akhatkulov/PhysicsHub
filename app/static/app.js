@@ -11,6 +11,7 @@ const t_page = document.querySelector(".test_page");
 const a_page = document.querySelector(".animation_page");
 const l_page = document.querySelector(".lab_page");
 const m_page = document.querySelector(".theme_page");
+const hb_page = document.querySelector(".handbook_page");
 
 // Buttons
 const btnQuestion = document.querySelector(".question");
@@ -20,6 +21,7 @@ const btnLabaratory = document.querySelector(".labaratory");
 const btnLTest = document.querySelector(".t_plus");
 const btnLEditTest = document.querySelector(".t_plus_edit")
 const btnTheme = document.querySelector(".theme");
+const btnHandbook = document.querySelector(".handbook-add");
 
 // Exit buttons
 const exitQM = document.querySelector(".q_exit");
@@ -27,7 +29,7 @@ const exitTM = document.querySelector(".t_exit");
 const exitAM = document.querySelector(".a_exit");
 const exitLM = document.querySelector(".l_exit");
 const exitMM = document.querySelector(".m_exit");
-const exitLAM = document.querySelector(".l_exit");
+const exitHM = document.querySelector(".h_exit");
 
 // Forms & inputs
 const qForm = document.querySelector(".q_form");
@@ -41,6 +43,8 @@ const qSearch = document.getElementById("q_search_input");
 const tSearch = document.getElementById("t_search_input");
 const aSearch = document.getElementById("a_search_input");
 const lSearch = document.getElementById("l_search_input")
+const hModal = document.querySelector(".handbook_modal");
+const hForm = document.querySelector(".h_form");
 
 
 const inputs = {
@@ -77,12 +81,19 @@ const inputs = {
     l: {
         title: document.getElementById("l_title"),
         image: document.getElementById("l_image"),
+        zip: document.getElementById("l_zip"),
         url: document.getElementById("l_url"),
         about: document.getElementById("l_about")
     },
     m: {
         title: document.getElementById("m_title"),
         about: document.getElementById("m_about")
+    },
+    h: {
+        category: document.getElementById("h_category"),
+        title: document.getElementById("h_title"),
+        content: document.getElementById("h_content"),
+        about: document.getElementById("h_about")
     }
 };
 
@@ -91,46 +102,62 @@ const questionContainer = document.querySelector(".q_boxs");
 const quizContainer = document.querySelector(".t_boxs");
 const themesContainer = document.querySelector(".th_box");
 const animationContainer = document.querySelector(".a_boxs");
-const labContainer = document.querySelector(".l_boxs")
+const labContainer = document.querySelector(".l_boxs");
 const questionBox = document.querySelector(".question_box");
 const testBox = document.querySelector(".test_box");
 const animationBox = document.querySelector(".animation_box");
 const labaratoryBox = document.querySelector(".lab_box");
 const themeBox = document.querySelector(".theme_box");
+const handbookBox = document.querySelector(".handbook_box");
+const handbookContainer = document.querySelector(".hb_box");
+
 q_page.addEventListener("click", () => {
     questionBox.style.display = "block";
     testBox.style.display = "none";
     animationBox.style.display = "none";
-    labaratoryBox.style.display = "none"
+    labaratoryBox.style.display = "none";
     themeBox.style.display = "none";
-})
+    handbookBox.style.display = "none";
+});
 t_page.addEventListener("click", () => {
     questionBox.style.display = "none";
     testBox.style.display = "block";
     animationBox.style.display = "none";
-    labaratoryBox.style.display = "none"
+    labaratoryBox.style.display = "none";
     themeBox.style.display = "none";
-})
+    handbookBox.style.display = "none";
+});
 a_page.addEventListener("click", () => {
     questionBox.style.display = "none";
     testBox.style.display = "none";
     animationBox.style.display = "block";
-    labaratoryBox.style.display = "none"
+    labaratoryBox.style.display = "none";
     themeBox.style.display = "none";
-})
+    handbookBox.style.display = "none";
+});
 l_page.addEventListener("click", () => {
     questionBox.style.display = "none";
     testBox.style.display = "none";
     animationBox.style.display = "none";
-    labaratoryBox.style.display = "block"
+    labaratoryBox.style.display = "block";
     themeBox.style.display = "none";
-})
+    handbookBox.style.display = "none";
+});
 m_page.addEventListener("click", () => {
     questionBox.style.display = "none";
     testBox.style.display = "none";
     animationBox.style.display = "none";
-    labaratoryBox.style.display = "none"
+    labaratoryBox.style.display = "none";
     themeBox.style.display = "block";
+    handbookBox.style.display = "none";
+});
+hb_page.addEventListener("click", () => {
+    questionBox.style.display = "none";
+    testBox.style.display = "none";
+    animationBox.style.display = "none";
+    labaratoryBox.style.display = "none";
+    themeBox.style.display = "none";
+    handbookBox.style.display = "block";
 })
 // Test question elements
 const svQ = document.querySelector(".sv_q");
@@ -160,7 +187,7 @@ function openModal(modal) {
 
 // Utility: close all modals
 function closeModals() {
-    [qModal, tModal, littleModal, animationModal, labModal, themeModal].forEach(m => m && (m.style.display = "none"));
+    [qModal, tModal, littleModal, animationModal, labModal, themeModal, hModal].forEach(m => m && (m.style.display = "none"));
     modals.style.display = "none";
     con.style.height = "auto";
     con.style.overflow = "auto";
@@ -189,6 +216,7 @@ btnTheme.addEventListener("click", () => openModal(themeModal));
 btnLTest.addEventListener("click", () => openModal(littleModal));
 btnLEditTest.addEventListener("click", () => openModal(littleModal));
 btnLabaratory.addEventListener("click", () => openModal(labModal));
+btnHandbook.addEventListener("click", () => openModal(hModal));
 // Exit listeners
 exitQM.addEventListener("click", closeModals);
 exitTM.addEventListener("click", closeModals);
@@ -196,6 +224,7 @@ exitLAM.addEventListener("click", closeModals);
 exitLM.addEventListener("click", () => { littleModal.style.display = "none" });
 exitAM.addEventListener("click", closeModals);
 exitMM.addEventListener("click", closeModals);
+exitHM.addEventListener("click", closeModals);
 
 // Add a test question
 svQ.addEventListener("submit", e => {
@@ -273,6 +302,7 @@ lForm.addEventListener("submit", e => {
     e.preventDefault();
 
     const image = inputs.l.image.files[0];
+    const zip = inputs.l.zip.files[0];
     if (!image) return alert("Rasm yuklang!");
 
     const formData = new FormData();
@@ -280,6 +310,9 @@ lForm.addEventListener("submit", e => {
     formData.append("about", inputs.l.about.value);
     formData.append("link", inputs.l.url.value);
     formData.append("pic", image);
+    if (zip) {
+        formData.append("zip", zip);
+    }
 
     fetch("/admin/add_lab", {
         method: "POST",
@@ -428,6 +461,7 @@ window.deleteQuiz = id => { if (confirm("Test o'chirilsinmi ?")) fetch(`/api/del
 window.deleteTheme = id => { if (confirm("Mavzu o'chirilsinmi ?")) fetch(`/api/delete_theme/${id}`, { method: 'DELETE' }).then(loadThemeList); };
 window.deleteAnima = id => { if (confirm("Animatsiya o'chirilsinmi ?")) fetch(`api/delete_animation/${id}`, { method: 'DELETE' }).then(loadAnimationList); };
 window.deleteLab = id => { if (confirm("Labaratoriya o'chirilsinmi ?")) fetch(`api/delete_labs/${id}`, { method: 'DELETE' }).then(loadLabs); }
+window.deleteHandbook = id => { if (confirm("O'chirilsinmi?")) fetch(`/api/delete_handbook/${id}`, { method: 'DELETE' }).then(loadHandbook); }
 window.editQuestion = function (id) {
     // Open edit modal
     openModal(qModal);
@@ -560,6 +594,19 @@ window.hiddenQuiz = function (id) {
         .catch(err => console.error(err));
 }
 
+function loadHandbook() {
+    fetch("/api/handbook").then(res => res.json()).then(data => {
+        handbookContainer.innerHTML = data.length ? data.map(item => `
+            <div class="box">
+                <p class="box_title">[${item.category}] ${item.title}</p>
+                <div class="edit_box_crud">
+                    <span onclick="deleteHandbook(${item.id})"><i class="fa-solid fa-trash"></i></span>
+                </div>
+            </div>
+        `).join('') : `<span class="edit_empty"><i class="fa-solid fa-box-open"></i><p>Ma'lumot topilmadi</p></span>`;
+    });
+}
+
 // Initialize
 loadThemes();
 loadQuestions();
@@ -567,3 +614,4 @@ loadQuizzes();
 loadThemeList();
 loadAnimationList();
 loadLabs();
+loadHandbook();

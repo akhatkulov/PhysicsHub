@@ -5,33 +5,29 @@
 
 <section class="main-display">
     <div class="leaderboard-container">
-        <h1 class="title">Reyting</h1>
+        <h1 class="form-action-title">Peshqadamlar Jadvali</h1>
 
-        <div class="leaderboard">
-            <div class="leader-head">
-                <h4>O'rin</h4>
-                <h4>User</h4>
-                <h4>Ball</h4>
-                <h4>Masalalar</h4>
-                <h4>Testlar</h4>
+        <div class="leader-head">
+            <span>O'rin</span>
+            <span>Foydalanuvchi</span>
+            <span>Ball</span>
+            <span>Masalalar</span>
+            <span>Testlar</span>
+        </div>
+
+        <div class="leader-body">
+            {% for rank, user, total_points in ranked_users %}
+            <div class="leader-body-item {% if user == current_user %}active{% endif %}">
+                <span style="font-weight: 800; color: var(--accent);">{{ rank }}</span>
+                <span style="font-weight: 600;">{{ user.username }}</span>
+                <span style="color: var(--primary); font-weight: 700;">{{ total_points }}</span>
+                <span>{{ user.problems_solved }}</span>
+                <span>{{ user.tests_passed }}</span>
             </div>
-            <div class="leader-body">
-                {% for rank, user, total_points in ranked_users %}
-                <div class="leader-body-item">
-                    <span class="leaderboard-td">{{ rank }}</span>
-                    <span class="leaderboard-td">{{ user.username }}</span>
-                    <span class="leaderboard-td">{{ total_points }}</span>
-                    <span class="leaderboard-td">{{ user.problems_solved }}</span>
-                    <span class="leaderboard-td">{{ user.tests_passed }}</span>
-                </div>
-                {% endfor %}
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
 
 {% endblock %}
 
-{% block page_content %}
-{{wtf.quick_form(form)}}
-{% endblock %}

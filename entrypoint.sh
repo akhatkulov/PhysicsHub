@@ -1,9 +1,8 @@
 #!/bin/bash
 
-export FLASK_APP=flasky.py  # <-- Flask faylingiz nomi shu bo‘lsa, aks holda moslang
-export FLASK_ENV=development
-export FLASK_RUN_HOST=0.0.0.0
-export FLASK_RUN_PORT=5000
+export FLASK_APP=${FLASK_APP:-flasky.py}
+export FLASK_RUN_HOST=${FLASK_RUN_HOST:-0.0.0.0}
+export FLASK_RUN_PORT=${FLASK_RUN_PORT:-5000}
 
 # Faqat bir marta: init
 if [ ! -d "migrations" ]; then

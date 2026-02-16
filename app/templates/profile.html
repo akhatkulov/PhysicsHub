@@ -1,68 +1,90 @@
 {% extends "base.html" %}
 
-{% block title %}Home - Physics Hub{% endblock %}
-
+{% block title %}Profil - Physics Hub{% endblock %}
 
 {% block content %}
-<div class="profile-container">
-    <div class="stats">
-        <div>
-            <span class="material-symbols-outlined">person</span>User: {{ current_user.username }}
+<div class="profile-page">
+    <h1 class="form-action-title text-gradient">Sizning Profilingiz</h1>
+
+    <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 48px;">
+        <div class="feature-card glass-card" style="text-align: center;">
+            <div class="level-badge" style="margin: 0 auto 15px;">{{ current_user.level }}</div>
+            <div
+                style="color: var(--text-muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                Sizning Darajangiz</div>
+            <div style="font-size: 11px; margin-top: 10px; color: var(--accent);">Keyingisiga: {{ 100 -
+                (current_user.points % 100) }} xp</div>
         </div>
-        <div>
-            <span class="material-symbols-outlined">calculate</span>Yechilgan masalalar: {{ current_user.problems_solved
-            }}
+        <div class="feature-card glass-card" style="text-align: center;">
+            <div style="font-size: 32px; font-weight: 800; color: var(--primary);">{{ current_user.points }}</div>
+            <div style="color: var(--text-muted); font-size: 12px; font-weight: 800; text-transform: uppercase;">Jami
+                Ballar</div>
+            <i class="fas fa-star" style="margin-top: 15px; color: var(--accent); opacity: 0.5;"></i>
         </div>
-        <div>
-            <span class="material-symbols-outlined">checklist_rtl</span>Yechilgan testlar: {{ current_user.tests_passed
-            }}
+        <div class="feature-card glass-card" style="text-align: center;">
+            <div style="font-size: 32px; font-weight: 800; color: #10b981;">#{{ current_user.rank() or '-' }}</div>
+            <div style="color: var(--text-muted); font-size: 12px; font-weight: 800; text-transform: uppercase;">Reyting
+            </div>
+            <i class="fas fa-trophy" style="margin-top: 15px; color: gold; opacity: 0.5;"></i>
         </div>
-        <div>
-            <span class="material-symbols-outlined">stars</span>Point lar: {{ current_user.points }}
-        </div>
-        <div>
-            <span class="material-symbols-outlined">military_tech</span>Rank: {{ current_user.rank() }}
+        <div class="feature-card glass-card" style="text-align: center;">
+            <div style="font-size: 32px; font-weight: 800; color: var(--accent);">{{ current_user.problems_solved +
+                current_user.tests_passed }}</div>
+            <div style="color: var(--text-muted); font-size: 12px; font-weight: 800; text-transform: uppercase;">
+                Yutuqlar</div>
+            <i class="fas fa-award" style="margin-top: 15px; color: var(--secondary); opacity: 0.5;"></i>
         </div>
     </div>
 
-    <form method="POST" action="{{ url_for('main.profile') }}" class="i42-form">
-        <h3>Profilingizni Tahrirlash</h3>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="flash-messages">
-            {% for category, message in messages %}
-            <div class="flash {{ category }}">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
-        {{ form.hidden_tag() }}
-        <div>
-            <label for="name">Ism:</label>
-            {{ form.name(class="form-control", value=user.name) }}
-        </div>
-        <div>
-            <label for="surname">Familiya:</label>
-            {{ form.surname(class="form-control", value=user.surname) }}
-        </div>
-        <div>
-            <label for="username">Taxallus:</label>
-            {{ form.username(class="form-control", value=user.username) }}
-        </div>
-        <input type="hidden" name="username" value="{{ form.username.data }}">
-        <div>
-            <label for="university">O'qish joyi:</label>
-            {{ form.university(class="form-control", value=user.university) }}
-        </div>
-        <div>
-            <label for="password">Yangi Parol:</label>
-            {{ form.password(class="form-control") }}
-            <small>Parolni almashtirish shart emas.</small>
-        </div>
-        <button type="submit" class="btn btn-primary">Saqlash</button>
-    </form>
-</div>
+    <div class="glass-card" style="padding: 40px; border-radius: var(--radius-lg); max-width: 600px; margin: 0 auto;">
+        <form method="POST" action="{{ url_for('main.profile') }}" class="i42-form" style="max-width: none;">
+            <h3 style="margin-bottom: 30px; text-align: center;">Profil Ma'lumotlari</h3>
 
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">
+                    <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label for="name">Ism</label>
+                {{ form.name(value=user.name) }}
+            </div>
+
+            <div class="form-group">
+                <label for="surname">Familiya</label>
+                {{ form.surname(value=user.surname) }}
+            </div>
+
+            <div class="form-group">
+                <label for="username">Taxallus (O'zgartirib bo'lmaydi)</label>
+                {{ form.username(value=user.username, disabled="disabled") }}
+            </div>
+
+            <div class="form-group">
+                <label for="university">O'qish joyi</label>
+                {{ form.university(value=user.university) }}
+            </div>
+
+            <div class="form-group">
+                <label for="password">Yangi Parol (Agar o'zgartirmoqchi bo'lsangiz)</label>
+                {{ form.password(placeholder="********") }}
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                Saqlash <i class="fas fa-save"></i>
+            </button>
+        </form>
+    </div>
+</div>
 {% endblock %}

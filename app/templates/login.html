@@ -1,35 +1,52 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Kirish - Physics Hub{% endblock %}
 
 {% block content %}
 <div class="login-section">
-    <form method="POST" action="/signin" class="i42-form">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="flash-messages">
-            {% for category, message in messages %}
-            <div class="flash {{ category }}">
-                {{ message }}
+    <div class="glass-card"
+        style="padding: 40px; border-radius: var(--radius-lg); width: 100%; max-width: 450px; margin: 0 auto;">
+        <form method="POST" action="/signin" class="i42-form" style="width: 100%; max-width: none;">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">
+                    <i class="fas fa-info-circle" style="margin-right: 10px;"></i>
+                    {{ message }}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
-        <div class="form-action-title">Kirish</div>
-        {{ form.hidden_tag() }}
+            {% endif %}
+            {% endwith %}
 
-        <label for="username">Taxallus</label>
-        {{ form.username(class="form-input", id="username") }}<br>
+            <div class="form-action-title text-gradient">Xush Kelibsiz</div>
+            <p style="text-align: center; color: var(--text-muted); margin-top: -30px; margin-bottom: 30px;">O'z
+                profilingizga kiring</p>
 
-        <label for="password">Parol</label>
-        {{ form.password(class="form-input", id="password") }}<br>
+            {{ form.hidden_tag() }}
 
-        <h3><a href="/signup">Ro'yxatdan o'tmaganmisiz?</a></h3>
-        <button type="submit">Kirish</button>
-    </form>
+            <div class="form-group">
+                <label for="username"><i class="fas fa-at"></i> Taxallus</label>
+                {{ form.username(id="username", placeholder="Username") }}
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Parol</label>
+                {{ form.password(id="password", placeholder="Parolingiz") }}
+            </div>
+
+            <button type="submit" class="btn-primary"
+                style="width: 100%; justify-content: center; margin-bottom: 20px;">
+                Kirish <i class="fas fa-sign-in-alt"></i>
+            </button>
+
+            <div style="text-align: center; font-size: 14px; color: var(--text-muted);">
+                Parolni unutdingizmi? <a href="#" style="color: var(--primary);">Tiklash</a><br><br>
+                Sizda hali akkaunt yo'qmi? <a href="/signup" style="color: var(--primary); font-weight: 700;">Ro'yxatdan
+                    o'tish</a>
+            </div>
+        </form>
+    </div>
 </div>
-{% endblock %}
-
-{% block page_content %}
-{{wtf.quick_form(form)}}
 {% endblock %}
