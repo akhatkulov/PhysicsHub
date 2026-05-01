@@ -29,16 +29,18 @@ header {
 
 .user-stats {
     display: flex;
-    color:#003366;
+    color: #003366;
     gap: 15px;
     font-size: 14px;
     font-weight: bold;
 }
 
-/* .button-group {
+.button-group {
     display: flex;
     gap: 10px;
 }
+
+/*
 .enter-button a {
     text-decoration: none;
     color:  #0078ff;
@@ -193,7 +195,7 @@ Forma uchun style */
     align-items: center;
     justify-content: center;
     /* Forma markazda bo'lishi uchun */
-    margin:5px;
+    margin: 5px;
     background: #2e3d7c;
     /* Gradient fon */
     border-radius: 5px;
@@ -329,13 +331,14 @@ Forma uchun style */
     border: 1px solid #c3e6cb;
 }
 
-    /* Theme list */
+/* Theme list */
 /* Oq fon berish */
 
 /* Kontent konteyneri */
 .theme-container {
     width: 70%;
-    margin: 30px auto; /* Markazga joylash */
+    margin: 30px auto;
+    /* Markazga joylash */
     padding: 20px;
     text-align: center;
 }
@@ -367,15 +370,18 @@ Forma uchun style */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+
 .theme-card {
-    background: #ffffff;  /* Oq fon */
+    background: #ffffff;
+    /* Oq fon */
     border-radius: 12px;
     padding: 15px;
     text-align: center;
     color: #003366;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border: 2px solid #003366; /* Ramka */
+    border: 2px solid #003366;
+    /* Ramka */
 }
 
 /* Hover effekti */
@@ -411,29 +417,36 @@ Forma uchun style */
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 #matter-list-item {
     list-style-type: none;
     padding: 0;
 }
+
 #matter-list-item li {
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
+
 .matter-theme-name {
     font-size: 18px;
 }
+
 .matter-pagination {
     margin-top: 20px;
     text-align: center;
 }
+
 .matter-pagination a {
     text-decoration: none;
     font-weight: bold;
     margin: 0 10px;
 }
+
 .matter-solved {
     color: green;
 }
+
 .matter-unsolved {
     color: red;
 }
@@ -462,7 +475,8 @@ Forma uchun style */
     align-items: center;
     gap: 30px;
 }
-.user-stats span{
+
+.user-stats span {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -762,7 +776,7 @@ Forma uchun style */
     padding: 10px;
 }
 
-.lab1-image{
+.lab1-image {
     width: 35%;
     height: 200px;
 }
@@ -821,7 +835,7 @@ Forma uchun style */
     opacity: 0;
 }
 
-.lab-collect{
+.lab-collect {
     display: flex;
     border-radius: 15px;
     opacity: 1;

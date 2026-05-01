@@ -1,0 +1,308 @@
+#fon {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+}
+
+#dynamometer-arrow-long-34, #dynamometer-arrow-long2-34 {
+  position: absolute;
+  left: 112px;
+  top: 605px;
+  width: 110px;
+  transition: transform 0.02s ease;
+  z-index: 20;
+}
+
+#dynamometer-arrow-short-34 {
+  position: absolute;
+  left: 112px;
+  width: 110px;
+   top: 605px;
+  transition: transform 0.02s ease;
+  z-index: 3;
+}
+
+
+#canvas {
+  position: absolute;
+  top:130px;
+  left: 540px;
+}
+
+#stand {
+  position: absolute;
+  top: 150px;
+  left: 450px;
+  height: 550px;
+   z-index: 4;
+}
+
+#prug {
+  position: absolute;
+  top: 130px;
+  left: 690px;
+  height: 50px;
+  z-index: 4;
+  }
+  
+#stol252 {
+  position: absolute;
+  top: 380px;
+  left: 80px;
+  width: 920px;
+  height: 250px;
+  z-index: 2;
+  
+}
+
+#planet {
+  position: absolute;
+  top: 240px;
+  left: 165px;
+}
+
+
+
+
+
+#secundomer {
+  position: absolute;
+  top: 465px;
+  left: 86px;
+  width: 160px;
+ 
+  z-index: 1;
+  
+}
+
+#magnit {
+  position: absolute;
+  top: 220px;
+  left: 300px;
+  width: 500px;
+  height: 450px;
+  z-index: 1;
+  
+}
+
+#level {
+  position: absolute;
+  top: 445px;
+  left: 485px;
+  height: 90px;
+  z-index: 2;
+}
+
+#ball {
+  position: absolute;
+  width: 50px;
+  height: 150px;
+  z-index: 3;
+  transform-origin: center center;
+}
+
+#ampermeter-9 {
+  position: absolute;
+  top: 80px;
+  left: 470px;
+  height: 200px;
+  z-index: 2;
+}
+
+#str-amp-9 {
+  position: absolute;
+  top: 200px;
+  left: 500px;
+  width: 140px;
+  z-index: 1;
+}
+
+
+
+#ampermeter-35 {
+  position: absolute;
+  top: 127px;
+  left: 486px;
+  height: 400px;
+  z-index: 2;
+}
+
+#str-amp-35 {
+  position: absolute;
+  top: 203px;
+  left: 1067px;
+  height: 420px;
+  z-index: 4;
+  transition: transform;
+}
+
+#ten2 {
+  position: absolute;
+  top: 575px;
+  left: 820px;
+  width: 330px;
+  height: 50px;
+  z-index: 0;
+}
+
+#ten {
+  position: absolute;
+  top: 540px;
+  left: 100px;
+  width: 880px;
+  height: 50px;
+  z-index: 3;
+}
+
+#istochnik {
+  position: absolute;
+  top: 640px;
+  left: 850px;
+  width: 141px;
+  z-index: 2;
+  height: 71px;
+}
+
+#istochnik-9 {
+  position: absolute;
+  top: 480px;
+  left: 300px;
+  height: 170px;
+  z-index: 0;
+}
+
+
+#patron-9 {
+  position: absolute;
+  top: 617px;
+  left: 750px;
+  height: 63px;
+  z-index: 3;
+}
+
+
+#oreol-9 {
+  position: absolute;
+  top: 415px;
+  left: 115px;
+  height: 125px;
+  width: 100px;
+  z-index: 3;
+}
+
+
+#voltmeter-9 {
+  position: absolute;
+  top: 100px;
+  left: 420px;
+  height: 320px;
+  z-index: 2;
+}
+
+#str-volt-9 {
+  position: absolute;
+  top: 150px;
+  left: 564px;
+  height: 220px;
+  width: 30px;
+  z-index: 2;
+}
+
+#ampermeter-9 {
+  position: absolute;
+  top: 80px;
+  left: 700px;
+  height: 200px;
+  z-index: 2;
+}
+
+#str-amp-9 {
+  position: absolute;
+  top: 200px;
+  left: 730px;
+  width: 140px;
+  z-index: 1;
+}
+
+
+#ampermeter-91 {
+  position: absolute;
+  top: 80px;
+  left: 390px;
+  height: 200px;
+  z-index: 2;
+}
+
+
+#str-amp-91 {
+  position: absolute;
+  top: 200px;
+  left: 420px;
+  width: 140px;
+  z-index: 1;
+}
+
+#ampermeter-92 {
+  position: absolute;
+  top: 110px;
+  left: 470px;
+  height: 225px;
+  z-index: 2;
+}
+
+
+#str-amp-92 {
+  position: absolute;
+  top: 240px;
+  left: 535px;
+  width: 140px;
+  z-index: 1;
+}
+
+
+
+#kluch1-9 {
+  position: absolute;
+  top: 620px;
+  left: 1000px;
+  height: 60px;
+  z-index: 11;
+}
+
+#kluch2-9 {
+  position: absolute;
+  top: 548px;
+  left: 1093px;
+  height: 160px;
+  width: 20px;
+  cursor: pointer;
+   z-index: 30;
+}
+
+#kluch-drag-9 {
+  position: absolute;
+  top: 450px;
+  left: 433px;
+  height: 100px;
+  width: 50px;
+  z-index: 20;
+}
+
+#rez0 {
+  position: absolute;
+  top: 408px;
+  left: 95px;
+  height: 131px;
+  width: 888px;
+  z-index: 2;
+}
+
+#rezx {
+  position: absolute;
+  top: 460px;
+  left: 748px;
+  height: 100px;
+  width: 60px;
+  z-index: 1;
+}

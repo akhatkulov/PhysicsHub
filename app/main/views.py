@@ -17,7 +17,8 @@ import shutil
 import requests
 from ..models import (
     get_leaderboard, get_matter, get_quiz, Gifs, get_animation_func, Labs, get_labs,
-    get_lab_list, HandbookItem, ChatMessage, User
+    get_lab_list, HandbookItem, ChatMessage, User, Matter, Quiz, Theme, MatterPoints, QuizPoints, 
+    SolvedProblems, TestResults, check_history, save_user_progress, get_all_themes
 )
 
 ALLOWED_EXTENSIONS = {'gif', 'mp4', 'jpg', 'jpeg', 'png'}
@@ -523,6 +524,15 @@ def handbook_view():
 @main.route("/labaratory/<id>")
 def lab_page(id):
     return render_template(f"lab/{id}/index.html")
+
+@main.route("/lab/workspace")
+def lab_workspace():
+    src = request.args.get('src')
+    title = request.args.get('title', 'Laboratoriya')
+    if not src:
+        flash("Laboratoriya yo'li topilmadi.", "error")
+        return redirect(url_for('main.lab_list_view'))
+    return render_template("lab_workspace.html", src=src, title=title)
 
 
 @main.route("/signup", methods=["GET", "POST"])

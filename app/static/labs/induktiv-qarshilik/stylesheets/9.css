@@ -1,0 +1,198 @@
+#canvas-9 {
+   position: absolute;
+   top:100px;
+   left: 580px;
+   height: 500px;
+   width: 300px;
+   z-index: 1;
+ }
+ 
+ #scales-display2-19 {
+   position: absolute;
+   top: 230px;
+   left: 1050px;
+   color: #0090C0;
+   font: "Century Gothic";
+   font-weight: 500;
+   font-size: 40px;
+   z-index: 10;
+ }
+ 
+ 
+ #radio-section-9 {
+   position: absolute;
+   top: 80px;
+   left: 145px;
+   width: 200px !important;
+ }
+ 
+ #params-section-9 {
+   position: absolute;
+   top: 45px;
+   left: 80px;
+ }
+ 
+ #params-section-91 {
+   position: absolute;
+   top: 45px;
+   left: 500px;
+ }
+ 
+ 
+ 
+ #istochnik-9 {
+   position: absolute;
+   top: 524px;
+   left: 45px;
+   height: 160px;
+   z-index: 0;
+ }
+ 
+ #voltmeter-91 {
+   position: absolute;
+   top: 290px;
+   left: 100px;
+   height: 200px;
+   z-index: 2;
+ }
+ 
+ #str-volt-91 {
+   position: absolute;
+   top: 410px;
+   left: 130px;
+   width: 140px;
+   z-index: 1;
+ }
+ 
+ 
+ 
+ 
+ #ampermeter-91 {
+   position: absolute;
+   top: 290px;
+   left: 750px;
+   height: 200px;
+   z-index: 2;
+   
+ }
+ 
+ 
+ #str-amp-91 {
+   position: absolute;
+   top: 410px;
+   left: 780px;
+   width: 140px;
+   z-index: 1;
+   
+ }
+ 
+ #multimetr {
+   position: absolute;
+   top: 145px;
+   left: 920px;
+   height: 555px;
+   z-index: 2;
+ }
+ 
+ 
+ 
+ #konder-9 {
+   position: absolute;
+   top: 310px;
+   left: 420px;
+   height: 220px;
+   z-index: 2;
+ }
+ 
+ 
+ #kluch1-9 {
+   position: absolute;
+   top: 540px;
+   left: 395px;
+   height: 50px;
+ }
+ 
+ #kluch2-9 {
+   position: absolute;
+   top: 500px;
+   left: 433px;
+   height: 50px;
+   width: 50px;
+   z-index: 2;
+ }
+ 
+ #kluch-drag-9 {
+   position: absolute;
+   top: 450px;
+   left: 433px;
+   height: 100px;
+   width: 50px;
+   z-index: 4;
+ }
+ 
+ #rez-9 {
+   position: absolute;
+   top: 260px;
+   left: 605px;
+   height: 30px;
+   width: 80px;
+ }
+ 
+ #reost-9 {
+   position: absolute;
+   top: 540px;
+   left: 720px;
+   height: 100px;
+ }
+ 
+ #begun-drag-9 {
+   position: absolute;
+   top: 538px;
+   left: 790px;
+   height: 50px;
+   width: 35px;
+   z-index: 4;
+ }
+ 
+ #begun-9 {
+   position: absolute;
+   top: 538px;
+   left: 790px;
+   height: 50px;
+ }
+ 
+ #provoda-9 {
+   position: absolute;
+   top: 272px;
+   left: 53px;
+   height: 407px;
+   width: 1201px;
+   z-index: 3;
+ }
+ 
+ #ten10-9 {
+   position: absolute;
+   top: 575px;
+   left: 690px;
+   height: 80px;
+   width: 180px;
+   z-index: 1;
+ }
+ 
+ #ten7-9 {
+   position: absolute;
+   top: 538px;
+   left: 395px;
+   height: 100px;
+   width: 120px;
+   z-index: 1;
+ }
+ 
+ 
+ .PrivateSwitchBase-root-1 {
+   padding: 1px !important;
+ }
+ 
+ .MuiFormControlLabel-root {
+   margin-left: -5px !important;
+ }

@@ -27,7 +27,8 @@ const btnHandbook = document.querySelector(".handbook-add");
 const exitQM = document.querySelector(".q_exit");
 const exitTM = document.querySelector(".t_exit");
 const exitAM = document.querySelector(".a_exit");
-const exitLM = document.querySelector(".l_exit");
+const exitLabM = document.querySelector(".l_exit");
+const exitLM = document.querySelector(".lm_exit");
 const exitMM = document.querySelector(".m_exit");
 const exitHM = document.querySelector(".h_exit");
 
@@ -220,9 +221,9 @@ btnHandbook.addEventListener("click", () => openModal(hModal));
 // Exit listeners
 exitQM.addEventListener("click", closeModals);
 exitTM.addEventListener("click", closeModals);
-exitLAM.addEventListener("click", closeModals);
-exitLM.addEventListener("click", () => { littleModal.style.display = "none" });
 exitAM.addEventListener("click", closeModals);
+exitLabM.addEventListener("click", closeModals);
+exitLM.addEventListener("click", () => { littleModal.style.display = "none" });
 exitMM.addEventListener("click", closeModals);
 exitHM.addEventListener("click", closeModals);
 
@@ -456,12 +457,12 @@ function loadLabs(searchE) {
 }
 
 // Delete handlers
-window.deleteQuestion = id => { if (confirm("Masala o'chirilsinmi ?")) fetch(`/api/delete_matter/${id}`, { method: 'DELETE' }).then(loadQuestions); };
-window.deleteQuiz = id => { if (confirm("Test o'chirilsinmi ?")) fetch(`/api/delete_quiz/${id}`, { method: 'DELETE' }).then(loadQuizzes); };
-window.deleteTheme = id => { if (confirm("Mavzu o'chirilsinmi ?")) fetch(`/api/delete_theme/${id}`, { method: 'DELETE' }).then(loadThemeList); };
-window.deleteAnima = id => { if (confirm("Animatsiya o'chirilsinmi ?")) fetch(`api/delete_animation/${id}`, { method: 'DELETE' }).then(loadAnimationList); };
-window.deleteLab = id => { if (confirm("Labaratoriya o'chirilsinmi ?")) fetch(`api/delete_labs/${id}`, { method: 'DELETE' }).then(loadLabs); }
-window.deleteHandbook = id => { if (confirm("O'chirilsinmi?")) fetch(`/api/delete_handbook/${id}`, { method: 'DELETE' }).then(loadHandbook); }
+window.deleteQuestion = id => { if (confirm("Masala o'chirilsinmi ?")) fetch(`/api/delete_matter/${id}`, { method: 'DELETE' }).then(() => loadQuestions()); };
+window.deleteQuiz = id => { if (confirm("Test o'chirilsinmi ?")) fetch(`/api/delete_quiz/${id}`, { method: 'DELETE' }).then(() => loadQuizzes()); };
+window.deleteTheme = id => { if (confirm("Mavzu o'chirilsinmi ?")) fetch(`/api/delete_theme/${id}`, { method: 'DELETE' }).then(() => loadThemeList()); };
+window.deleteAnima = id => { if (confirm("Animatsiya o'chirilsinmi ?")) fetch(`/api/delete_animation/${id}`, { method: 'DELETE' }).then(() => loadAnimationList()); };
+window.deleteLab = id => { if (confirm("Labaratoriya o'chirilsinmi ?")) fetch(`/api/delete_labs/${id}`, { method: 'DELETE' }).then(() => loadLabs()); };
+window.deleteHandbook = id => { if (confirm("O'chirilsinmi?")) fetch(`/api/delete_handbook/${id}`, { method: 'DELETE' }).then(() => loadHandbook()); };
 window.editQuestion = function (id) {
     // Open edit modal
     openModal(qModal);
@@ -606,6 +607,23 @@ function loadHandbook() {
         `).join('') : `<span class="edit_empty"><i class="fa-solid fa-box-open"></i><p>Ma'lumot topilmadi</p></span>`;
     });
 }
+
+hForm.addEventListener("submit", e => {
+    e.preventDefault();
+    fetch("/admin/add_handbook", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            category: inputs.h.category.value,
+            title: inputs.h.title.value,
+            content: inputs.h.content.value,
+            about: inputs.h.about.value
+        })
+    }).then(() => {
+        closeModals();
+        loadHandbook();
+    });
+});
 
 // Initialize
 loadThemes();

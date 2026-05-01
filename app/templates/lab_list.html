@@ -26,9 +26,9 @@
                 <p class="lab-description"
                     style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Elektr
                     zanjirini yig'ish, kuchlanish va tok kuchini o'lchash bo'yicha bazaviy tajribalar.</p>
-                <a href="/labaratory/1" class="btn-primary"
-                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
-                        style="margin-left: 8px;"></i></a>
+                <a href="{{ url_for('main.lab_workspace', src='/labaratory/1', title='Elektr zanjiri asoslari') }}"
+                    class="btn-primary" style="display: flex; justify-content: center; width: 100%;">Kirish <i
+                        class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
             </div>
         </div>
 
@@ -44,9 +44,9 @@
                 <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Newton Qonunlari</h3>
                 <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
                     Mexanikaning uchta asosiy qonunini vizual model orqali o'rganing.</p>
-                <a href="/labaratory/2" class="btn-primary"
-                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
-                        style="margin-left: 8px;"></i></a>
+                <a href="{{ url_for('main.lab_workspace', src='/labaratory/2', title='Newton Qonunlari') }}"
+                    class="btn-primary" style="display: flex; justify-content: center; width: 100%;">Kirish <i
+                        class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
             </div>
         </div>
 
@@ -62,9 +62,9 @@
                 <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Elektr Zanjiri (Ohm Qonuni)</h3>
                 <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
                     Qarshilik, kuchlanish va tok kuchi orasidagi bog'liqlikni tekshiring.</p>
-                <a href="/labaratory/elektr_zanjiri" class="btn-primary"
-                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
-                        style="margin-left: 8px;"></i></a>
+                <a href="{{ url_for('main.lab_workspace', src='/labaratory/elektr_zanjiri', title='Elektr Zanjiri (Ohm Qonuni)') }}"
+                    class="btn-primary" style="display: flex; justify-content: center; width: 100%;">Kirish <i
+                        class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
             </div>
         </div>
 
@@ -80,9 +80,9 @@
                 <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Mexanik Tebranishlar</h3>
                 <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
                     Prujinali mayatnikning tebranish chastotasi va amplitudasini o'rganish.</p>
-                <a href="/labaratory/mexanik_tebranish" class="btn-primary"
-                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
-                        style="margin-left: 8px;"></i></a>
+                <a href="{{ url_for('main.lab_workspace', src='/labaratory/mexanik_tebranish', title='Mexanik Tebranishlar') }}"
+                    class="btn-primary" style="display: flex; justify-content: center; width: 100%;">Kirish <i
+                        class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
             </div>
         </div>
 
@@ -98,9 +98,9 @@
                 <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Optika Laboratoriyasi</h3>
                 <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
                     Linzalar, fokus masofasi va tasvir hosil bo'lishini o'rganing.</p>
-                <a href="/labaratory/optika_labaratoriyasi" class="btn-primary"
-                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
-                        style="margin-left: 8px;"></i></a>
+                <a href="{{ url_for('main.lab_workspace', src='/labaratory/optika_labaratoriyasi', title='Optika Laboratoriyasi') }}"
+                    class="btn-primary" style="display: flex; justify-content: center; width: 100%;">Kirish <i
+                        class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
             </div>
         </div>
 
@@ -116,9 +116,9 @@
                 <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Issiqlik Almashinuvi</h3>
                 <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
                     Termodinamika qonunlari va issiqlik o'tkazuvchanlik jarayonlari.</p>
-                <a href="/labaratory/issiqlik_almashinuvi" class="btn-primary"
-                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
-                        style="margin-left: 8px;"></i></a>
+                <a href="{{ url_for('main.lab_workspace', src='/labaratory/issiqlik_almashinuvi', title='Issiqlik Almashinuvi') }}"
+                    class="btn-primary" style="display: flex; justify-content: center; width: 100%;">Kirish <i
+                        class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
             </div>
         </div>
 
@@ -134,9 +134,9 @@
                 <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">Harakat va Kuch</h3>
                 <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Kuch
                     ta'sirida jismlarning harakatlanishi va tezlanishini kuzating.</p>
-                <a href="/labaratory/harakat_va_kuch" class="btn-primary"
-                    style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
-                        style="margin-left: 8px;"></i></a>
+                <a href="{{ url_for('main.lab_workspace', src='/labaratory/harakat_va_kuch', title='Harakat va Kuch') }}"
+                    class="btn-primary" style="display: flex; justify-content: center; width: 100%;">Kirish <i
+                        class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
             </div>
         </div>
 
@@ -154,7 +154,7 @@
                 <h3 class="lab-title" style="margin-bottom: 10px; font-size: 18px;">{{ lab.title }}</h3>
                 <p class="lab-description" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">{{
                     lab.about }}</p>
-                <a href="{{ lab.link }}" class="btn-primary"
+                <a href="{{ url_for('main.lab_workspace', src=lab.link, title=lab.title) }}" class="btn-primary"
                     style="display: flex; justify-content: center; width: 100%;">Kirish <i class="fas fa-arrow-right"
                         style="margin-left: 8px;"></i></a>
             </div>
