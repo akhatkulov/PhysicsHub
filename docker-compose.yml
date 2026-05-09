@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: ${DB_USER:-physicshub}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-physicshub_pass}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
       POSTGRES_DB: ${DB_NAME:-physicshub}
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -23,13 +23,13 @@ services:
     restart: always
     environment:
       - FLASK_APP=flasky.py
-      - FLASK_DEBUG=1
-      - DATABASE_URL=postgresql://${DB_USER:-physicshub}:${DB_PASSWORD:-physicshub_pass}@db:5432/${DB_NAME:-physicshub}
-      - SECRET_KEY=${SECRET_KEY:-your_very_secret_key}
+      - FLASK_CONFIG=${FLASK_CONFIG:-production}
+      - FLASK_DEBUG=${FLASK_DEBUG:-0}
+      - DATABASE_URL=postgresql://${DB_USER:-physicshub}:${DB_PASSWORD}@db:5432/${DB_NAME:-physicshub}
+      - SECRET_KEY=${SECRET_KEY:?Set SECRET_KEY in .env}
+      - GUNICORN_WORKERS=${GUNICORN_WORKERS:-4}
     ports:
       - "5000:5000"
-    volumes:
-      - .:/app
     depends_on:
       db:
         condition: service_healthy
@@ -42,7 +42,7 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_DB=${DB_NAME:-physicshub}
       - POSTGRES_USER=${DB_USER:-physicshub}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-physicshub_pass}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - SCHEDULE=@daily
       - BACKUP_KEEP_DAYS=7
       - BACKUP_KEEP_WEEKS=4

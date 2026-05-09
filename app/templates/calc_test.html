@@ -7,7 +7,7 @@
     style="max-width: 900px; margin: 0 auto; min-height: calc(100vh - 140px); display: flex; flex-direction: column;">
 
     <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-        <h1 class="form-action-title text-gradient" style="margin: 0; font-size: 24px;">Mavzulashtirilgan Testlar</h1>
+        <h1 class="form-action-title text-gradient" style="margin: 0; font-size: 24px;">Bo'limlashtirilgan Testlar</h1>
         <div class="timer"
             style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 99px; font-family: monospace; font-size: 16px;">
             <i class="fas fa-clock"></i> <span id="timer">00:00</span>
@@ -45,6 +45,7 @@
         </div>
 
         <form method="POST" id="quiz-form" style="flex: 1; display: flex; flex-direction: column;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="questions-wrapper" style="flex: 1; position: relative;">
                 {% for question in questions %}
                 <div class="quiz-slide" id="slide-{{ loop.index0 }}" style="display: none; padding: 40px;">

@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Admin panel</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='fontawesome-free-6.7.2-web/css/all.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 </head>
 
 <body>
@@ -31,10 +33,13 @@
                     Labaratoriya qo'shish
                 </div>
                 <div class="theme">
-                    Mavzu qo'shish
+                    Bo'lim qo'shish
                 </div>
                 <div class="handbook-add">
                     Qo'llanma qo'shish
+                </div>
+                <div class="lesson-add">
+                    Mavzu qo'shish
                 </div>
             </div>
         </div>
@@ -54,10 +59,16 @@
                         Labaratoriyalar
                     </div>
                     <div class="theme_page">
-                        Mavzular
+                        Bo'limlar
                     </div>
                     <div class="handbook_page">
                         Qo'llanma
+                    </div>
+                    <div class="lesson_page">
+                        Mavzular
+                    </div>
+                    <div class="user_page">
+                        Foydalanuvchilar
                     </div>
                 </div>
             </div>
@@ -114,12 +125,36 @@
                     </div>
                 </div>
                 <div class="theme_box">
-                    <h1>Mavzular</h1>
+                    <h1>Bo'limlar</h1>
+                    <form id="m_search_form">
+                        <input type="search" id="m_search_input" name="prefix" placeholder="Qidirish..."
+                            autocomplete="off">
+                    </form>
                     <div class="th_box"></div>
                 </div>
                 <div class="handbook_box">
                     <h1>Qo'llanma</h1>
+                    <form id="h_search_form">
+                        <input type="search" id="h_search_input" name="prefix" placeholder="Qidirish..."
+                            autocomplete="off">
+                    </form>
                     <div class="hb_box edit_boxs"></div>
+                </div>
+                <div class="lesson_box">
+                    <h1>Mavzular</h1>
+                    <form id="ls_search_form">
+                        <input type="search" id="ls_search_input" name="prefix" placeholder="Sarlavha bo'yicha qidirish..."
+                            autocomplete="off">
+                    </form>
+                    <div class="ls_box edit_boxs"></div>
+                </div>
+                <div class="user_box">
+                    <h1>Foydalanuvchilar</h1>
+                    <form id="u_search_form">
+                        <input type="search" id="u_search_input" name="prefix" placeholder="Username bo'yicha qidirish..."
+                            autocomplete="off">
+                    </form>
+                    <div class="u_box edit_boxs"></div>
                 </div>
             </div>
         </header>
@@ -164,7 +199,7 @@
                 <div class="input-i">
                     <select id="mavzusi"></select>
                     <label for="mavzusi" class="mavzulari">
-                        Masala mavzulari
+                        Masala bo'limi
                     </label>
                 </div>
                 <button type="submit">Qo'shish</button>
@@ -203,7 +238,7 @@
                 <div class="input-i">
                     <select id="mavzusi_edit"></select>
                     <label for="mavzusi_edit" class="mavzulari">
-                        Masala mavzulari
+                        Masala bo'limi
                     </label>
                 </div>
                 <button type="submit">Kiritish</button>
@@ -224,7 +259,7 @@
                 <div class="input-i">
                     <select id="t_mavzusi"></select>
                     <label for="t_mavzusi" class="mavzulari">
-                        Test mavzusi
+                        Test bo'limi
                     </label>
                 </div>
                 <div class="tests">
@@ -251,7 +286,7 @@
                 <div class="input-i">
                     <select id="t_mavzusi_edit"></select>
                     <label for="t_mavzusi_edit" class="mavzulari">
-                        Test mavzusi
+                        Test bo'limi
                     </label>
                 </div>
                 <div class="tests">
@@ -272,9 +307,7 @@
             <span class="a_exit exit">
                 <i class="fa-solid fa-xmark"></i>
             </span>
-            <h1>
-                Animatsiya qo'shish
-            </h1>
+            <h1 class="a_modal_title">Animatsiya qo'shish</h1>
             <form action="#" class="a_form">
                 <div class="input-i">
                     <input type="text" id="a_title" required>
@@ -285,11 +318,11 @@
                 <div class="input-i">
                     <select id="a_mavzusi"></select>
                     <label for="a_mavzusi" class="mavzulari">
-                        Gif mavzusi
+                        Gif bo'limi
                     </label>
                 </div>
                 <div class="input-i">
-                    <input type="file" accept="image/gif" id="a_gif" required>
+                    <input type="file" accept="image/gif,video/mp4" id="a_gif" required>
                 </div>
                 <div class="input-i">
                     <input type="text" id="a_about" required>
@@ -299,14 +332,37 @@
                 </div>
                 <button type="submit">Qo'shish</button>
             </form>
+            <form action="#" class="a_form_edit">
+                <div class="input-i">
+                    <input type="text" id="a_title_edit" required>
+                    <label for="a_title_edit" class="title">
+                        Animatsiya nomi
+                    </label>
+                </div>
+                <div class="input-i">
+                    <select id="a_mavzusi_edit"></select>
+                    <label for="a_mavzusi_edit" class="mavzulari">
+                        Gif bo'limi
+                    </label>
+                </div>
+                <div class="input-i">
+                    <span>Yangi fayl (ixtiyoriy):</span>
+                    <input type="file" accept="image/gif,video/mp4" id="a_gif_edit">
+                </div>
+                <div class="input-i">
+                    <input type="text" id="a_about_edit" required>
+                    <label for="a_about_edit" class="title">
+                        Ma'lumot
+                    </label>
+                </div>
+                <button type="submit">Saqlash</button>
+            </form>
         </div>
         <div class="lab_modal">
             <span class="l_exit exit">
                 <i class="fa-solid fa-xmark"></i>
             </span>
-            <h1>
-                Labaratoriya qo'shish
-            </h1>
+            <h1 class="l_modal_title">Labaratoriya qo'shish</h1>
             <form action="#" class="l_form">
                 <div class="input-i">
                     <input type="text" id="l_title" required>
@@ -336,19 +392,46 @@
                 </div>
                 <button type="submit">Qo'shish</button>
             </form>
+            <form action="#" class="l_form_edit">
+                <div class="input-i">
+                    <input type="text" id="l_title_edit" required>
+                    <label for="l_title_edit" class="title">
+                        Labaratoriya nomi
+                    </label>
+                </div>
+                <div class="input-i">
+                    <span>Yangi muqova rasmi (ixtiyoriy):</span>
+                    <input type="file" accept="image/*" id="l_image_edit">
+                </div>
+                <div class="input-i">
+                    <span>Yangi ZIP (ixtiyoriy):</span>
+                    <input type="file" accept=".zip" id="l_zip_edit">
+                </div>
+                <div class="input-i">
+                    <input type="text" id="l_url_edit" placeholder="Yoki link kiriting">
+                    <label for="l_url_edit" class="title">
+                        Labaratoriya linki (URL)
+                    </label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="l_about_edit" required>
+                    <label for="l_about_edit" class="title">
+                        Ma'lumot
+                    </label>
+                </div>
+                <button type="submit">Saqlash</button>
+            </form>
         </div>
         <div class="theme_modal">
             <span class="m_exit exit">
                 <i class="fa-solid fa-xmark"></i>
             </span>
-            <h1>
-                Mavzu qo'shish
-            </h1>
+            <h1 class="m_modal_title">Bo'lim qo'shish</h1>
             <form action="#" class="m_form">
                 <div class="input-i">
                     <input type="text" id="m_title" required>
                     <label for="m_title" class="title">
-                        Mavzu
+                        Bo'lim
                     </label>
                 </div>
                 <div class="input-i">
@@ -359,12 +442,27 @@
                 </div>
                 <button type="submit">Qo'shish</button>
             </form>
+            <form action="#" class="m_form_edit">
+                <div class="input-i">
+                    <input type="text" id="m_title_edit" required>
+                    <label for="m_title_edit" class="title">
+                        Bo'lim
+                    </label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="m_about_edit" required>
+                    <label for="m_about_edit" class="title">
+                        Ma'lumot
+                    </label>
+                </div>
+                <button type="submit">Saqlash</button>
+            </form>
         </div>
         <div class="handbook_modal">
             <span class="h_exit exit">
                 <i class="fa-solid fa-xmark"></i>
             </span>
-            <h1>Qo'llanma qo'shish</h1>
+            <h1 class="h_modal_title">Qo'llanma qo'shish</h1>
             <form action="#" class="h_form">
                 <div class="input-i">
                     <input type="text" id="h_category" required>
@@ -383,6 +481,86 @@
                     <label for="h_about" class="title">Izoh (ixtiyoriy)</label>
                 </div>
                 <button type="submit">Qo'shish</button>
+            </form>
+            <form action="#" class="h_form_edit">
+                <div class="input-i">
+                    <input type="text" id="h_category_edit" required>
+                    <label for="h_category_edit" class="title">Kategoriya</label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="h_title_edit" required>
+                    <label for="h_title_edit" class="title">Nomi</label>
+                </div>
+                <div class="input-i">
+                    <textarea id="h_content_edit" required></textarea>
+                    <label for="h_content_edit" class="title">Mazmuni / Formula</label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="h_about_edit">
+                    <label for="h_about_edit" class="title">Izoh (ixtiyoriy)</label>
+                </div>
+                <button type="submit">Saqlash</button>
+            </form>
+        </div>
+        <div class="lesson_modal">
+            <span class="ls_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <h1 class="ls_modal_title">Mavzu qo'shish</h1>
+            <form action="#" class="ls_form">
+                <div class="input-i">
+                    <input type="text" id="ls_title" required>
+                    <label for="ls_title" class="title">Mavzu nomi</label>
+                </div>
+                <div class="input-i">
+                    <textarea id="ls_about"></textarea>
+                    <label for="ls_about" class="title">Qisqa izoh (ixtiyoriy)</label>
+                </div>
+                <div class="input-i">
+                    <span>Fayl (PDF yoki DOCX):</span>
+                    <input type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" id="ls_file" required>
+                </div>
+                <button type="submit">Qo'shish</button>
+            </form>
+            <form action="#" class="ls_form_edit">
+                <div class="input-i">
+                    <input type="text" id="ls_title_edit" required>
+                    <label for="ls_title_edit" class="title">Mavzu nomi</label>
+                </div>
+                <div class="input-i">
+                    <textarea id="ls_about_edit"></textarea>
+                    <label for="ls_about_edit" class="title">Qisqa izoh (ixtiyoriy)</label>
+                </div>
+                <div class="input-i">
+                    <span>Yangi fayl (ixtiyoriy, PDF/DOCX):</span>
+                    <input type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" id="ls_file_edit">
+                </div>
+                <button type="submit">Saqlash</button>
+            </form>
+        </div>
+        <div class="user_modal">
+            <span class="u_exit exit">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <h1>Foydalanuvchini tahrirlash</h1>
+            <form action="#" class="u_form_edit">
+                <div class="input-i">
+                    <input type="text" id="u_username_edit" disabled>
+                    <label for="u_username_edit" class="title">Username (o'zgartirib bo'lmaydi)</label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="u_name_edit" required>
+                    <label for="u_name_edit" class="title">Ism</label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="u_surname_edit" required>
+                    <label for="u_surname_edit" class="title">Familiya</label>
+                </div>
+                <div class="input-i">
+                    <input type="text" id="u_university_edit" required>
+                    <label for="u_university_edit" class="title">O'qish joyi</label>
+                </div>
+                <button type="submit">Saqlash</button>
             </form>
         </div>
     </div>

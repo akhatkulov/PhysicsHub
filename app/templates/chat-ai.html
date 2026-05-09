@@ -45,7 +45,7 @@
         <div class="message-time">{{ msg.timestamp.strftime('%H:%M') }}</div>
       </div>
       <div class="message ai-message">
-        <div class="message-content markdown-content">{{ msg.response }}</div>
+        <div class="message-content markdown-content" data-raw="{{ msg.response }}"></div>
         <div class="message-time">{{ msg.timestamp.strftime('%H:%M') }}</div>
       </div>
       {% endfor %}
@@ -160,15 +160,42 @@
   const form = document.getElementById('chat-form');
   const input = document.getElementById('chat-input');
   const messages = document.getElementById('messages');
+  const CSRF_TOKEN = (document.querySelector('meta[name="csrf-token"]') || {}).content || '';
 
   // Scroll to bottom on load
   messages.scrollTop = messages.scrollHeight;
 
-  // Render markdown for history
-  document.querySelectorAll('.markdown-content').forEach(el => {
-    if (typeof marked !== 'undefined') {
-      el.innerHTML = marked.parse(el.textContent);
+  function safeMarkdown(raw) {
+    const md = (typeof marked !== 'undefined') ? marked.parse(String(raw ?? '')) : String(raw ?? '');
+    if (typeof DOMPurify !== 'undefined') {
+      return DOMPurify.sanitize(md, { USE_PROFILES: { html: true } });
     }
+    const div = document.createElement('div');
+    div.textContent = String(raw ?? '');
+    return div.textContent;
+  }
+
+  function makeMessage(kind, htmlOrText, isHtml, timeLabel) {
+    const wrap = document.createElement('div');
+    wrap.className = 'message ' + kind;
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    if (isHtml) {
+      content.innerHTML = htmlOrText; // sanitized via DOMPurify
+    } else {
+      content.textContent = htmlOrText;
+    }
+    const time = document.createElement('div');
+    time.className = 'message-time';
+    time.textContent = timeLabel;
+    wrap.appendChild(content);
+    wrap.appendChild(time);
+    return wrap;
+  }
+
+  document.querySelectorAll('.markdown-content').forEach(el => {
+    const raw = el.dataset.raw ?? el.textContent;
+    el.innerHTML = safeMarkdown(raw);
   });
 
   form.addEventListener('submit', async (e) => {
@@ -176,70 +203,44 @@
     const text = input.value.trim();
     if (!text) return;
 
-    // Add User Message
-    const userMsgDiv = document.createElement('div');
-    userMsgDiv.className = 'message user-message';
-    userMsgDiv.innerHTML = `
-        <div class="message-content">${text}</div>
-        <div class="message-time">Hozir</div>
-    `;
-    messages.appendChild(userMsgDiv);
+    messages.appendChild(makeMessage('user-message', text, false, 'Hozir'));
 
     input.value = '';
     input.disabled = true;
     messages.scrollTop = messages.scrollHeight;
 
-    // Add Loading Indicator
     const loadingDiv = document.createElement('div');
     loadingDiv.className = 'message ai-message loading';
-    loadingDiv.innerHTML = `
-        <div class="message-content" style="display: flex; gap: 5px; align-items: center;">
-            <span style="width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; animation: bounce 1s infinite 0s;"></span>
-            <span style="width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; animation: bounce 1s infinite 0.2s;"></span>
-            <span style="width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; animation: bounce 1s infinite 0.4s;"></span>
-        </div>
-    `;
+    const dotsHtml = '<div class="message-content" style="display: flex; gap: 5px; align-items: center;">' +
+        '<span style="width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; animation: bounce 1s infinite 0s;"></span>' +
+        '<span style="width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; animation: bounce 1s infinite 0.2s;"></span>' +
+        '<span style="width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; animation: bounce 1s infinite 0.4s;"></span>' +
+        '</div>';
+    loadingDiv.innerHTML = (typeof DOMPurify !== 'undefined') ? DOMPurify.sanitize(dotsHtml) : '';
     messages.appendChild(loadingDiv);
     messages.scrollTop = messages.scrollHeight;
 
     try {
-      // POST to our backend API instead of direct external API
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-CSRFToken': CSRF_TOKEN
         },
+        credentials: 'same-origin',
         body: JSON.stringify({ message: text })
       });
 
       if (!response.ok) throw new Error('Server error');
       const data = await response.json();
 
-      // Remove loading
       loadingDiv.remove();
-
-      // Add AI Message
-      const aiMsgDiv = document.createElement('div');
-      aiMsgDiv.className = 'message ai-message';
-      // Use marked for markdown parsing if available
-      const parsedContent = typeof marked !== 'undefined' ? marked.parse(data.javob) : data.javob;
-
-      aiMsgDiv.innerHTML = `
-        <div class="message-content">${parsedContent}</div>
-        <div class="message-time">Hozir</div>
-      `;
-      messages.appendChild(aiMsgDiv);
+      messages.appendChild(makeMessage('ai-message', safeMarkdown(data.javob), true, 'Hozir'));
 
     } catch (err) {
       console.error(err);
       loadingDiv.remove();
-
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'message ai-message';
-      errorDiv.innerHTML = `
-        <div class="message-content" style="border-color: #ef4444; color: #ef4444;">Tizimda xatolik yuz berdi. Iltimos, qayta urinib ko'ring.</div>
-      `;
-      messages.appendChild(errorDiv);
+      messages.appendChild(makeMessage('ai-message', "Tizimda xatolik yuz berdi. Iltimos, qayta urinib ko'ring.", false, 'Hozir'));
     } finally {
       input.disabled = false;
       input.focus();

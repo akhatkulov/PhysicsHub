@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Flasky - Internal Server Error{% endblock %}
+{% block title %}Tizim xatoligi - Physics Hub{% endblock %}
 
+{% block content %}
+<div style="min-height: calc(100vh - 240px); display: flex; align-items: center; justify-content: center;">
+    <div class="glass-card" style="text-align: center; padding: 60px 40px; max-width: 520px; border-radius: var(--radius-lg);">
+        <div style="font-size: 96px; font-weight: 800; line-height: 1;" class="text-gradient">500</div>
+        <h1 style="margin: 16px 0 12px;">Tizimda xatolik yuz berdi</h1>
+        <p style="color: var(--text-muted); margin-bottom: 28px;">Iltimos, biroz vaqtdan so'ng qayta urinib ko'ring.</p>
+        <a href="/" class="btn-primary" style="display: inline-flex;">Bosh sahifaga qaytish <i class="fas fa-home"></i></a>
+    </div>
+</div>
 {% endblock %}

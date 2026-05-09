@@ -1,1 +1,33 @@
-__pycache__
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+
+# Virtual envs
+venv/
+env/
+.venv/
+.env
+.env.*
+!.env.example
+
+# Flask / SQLite
+db/*.sqlite
+instance/
+
+# Logs
+*.log
+error.log
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Backups
+backups/

@@ -49,6 +49,7 @@
         <hr style="border-color: var(--border); margin-bottom: 24px;">
 
         <form method="POST" class="calc-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             <div class="flash-messages" style="margin-bottom: 20px;">

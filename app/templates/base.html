@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{% block title %}Physics Hub - Kelajak Fizikasi{% endblock %}</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <meta name="description"
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 </head>
 
 <body>
@@ -49,6 +51,7 @@
                             <a href="/leaderboard"><i class="fas fa-medal"></i> Reyting</a>
                             <a href="/matters"><i class="fas fa-calculator"></i> Masalalar</a>
                             <a href="/tests"><i class="fas fa-vial"></i> Testlar</a>
+                            <a href="/lessons"><i class="fas fa-book-open"></i> Mavzular</a>
                             <a href="/handbook"><i class="fas fa-book"></i> Qo'llanma</a>
                             <a href="/lab"><i class="fas fa-flask"></i> Laboratoriya</a>
                             <a href="/team"><i class="fas fa-users"></i> Jamoa</a>
@@ -69,6 +72,9 @@
             </div>
             <div class="nav-button {{ 'active' if request.path.startswith('/tests') }}">
                 <a href="/tests"><i class="fas fa-vials"></i> Testlar</a>
+            </div>
+            <div class="nav-button {{ 'active' if request.path.startswith('/lessons') }}">
+                <a href="/lessons"><i class="fas fa-book-open"></i> Mavzular</a>
             </div>
             <div class="nav-button {{ 'active' if request.path.startswith('/gifs') }}">
                 <a href="/gifs"><i class="fas fa-play-circle"></i> Animatsiyalar</a>

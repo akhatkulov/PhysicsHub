@@ -3,13 +3,13 @@ from app.models import Theme, Matter, Quiz, HandbookItem
 
 app = create_app("default")
 with app.app_context():
-    # Add Themes if empty
+    # Add Themes if empty (names lowercase to match URL/normalization convention)
     if not Theme.query.first():
         themes = [
-            Theme(name="Mexanika", about="Harakat, kuch, energiya va impuls qonuniyatlari."),
-            Theme(name="Optika", about="Yorug'likning tarqalishi, qaytishi va sinishi."),
-            Theme(name="Termodinamika", about="Issiqlik, harorat va ichki energiya jarayonlari."),
-            Theme(name="Elektr", about="Zaryadlar, maydonlar va elektr qarshiligi.")
+            Theme(name="mexanika", about="Harakat, kuch, energiya va impuls qonuniyatlari."),
+            Theme(name="optika", about="Yorug'likning tarqalishi, qaytishi va sinishi."),
+            Theme(name="termodinamika", about="Issiqlik, harorat va ichki energiya jarayonlari."),
+            Theme(name="elektr", about="Zaryadlar, maydonlar va elektr qarshiligi.")
         ]
         db.session.add_all(themes)
         print("Coefficients: Themes added.")

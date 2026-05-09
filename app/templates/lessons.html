@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Mavzular - Physics Hub{% endblock %}
+
+{% block content %}
+<div class="lessons-page">
+    <h1 class="form-action-title text-gradient">Mavzular</h1>
+    <p class="subtitle" style="text-align: center; color: var(--text-muted); margin-top: -30px; margin-bottom: 40px;">
+        Nazariy materiallar — PDF va Word hujjatlar
+    </p>
+
+    {% if lessons.items %}
+    <div class="lessons-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;">
+        {% for lesson in lessons.items %}
+        <a href="{{ url_for('main.lesson_view', lesson_id=lesson.id) }}" class="glass-card lesson-card"
+            style="display: flex; flex-direction: column; padding: 24px; border-radius: var(--radius); transition: transform 0.3s ease, box-shadow 0.3s ease; text-decoration: none; color: inherit;">
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                <div class="icon-wrap" style="margin: 0; width: 48px; height: 48px; font-size: 22px;
+                    {% if lesson.file_type == 'pdf' %}background: linear-gradient(135deg, #ef4444, #f59e0b);
+                    {% else %}background: linear-gradient(135deg, #2563eb, #0ea5e9);{% endif %}">
+                    <i class="fas {% if lesson.file_type == 'pdf' %}fa-file-pdf{% else %}fa-file-word{% endif %}"></i>
+                </div>
+                <span style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
+                    {{ lesson.file_type | upper }}
+                </span>
+            </div>
+            <h3 style="margin-bottom: 10px;">{{ lesson.title }}</h3>
+            {% if lesson.about %}
+            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; flex: 1;">{{ lesson.about }}</p>
+            {% endif %}
+            <div style="margin-top: 18px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 12px; color: var(--text-muted);">
+                    <i class="far fa-calendar"></i> {{ lesson.created_at.strftime('%Y-%m-%d') if lesson.created_at else '' }}
+                </span>
+                <span style="display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--primary);">
+                    O'qish <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="pagination" style="margin-top: 40px; display: flex; justify-content: center; align-items: center; gap: 16px;">
+        {% if lessons.has_prev %}
+        <a href="?page={{ lessons.prev_num }}" class="btn-secondary" style="padding: 8px 16px; font-size: 13px;">
+            <i class="fas fa-chevron-left"></i> Oldingi
+        </a>
+        {% endif %}
+        <span style="font-weight: 600; color: var(--text-muted);">{{ lessons.page }} / {{ lessons.pages }}</span>
+        {% if lessons.has_next %}
+        <a href="?page={{ lessons.next_num }}" class="btn-secondary" style="padding: 8px 16px; font-size: 13px;">
+            Keyingi <i class="fas fa-chevron-right"></i>
+        </a>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="glass-card" style="text-align: center; padding: 60px 40px; border-radius: var(--radius-lg);">
+        <i class="fas fa-book-open" style="font-size: 48px; color: var(--text-muted); margin-bottom: 16px;"></i>
+        <h3>Hozircha mavzular yo'q</h3>
+        <p style="color: var(--text-muted); margin-top: 8px;">Tez orada nazariy materiallar qo'shiladi.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.lesson-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--primary-glow);
+}
+</style>
+{% endblock %}

@@ -2,7 +2,10 @@
 
 # Load environment variables if .env exists
 if [ -f .env ]; then
-    export $(cat .env | xargs)
+    set -a
+    # shellcheck disable=SC1091
+    . ./.env
+    set +a
 fi
 
 DB_CONTAINER="physicshub_db"

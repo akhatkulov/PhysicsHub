@@ -54,25 +54,35 @@ class User(UserMixin, db.Model):
 
     @hybrid_method
     def rank(self):
-        subquery = db.session.query(
-            User.id,
-            db.func.coalesce(
-                db.func.sum(MatterPoints.points_earned)
-                + db.func.sum(QuizPoints.points_earned),
-                0,
-            ).label("total_points"),
-        ).outerjoin(MatterPoints, User.id == MatterPoints.user_id)
-        subquery = subquery.outerjoin(QuizPoints, User.id == QuizPoints.user_id)
-        subquery = subquery.group_by(User.id).subquery()
+        matter_sub = (
+            db.session.query(
+                MatterPoints.user_id.label("uid"),
+                db.func.coalesce(db.func.sum(MatterPoints.points_earned), 0).label("mp"),
+            )
+            .group_by(MatterPoints.user_id)
+            .subquery()
+        )
+        quiz_sub = (
+            db.session.query(
+                QuizPoints.user_id.label("uid"),
+                db.func.coalesce(db.func.sum(QuizPoints.points_earned), 0).label("qp"),
+            )
+            .group_by(QuizPoints.user_id)
+            .subquery()
+        )
+        total_expr = (
+            db.func.coalesce(matter_sub.c.mp, 0)
+            + db.func.coalesce(quiz_sub.c.qp, 0)
+        ).label("total_points")
 
-        ranked_users = (
-            db.session.query(subquery.c.id)
-            .order_by(subquery.c.total_points.desc())
+        ranked = (
+            db.session.query(User.id, total_expr)
+            .outerjoin(matter_sub, matter_sub.c.uid == User.id)
+            .outerjoin(quiz_sub, quiz_sub.c.uid == User.id)
+            .order_by(total_expr.desc())
             .all()
         )
-        rank_dict = {
-            user_id: rank for rank, (user_id,) in enumerate(ranked_users, start=1)
-        }
+        rank_dict = {user_id: rank for rank, (user_id, _) in enumerate(ranked, start=1)}
         return rank_dict.get(self.id, None)
 
 
@@ -166,39 +176,50 @@ class HandbookItem(db.Model):
     about = db.Column(db.String(1000), nullable=True)
 
 
+class Lesson(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(200), nullable=False)
+    about = db.Column(db.String(2000), nullable=True)
+    file_path = db.Column(db.String(500), nullable=False)   # static-relative, e.g. lessons/abc.pdf
+    file_type = db.Column(db.String(10), nullable=False)    # 'pdf' or 'docx'
+    html_path = db.Column(db.String(500), nullable=True)    # for docx: rendered HTML (mammoth)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
 
 def save_user_progress(user_id, item_id, points, x_type):
+    points = max(int(points or 0), 0)
     if x_type == "matter":
         progress = MatterPoints.query.filter_by(
             user_id=user_id, matter_id=item_id
         ).first()
         if progress:
-            progress.points_earned = points
+            if points > progress.points_earned:
+                progress.points_earned = points
+                progress.timestamp = datetime.utcnow()
         else:
-            progress = MatterPoints(
+            db.session.add(MatterPoints(
                 user_id=user_id, matter_id=item_id, points_earned=points
-            )
-            db.session.add(progress)
+            ))
 
         if not SolvedProblems.query.filter_by(
             user_id=user_id, matter_id=item_id
         ).first():
-            solved_problem = SolvedProblems(user_id=user_id, matter_id=item_id)
-            db.session.add(solved_problem)
+            db.session.add(SolvedProblems(user_id=user_id, matter_id=item_id))
 
     elif x_type == "quiz":
         progress = QuizPoints.query.filter_by(user_id=user_id, quiz_id=item_id).first()
         if progress:
-            progress.points_earned = points
+            if points > progress.points_earned:
+                progress.points_earned = points
+                progress.timestamp = datetime.utcnow()
         else:
-            progress = QuizPoints(
+            db.session.add(QuizPoints(
                 user_id=user_id, quiz_id=item_id, points_earned=points
-            )
-            db.session.add(progress)
+            ))
 
         if not TestResults.query.filter_by(user_id=user_id, quiz_id=item_id).first():
-            solved_test = TestResults(user_id=user_id, quiz_id=item_id)
-            db.session.add(solved_test)
+            db.session.add(TestResults(user_id=user_id, quiz_id=item_id))
 
     else:
         raise ValueError("Invalid x_type. Use 'matter' or 'quiz'.")
@@ -233,30 +254,36 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-def get_leaderboard():
-    subquery = (
+def get_leaderboard(limit=10):
+    matter_sub = (
         db.session.query(
-            User.id,
-            (
-                db.func.coalesce(db.func.sum(MatterPoints.points_earned), 0)
-                + db.func.coalesce(db.func.sum(QuizPoints.points_earned), 0)
-            ).label("total_points"),
+            MatterPoints.user_id.label("uid"),
+            db.func.coalesce(db.func.sum(MatterPoints.points_earned), 0).label("mp"),
         )
-        .outerjoin(MatterPoints, User.id == MatterPoints.user_id)
-        .outerjoin(QuizPoints, User.id == QuizPoints.user_id)
-        .group_by(User.id)
+        .group_by(MatterPoints.user_id)
         .subquery()
     )
+    quiz_sub = (
+        db.session.query(
+            QuizPoints.user_id.label("uid"),
+            db.func.coalesce(db.func.sum(QuizPoints.points_earned), 0).label("qp"),
+        )
+        .group_by(QuizPoints.user_id)
+        .subquery()
+    )
+    total_expr = (
+        db.func.coalesce(matter_sub.c.mp, 0)
+        + db.func.coalesce(quiz_sub.c.qp, 0)
+    ).label("total_points")
 
-    top_users = (
-        db.session.query(User, subquery.c.total_points)
-        .join(subquery, User.id == subquery.c.id)
-        .order_by(subquery.c.total_points.desc())
-        .limit(10)
+    return (
+        db.session.query(User, total_expr)
+        .outerjoin(matter_sub, matter_sub.c.uid == User.id)
+        .outerjoin(quiz_sub, quiz_sub.c.uid == User.id)
+        .order_by(total_expr.desc())
+        .limit(limit)
         .all()
     )
-
-    return top_users
 
 
 def get_all_themes():
@@ -336,3 +363,26 @@ def get_quiz(prefix):
 def get_matter(prefix):
     matters = get_matter_list()
     return [m for m in matters if m["title"].startswith(prefix)]
+
+
+def get_all_lessons():
+    lessons = Lesson.query.order_by(Lesson.created_at.desc()).all()
+    return [
+        {
+            "id": l.id,
+            "title": l.title,
+            "about": l.about or "",
+            "file_path": l.file_path,
+            "file_type": l.file_type,
+            "html_path": l.html_path,
+            "created_at": l.created_at.strftime("%Y-%m-%d %H:%M") if l.created_at else "",
+        }
+        for l in lessons
+    ]
+
+
+def get_lessons_by_prefix(prefix):
+    lessons = get_all_lessons()
+    if not prefix:
+        return lessons
+    return [l for l in lessons if l["title"].lower().startswith(prefix.lower())]

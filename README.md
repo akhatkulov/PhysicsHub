@@ -1,5 +1,8 @@
 --[#]-- LINUX RUN --[#]--
 
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+
 export FLASK_APP=flasky.py
 export FLASK_DEBUG=1
 
@@ -9,6 +12,9 @@ flask run
 
 
 --[?]-- Windows run command --[?]--
+python -m venv venv && venv\Scripts\activate
+pip install -r requirements.txt
+
 set FLASK_APP=flasky.py
 
 set FLASK_DEBUG=1
